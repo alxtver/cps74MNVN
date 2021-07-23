@@ -8,12 +8,17 @@
 html {
   overflow-y: auto;
 }
-.successMessage {
-  background: #aaffa5ad;
+.el-message__content {
+  font-size: larger;
 }
-.errorMessage {
-  background: #fda2a280;
+.el-message{
+  backdrop-filter: blur(2px);
+  box-shadow: 5px 5px 26px -2px #999999;
+  border: none;
+  background: rgba(120, 119, 119, 0.68);
 }
 .sn-notify {
   background: #00000012;
+  backdrop-filter: blur(2px);
+  box-shadow: 5px 5px 26px -2px #999999;
 }

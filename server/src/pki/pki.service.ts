@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import mongoose from 'mongoose';
@@ -93,19 +92,5 @@ export class PkiService {
                     .includes(enToRuQueryText.toLocaleLowerCase())
             );
         });
-=======
-import {Injectable} from '@nestjs/common';
-import {Model} from 'mongoose';
-import {InjectModel} from '@nestjs/mongoose';
-import {Pki} from './interfaces/pki.interface';
-
-@Injectable()
-export class PkiService {
-    constructor(@InjectModel('Pki') private readonly pkiModel: Model<Pki>) { }
-
-    // fetch all pkis
-    async getAllPki(): Promise<Pki[]> {
-        return await this.pkiModel.find().exec();
->>>>>>> 5e42e39... first commit
     }
 }

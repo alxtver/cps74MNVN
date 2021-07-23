@@ -1,13 +1,5 @@
 <template>
   <div class="login">
-    <v-snackbar
-        v-model="snackbar"
-        :timeout="4000"
-        :top="true"
-        :color="snackbarColor"
-        :centered="true"
-        contentClass="snack"
-    >{{snackbarText}} </v-snackbar>
     <v-card elevation="24">
       <v-form
         width="500"

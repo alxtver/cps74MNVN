@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
     Controller,
     Get,
@@ -7,15 +6,19 @@ import {
     Post,
     Body,
     Put,
+    Query,
+    NotFoundException,
     Delete,
-    Req,
+    Param,
+    Req
 } from '@nestjs/common';
 import { PkiService } from './pki.service';
-import { PkiDto } from '../dto/pki.dto';
+import {CreateCustomerDTO} from "../customer/dto/create-customer.dto";
+import {PkiDto} from "../dto/pki.dto";
 
 @Controller('pkis')
 export class PkiController {
-    constructor(private pkiService: PkiService) {}
+    constructor(private pkiService: PkiService) { }
 
     /**
      * Получить ПКИ
@@ -95,18 +98,3 @@ export class PkiController {
         return res.status(HttpStatus.OK).json(response);
     }
 }
-=======
-import { Controller, Get, Res, HttpStatus, Post, Body, Put, Query, NotFoundException, Delete, Param } from '@nestjs/common';
-import { PkiService } from './pki.service';
-
-@Controller('pki')
-export class PkiController {
-    constructor(private pkiService: PkiService) { }
-
-    // Retrieve customers list
-    @Get('pkis')
-    async getAllPki(@Res() res) {
-        const pkis = await this.pkiService.getAllPki();
-        return res.status(HttpStatus.OK).json(pkis);
-    }}
->>>>>>> 5e42e39... first commit

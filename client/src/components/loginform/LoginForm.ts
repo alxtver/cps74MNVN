@@ -1,5 +1,4 @@
 import { Component, Vue } from "vue-property-decorator";
-import { Form } from "element-ui";
 import AuthApi from "@/api/authapi/AuthApi";
 import router from "@/router";
 
@@ -15,9 +14,6 @@ export default class LoginForm extends Vue {
     };
 
     private loading = false;
-    private snackbar = false;
-    private snackbarText: string | null = null;
-    private snackbarColor: string | null = null;
 
     private userRules = [(v) => !!v || "Введите имя"];
     private passRules = [(v) => !!v || "Введите пароль"];
@@ -33,9 +29,12 @@ export default class LoginForm extends Vue {
             this.authData.password
         );
         if (response.message === "loginConfirm") {
-            this.snackbar = true;
-            this.snackbarText = "Вход разрешен";
-            this.snackbarColor = "teal accent-3";
+            this.$message({
+                message: 'Вход разрешен',
+                type: 'success',
+                customClass: 'successMessage',
+                center: true,
+            });
             this.$store.commit("loginConfirm");
             this.$store.commit("updateUser", response.user);
             this.$store.commit("updatePart", response.user.lastPart);
@@ -45,13 +44,19 @@ export default class LoginForm extends Vue {
             sessionStorage.setItem("part", response.user.lastPart);
             await router.push("pkis");
         } else if (response.message === "wrongName") {
-            this.snackbar = true;
-            this.snackbarText = "Неправильное имя пользователя!";
-            this.snackbarColor = "deep-orange";
+            this.$message({
+                message: 'Неправильное имя пользователя!',
+                type: 'error',
+                customClass: 'errorMessage',
+                center: true,
+            });
         } else if (response.message === "wrongPassword") {
-            this.snackbar = true;
-            this.snackbarText = "Неправильный пароль!";
-            this.snackbarColor = "deep-orange";
+            this.$message({
+                message: 'Неправильный пароль!',
+                type: 'error',
+                customClass: 'errorMessage',
+                center: true,
+            });
         }
         this.loading = false;
     }
