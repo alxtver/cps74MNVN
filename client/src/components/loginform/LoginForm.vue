@@ -11,6 +11,7 @@
         <v-text-field
           v-model="authData.username"
           light
+          autofocus
           prepend-icon="mdi-account"
           label="Имя пользователя"
           :rules="userRules"

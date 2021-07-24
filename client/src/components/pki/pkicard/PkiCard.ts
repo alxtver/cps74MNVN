@@ -80,6 +80,7 @@ export default class PkiCardTs extends Vue {
      * @private
      */
     private async save(): Promise<void> {
+        this.editedItem.serial_number = converter.snModifier(this.editedItem).SN;
         await this.validation();
         if (!this.valid) {
             return;
@@ -105,7 +106,7 @@ export default class PkiCardTs extends Vue {
                     message: '',
                     duration: 15000,
                     showClose: false,
-                    customClass: 'sn-notify'
+                    customClass: 'sn-notify',
                 });
             } else {
                 this.$emit('notUniqueSerialNumber');
