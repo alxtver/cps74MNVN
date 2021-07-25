@@ -30,7 +30,7 @@ export default class ApkziCardTs extends Vue {
     }
 
     /**
-     * Нажатие на кнопку добавить ПКИ
+     * Нажатие на кнопку добавить АПКЗИ
      * @private
      */
     private newApkzi(): void {
@@ -39,7 +39,7 @@ export default class ApkziCardTs extends Vue {
     }
 
     /**
-     * Сохранить ПКИ
+     * Сохранить АПКЗИ
      * @private
      */
     private async save(): Promise<void> {
@@ -70,10 +70,6 @@ export default class ApkziCardTs extends Vue {
                 this.$emit('notUniqueSerialNumber');
                 this.disableSaveBtn = false;
             }
-            // this.editedItem.serial_number = '';
-            const serialNumberField = this.$refs
-                .serialNumberField as HTMLHtmlElement;
-            serialNumberField.focus();
             await this.resetValidation();
         }
     }

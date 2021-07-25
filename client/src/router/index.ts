@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Pkis from '../views/pki/Pkis.vue';
 import LoginForm from '@/components/loginform/LoginForm.vue';
 import Apkzi from "@/views/apkzi/Apkzi.vue";
+import SystemCases from "@/views/systemcases/SystemCases.vue";
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,14 @@ const routes: Array<RouteConfig> = [
     component: Apkzi,
     meta: {
       title: 'АПКЗИ'
+    }
+  },
+  {
+    path: '/systemCases',
+    name: 'SystemCases',
+    component: SystemCases,
+    meta: {
+      title: 'Системные блоки'
     }
   },
   {

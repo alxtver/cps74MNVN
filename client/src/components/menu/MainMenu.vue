@@ -21,7 +21,7 @@
                     <v-tabs-slider color="deep-orange"></v-tabs-slider>
                     <v-tab to="/pkis"> ПКИ </v-tab>
                     <v-tab to="/apkzi"> АПКЗИ </v-tab>
-                    <v-tab> СБ </v-tab>
+                    <v-tab to="/systemCases"> Системные блоки </v-tab>
                     <v-tab to="/pc"> ПЭВМ </v-tab>
                 </v-tabs>
                 <v-spacer></v-spacer>

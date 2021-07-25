@@ -12,6 +12,7 @@ import { ResponseVariablesMiddleware } from './middleware/responseVariables.midd
 import { routes } from './app.routes';
 import { EanModule } from './ean/ean.module';
 import { ApkziModule } from './apkzi/apkzi.module';
+import { SystemCasesModule } from './system-cases/system-cases.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ApkziModule } from './apkzi/apkzi.module';
     ResponseVariablesMiddleware,
     EanModule,
     ApkziModule,
+    SystemCasesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

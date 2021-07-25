@@ -1,6 +1,6 @@
 <template>
   <v-card class="mb-5 mt-5 ml-10 mr-10" elevation="5">
-    <pki-table-vuetify></pki-table-vuetify>
+    <pki-table></pki-table>
   </v-card>
 </template>
 

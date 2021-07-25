@@ -1,7 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
-import PkiTableVuetify from '@/components/pki/pkitable/PkiTable.vue';
+import PkiTable from '@/components/pki/pkitable/PkiTable.vue';
 
-@Component({components: {PkiTableVuetify}})
+@Component({components: {PkiTable}})
 export default class Pkis extends Vue {
 
 }
