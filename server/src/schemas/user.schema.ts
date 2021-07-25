@@ -19,5 +19,7 @@ export const userSchema = new mongoose.Schema({
     lastPage: Number,
     pcCount: String,
     lastAssemblyPC: String,
+    lastApkzi: Object,
+    lastPki: Object,
     company: String,
 });

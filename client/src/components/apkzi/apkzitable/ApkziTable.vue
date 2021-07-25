@@ -33,9 +33,9 @@
                         ref="apkziCard"
                         :editedItem="editedItem"
                         :isNewApkzi="isNewApkzi"
-                        @createNewPki="createNewApkzi"
+                        @createNewApkzi="createNewApkzi"
                         @editComplete="editComplete"
-                        @addNewPki="addNewPki"
+                        @addNewApkzi="addNewApkzi"
                         @notUniqueSerialNumber="notUniqueSerialNumber"
                     ></apkzi-card>
                     <settings-menu @isEditing="changeEditing"></settings-menu>

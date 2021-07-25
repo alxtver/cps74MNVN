@@ -17,6 +17,14 @@ class PkiApi {
   }
 
     /**
+     * Получить последний введенный ПКИ
+     */
+    public async getLastPki(): Promise<Pki> {
+        const response = await this.axiosInstance.get('/pkis/lastPki');
+        return dataToClass(Pki, response.data);
+    }
+
+    /**
      * Создать ПКИ
      */
     public async addPki(pki: Pki): Promise<Pki | string> {

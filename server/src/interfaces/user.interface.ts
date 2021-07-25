@@ -8,4 +8,6 @@ export interface User extends Document {
     readonly lastPage: number;
     readonly pcCount: string;
     readonly lastAssemblyPC: string;
+    lastApkzi: object;
+    lastPki: object;
 }

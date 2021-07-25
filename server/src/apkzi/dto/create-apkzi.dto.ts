@@ -1,4 +1,5 @@
 export class CreateApkziDto {
+    readonly _id: string;
     readonly apkzi_name: string;
     readonly kont_name: string;
     readonly fdsi: string;

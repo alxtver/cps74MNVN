@@ -10,7 +10,7 @@ export default new Vuex.Store({
         auth: false,
         user: null,
         part: '',
-        sound: true
+        sound: true,
     },
     mutations: {
         updateUser(state, newUser) {

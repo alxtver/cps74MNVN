@@ -7,4 +7,6 @@ export default class User {
     readonly lastPage: number = 0;
     readonly pcCount: string = '';
     readonly lastAssemblyPC: string = '';
+    readonly lastApkzi: string = '';
+    readonly lastPki: string = '';
 }

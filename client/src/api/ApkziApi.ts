@@ -2,7 +2,6 @@ import { axiosFactory } from './AxiosFactory';
 import { AxiosInstance } from 'axios';
 import {dataToArrayClass, dataToClass} from '@/api/ClassFactory';
 import Apkzi from "@/models/Apkzi";
-import Pki from "@/models/Pki";
 
 class ApkziApi {
     constructor(
@@ -15,6 +14,14 @@ class ApkziApi {
     public async getApkzi(): Promise<Apkzi[]> {
         const response = await this.axiosInstance.get('/apkzi');
         return dataToArrayClass(Apkzi, response.data);
+    }
+
+    /**
+     * Получить последний введенный АПКЗИ
+     */
+    public async getLastApkzi(): Promise<Apkzi> {
+        const response = await this.axiosInstance.get('/apkzi/lastApkzi');
+        return dataToClass(Apkzi, response.data);
     }
 
     /**

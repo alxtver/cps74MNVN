@@ -1,15 +1,13 @@
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import Pki from '@/models/Pki';
-import pkiApi from '@/api/PkiApi';
-import eanApi from '@/api/EanApi';
+import { Component, Prop, Vue} from 'vue-property-decorator';
 import converter from '@/helper/Converter';
-import sounds from '@/helper/Sounds';
 import { State } from 'vuex-class';
+import Apkzi from "@/models/Apkzi";
+import apkziApi from "@/api/ApkziApi";
 
 @Component
 export default class ApkziCardTs extends Vue {
-    @Prop({ default: new Pki() })
-    private editedItem!: Pki;
+    @Prop({ default: new Apkzi() })
+    private editedItem!: Apkzi;
 
     @Prop({ default: true })
     private isNewApkzi!: boolean;
@@ -19,49 +17,9 @@ export default class ApkziCardTs extends Vue {
 
     private dialog = false;
     private valid = true;
-    private autocompleteTypesPki: string[] = [];
-    private autocompleteVendors: string[] = [];
-    private autocompleteCountries: string[] = [];
-    private searchPki: string | null = null; // Строка поиска
-    private searchVendors: string | null = null;
-    private searchCountries: string | null = null;
+    private disableSaveBtn = false;
 
-    private typeRules = [(v) => !!v || 'Введите тип'];
-    private vendorRules = [(v) => !!v || 'Введите наименование производителя'];
-    private modelRules = [(v) => !!v || 'Введите модель'];
-    private countryRules = [(v) => !!v || 'Введите страну'];
-    private partRules = [(v) => !!v || 'Введите тему'];
-    private serialNumberRules = [(v) => !!v || 'Введите серийный номер'];
-
-    /**
-     * Слушаем изменение строки поиска
-     * @param query
-     * @private
-     */
-    @Watch('searchPki')
-    private async autoCompleteTypes(query): Promise<void> {
-        if (query !== null) {
-            this.autocompleteTypesPki = await pkiApi.autocompleteTypesPki(
-                query,
-            );
-        }
-    }
-
-    @Watch('searchVendors')
-    private async autoCompleteVendors(query): Promise<void> {
-        if (query !== null) {
-            this.autocompleteVendors = await pkiApi.autocompleteVendors(query);
-        }
-    }
-
-    @Watch('searchCountries')
-    private async autoCompleteCountries(query): Promise<void> {
-        if (query !== null) {
-            this.autocompleteCountries = await pkiApi.autocompleteCountries(
-                query,
-            );
-        }
-    }
+    private validationRules = [(v) => !!v || 'Обязательное поле'];
 
     /**
      * Открыть диалог
@@ -75,9 +33,9 @@ export default class ApkziCardTs extends Vue {
      * Нажатие на кнопку добавить ПКИ
      * @private
      */
-    private newPki(): void {
+    private newApkzi(): void {
         this.resetValidation();
-        this.$emit('createNewPki');
+        this.$emit('createNewApkzi');
     }
 
     /**
@@ -90,61 +48,34 @@ export default class ApkziCardTs extends Vue {
             return;
         }
         if (!this.isNewApkzi) {
-            const pki: Pki = await pkiApi.editPki(this.editedItem);
-            this.$emit('editComplete', pki);
+            const apkzi: Apkzi = await apkziApi.editApkzi(this.editedItem);
+            this.$emit('editComplete', apkzi);
             this.dialog = false;
         } else {
-            if (this.sound) {
-                sounds.say(
-                    this.editedItem.serial_number.slice(
-                        this.editedItem.serial_number.length - 3,
-                    ),
-                    1.4,
-                );
-            }
-            const response = await pkiApi.addPki(this.editedItem);
-            if (response instanceof Pki) {
-                this.$emit('addNewPki', response);
+            this.disableSaveBtn = true;
+            const response = await apkziApi.addApkzi(this.editedItem);
+            if (response instanceof Apkzi) {
+                this.$emit('addNewApkzi', response);
                 this.$notify({
-                    title: response.serial_number,
+                    title: `${response.zav_number} сохранен!`,
                     message: '',
-                    duration: 15000,
+                    duration: 3000,
                     showClose: false,
                     customClass: 'sn-notify',
                 });
+                this.editedItem.zav_number = converter.plusOne(this.editedItem.zav_number);
+                this.editedItem.kontr_zav_number = converter.plusOne(this.editedItem.kontr_zav_number);
+                this.disableSaveBtn = false;
             } else {
                 this.$emit('notUniqueSerialNumber');
+                this.disableSaveBtn = false;
             }
-            this.editedItem.serial_number = '';
+            // this.editedItem.serial_number = '';
             const serialNumberField = this.$refs
                 .serialNumberField as HTMLHtmlElement;
             serialNumberField.focus();
             await this.resetValidation();
         }
-    }
-
-    /**
-     * Заполнение данных по штрих-коду
-     * @private
-     * @param event
-     */
-    private async checkEan(event): Promise<void> {
-        const ean = await eanApi.searchEan(event.target.value);
-        if (ean) {
-            this.editedItem.type_pki = ean.type_pki;
-            this.editedItem.vendor = ean.vendor;
-            this.editedItem.model = ean.model;
-            this.editedItem.country = ean.country;
-            const serialNumberField = this.$refs
-                .serialNumberField as HTMLHtmlElement;
-            serialNumberField.focus();
-        } else {
-            this.editedItem.type_pki = '';
-            this.editedItem.vendor = '';
-            this.editedItem.model = '';
-            this.editedItem.country = '';
-        }
-        this.resetValidation();
     }
 
     /**
@@ -167,25 +98,5 @@ export default class ApkziCardTs extends Vue {
     private validation(): void {
         const form = this.$refs.form as Vue & { validate: () => boolean };
         form.validate();
-    }
-
-    /**
-     * Правила фильтрации в комбобоксах
-     * @param item
-     * @param queryText
-     * @param itemText
-     * @private
-     */
-    private filterRules(item: any, queryText: string, itemText: string) {
-        const ruToEnQueryText = converter.translate(queryText).ruToEnLeather;
-        const enToRuQueryText = converter.translate(queryText).enToRuLeather;
-        return (
-            itemText
-                .toLocaleLowerCase()
-                .indexOf(ruToEnQueryText.toLocaleLowerCase()) > -1 ||
-            itemText
-                .toLocaleLowerCase()
-                .indexOf(enToRuQueryText.toLocaleLowerCase()) > -1
-        );
     }
 }

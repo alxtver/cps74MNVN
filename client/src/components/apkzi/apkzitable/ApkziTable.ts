@@ -1,20 +1,20 @@
-import Component from "vue-class-component";
-import Vue from "vue";
-import ApkziCard from '@/components/apkzi/apkzicard/ApkziCard.vue'
-import Apkzi from "@/models/Apkzi";
-import {State} from "vuex-class";
-import Part from "@/models/Part";
-import {Watch} from "vue-property-decorator";
-import apkziApi from "@/api/ApkziApi";
-import {DataTableHeader} from "vuetify";
-import SettingsMenu from "@/components/pki/pkitable/settingsmenu/SettingsMenu.vue";
-import sounds from "@/helper/Sounds";
-import ApkziCardTs from "@/components/apkzi/apkzicard/ApkziCard";
+import Component from 'vue-class-component';
+import Vue from 'vue';
+import ApkziCard from '@/components/apkzi/apkzicard/ApkziCard.vue';
+import Apkzi from '@/models/Apkzi';
+import { State } from 'vuex-class';
+import Part from '@/models/Part';
+import { Watch } from 'vue-property-decorator';
+import apkziApi from '@/api/ApkziApi';
+import { DataTableHeader } from 'vuetify';
+import SettingsMenu from '@/components/pki/pkitable/settingsmenu/SettingsMenu.vue';
+import sounds from '@/helper/Sounds';
+import ApkziCardTs from '@/components/apkzi/apkzicard/ApkziCard';
 
 /**
  * Основная таблица АПКЗИ
  */
-@Component({ components: {ApkziCard, SettingsMenu} })
+@Component({ components: { ApkziCard, SettingsMenu } })
 export default class ApkziTable extends Vue {
     private apkzis: Apkzi[] = [];
     private search = '';
@@ -32,7 +32,11 @@ export default class ApkziTable extends Vue {
         { text: 'Наим. контроллера СЗИ', value: 'kont_name', sortable: false },
         { text: 'ФДШИ контроллера', value: 'fdsiKontr', sortable: false },
         { text: 'Зав. номер', value: 'zav_number', sortable: false },
-        { text: 'Зав. номер контроллера', value: 'kontr_zav_number', sortable: false },
+        {
+            text: 'Зав. номер контроллера',
+            value: 'kontr_zav_number',
+            sortable: false,
+        },
         {
             text: 'Номер машины',
             value: 'number_machine',
@@ -96,9 +100,15 @@ export default class ApkziTable extends Vue {
      * Открытие окна создания нового АПКЗИ
      * @private
      */
-    private createNewApkzi(): void {
-        this.editedItem = new Apkzi();
-        this.editedItem.part = this.$store.state.part
+    private async createNewApkzi(): Promise<void> {
+        const lastApkzi = await apkziApi.getLastApkzi();
+        if (lastApkzi) {
+            lastApkzi._id = null;
+            this.editedItem = lastApkzi;
+        } else {
+            this.editedItem = new Apkzi();
+        }
+        this.editedItem.part = this.$store.state.part;
         this.isNewApkzi = true;
     }
 
@@ -116,8 +126,9 @@ export default class ApkziTable extends Vue {
      * @param apkzi
      * @private
      */
-    private addNewPki(apkzi: Apkzi): void {
-        this.apkzis.push(apkzi)
+    private addNewApkzi(apkzi: Apkzi): void {
+        this.apkzis.push(apkzi);
+        this.addIndexes(this.apkzis);
     }
 
     /**
@@ -125,7 +136,7 @@ export default class ApkziTable extends Vue {
      * @private
      */
     private notUniqueSerialNumber(): void {
-        sounds.alert()
+        sounds.alert();
         this.$message({
             message: 'Неуникальный серийный номер',
             type: 'error',
@@ -140,9 +151,11 @@ export default class ApkziTable extends Vue {
      */
     private deleteItemConfirm(item: Apkzi): void {
         apkziApi.deleteApkzi(item._id).then((data: Apkzi) => {
-            this.apkzis = this.apkzis.filter((apkzi: Apkzi) => apkzi._id !== data._id);
+            this.apkzis = this.apkzis.filter(
+                (apkzi: Apkzi) => apkzi._id !== data._id,
+            );
             this.apkzis = this.addIndexes(this.apkzis);
-            const message = `АПКЗИ удален!`
+            const message = `АПКЗИ удален!`;
             this.$message({
                 message,
                 type: 'error',

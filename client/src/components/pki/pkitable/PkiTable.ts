@@ -163,8 +163,14 @@ export default class PkiTable extends Vue {
      * Открытие окна создания нового ПКИ
      * @private
      */
-    private createNewPki(): void {
-        this.editedItem = new Pki();
+    private async createNewPki(): Promise<void> {
+        const lastPki = await pkiApi.getLastPki();
+        if (lastPki) {
+            lastPki._id = null;
+            this.editedItem = lastPki;
+        } else {
+            this.editedItem = new Pki();
+        }
         this.editedItem.part = this.$store.state.part
         this.isNewPki = true;
     }
@@ -190,6 +196,7 @@ export default class PkiTable extends Vue {
      */
     private addNewPki(pki: Pki): void {
         this.pkis.push(pki)
+        this.addIndexes(this.pkis);
     }
 
     /**

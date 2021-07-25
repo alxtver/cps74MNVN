@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pki } from '../interfaces/pki.interface';
 import { User } from '../interfaces/user.interface';
 import converter from '../helper/Converter';
 import { PkiDto } from '../dto/pki.dto';
 import {Ean} from "../interfaces/ean.interface";
-import {EanDto} from "../dto/ean.dto";
+import {Apkzi} from "../interfaces/apkzi.interface";
 
 @Injectable()
 export class PkiService {
@@ -46,7 +45,14 @@ export class PkiService {
                 newEan.save()
             }
         }
+        // добавляем пользователю идентификатор последнего добавленного ПКИ
+        this.userModel.findByIdAndUpdate(req.session.user._id, {lastPki: PkiDto}).exec();
         return await this.pkiModel(PkiDto).save();
+    }
+
+    async getLastPki(req): Promise<Apkzi> {
+        const user = await this.userModel.findById(req.session.user._id).exec();
+        return user.lastPki
     }
 
     async editPki(req): Promise<Pki> {

@@ -6,14 +6,10 @@ import {
     Post,
     Body,
     Put,
-    Query,
-    NotFoundException,
     Delete,
-    Param,
     Req
 } from '@nestjs/common';
 import { PkiService } from './pki.service';
-import {CreateCustomerDTO} from "../customer/dto/create-customer.dto";
 import {PkiDto} from "../dto/pki.dto";
 
 @Controller('pkis')
@@ -29,6 +25,17 @@ export class PkiController {
     async getAllPki(@Req() req, @Res() res) {
         const pkis = await this.pkiService.getAllPki(req);
         return res.status(HttpStatus.OK).json(pkis);
+    }
+
+    /**
+     * Получить последний введенный ПКИ
+     * @param req
+     * @param res
+     */
+    @Get('lastPki')
+    async getLastPki(@Req() req, @Res() res) {
+        const lastPki = await this.pkiService.getLastPki(req);
+        return res.status(HttpStatus.OK).json(lastPki)
     }
 
     /**

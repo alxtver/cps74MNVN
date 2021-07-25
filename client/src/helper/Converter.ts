@@ -24,11 +24,15 @@ class Converter {
         };
     }
 
+    /**
+     * Правка серийника в зависимости от условий
+     * @param pki
+     */
     public snModifier(pki: Pki) {
         let serialNumber = pki.serial_number;
         const vendor = pki.vendor;
         const eanCode = pki.ean_code;
-        const typePKI = pki.type_pki;
+        // const typePKI = pki.type_pki;
         //Проверка на русские символы в серийнике
         for (const letter of serialNumber) {
             const codeOfLetter = letter.charCodeAt(0);
@@ -67,7 +71,7 @@ class Converter {
                 };
             }
         }
-        // серийники APC  удаление буквы S
+        // серийники APC удаление буквы S
         if (
             (vendor === 'APC' || vendor === 'APC Back-UPS') &&
             serialNumber[0] === 'S'
@@ -112,6 +116,32 @@ class Converter {
             SN: serialNumber,
             message: false,
         };
+    }
+
+    /**
+     * Добавить единицу
+     * @param number
+     */
+    public plusOne(number) {
+        let indexChar = 0;
+        for (let index = 0; index < number.length; index++) {
+            if (!/\d/.test(number[index])) {
+                indexChar = index;
+            }
+        }
+        const firstPart = number.slice(0, indexChar + 1);
+        const secondPart = number.slice(indexChar + 1);
+        if (secondPart !== '') {
+            const lenSecondPart = secondPart.length;
+            return (
+                firstPart +
+                (parseInt(secondPart) + 1)
+                    .toString()
+                    .padStart(lenSecondPart, '0')
+            );
+        } else {
+            return (parseInt(firstPart) + 1).toString();
+        }
     }
 }
 const converter = new Converter();

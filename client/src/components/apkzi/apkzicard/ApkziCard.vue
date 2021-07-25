@@ -11,7 +11,7 @@
           class="mb-2"
           v-bind="attrs"
           v-on="on"
-          @click="newPki"
+          @click="newApkzi"
       >
         Добавить АПКЗИ
       </v-btn>
@@ -22,97 +22,70 @@
         v-model="valid"
         lazy-validation
     >
+        <h4>
+            АПКЗИ  для {{editedItem.part}}
+        </h4>
+        <h4 v-if="editedItem.number_machine">
+            Системный блок №{{editedItem.number_machine}}
+        </h4>
         <v-text-field
-            v-model="editedItem.ean_code"
-            label="Штрих-код"
-            filled
+            v-model="editedItem.fdsi"
+            label="ФДШИ"
             dense
             autofocus
-            outlined
-            @keypress.enter="checkEan"
+            required
+            :rules="validationRules"
         ></v-text-field>
         
-      <v-combobox
+      <v-text-field
           ref="typeField"
-          v-model="editedItem.type_pki"
+          v-model="editedItem.apkzi_name"
           class="mt-4"
-          label="Тип"
+          label="Наименование АПКЗИ"
           dense
           required
-          :hide-selected="true"
-          :rules="typeRules"
-          :items="autocompleteTypesPki"
-          :hide-no-data="true"
-          :auto-select-first="true"
-          :search-input.sync="searchPki"
-          :filter="filterRules"
-      ></v-combobox>
-
-      <v-combobox
-          class="mt-4"
-          v-model="editedItem.vendor"
-          label="Производитель"
-          dense
-          required
-          :rules="vendorRules"
-          :items="autocompleteVendors"
-          :hide-no-data="true"
-          :auto-select-first="true"
-          :filter="filterRules"
-          :search-input.sync="searchVendors"
-      ></v-combobox>
+          :rules="validationRules"
+      ></v-text-field>
 
       <v-text-field
           class="mt-4"
-          v-model="editedItem.model"
-          :rules="modelRules"
-          label="Модель"
+          v-model="editedItem.kont_name"
+          label="Наименование контроллера СЗИ"
+          dense
+          required
+          :rules="validationRules"
+      ></v-text-field>
+
+      <v-text-field
+          class="mt-4"
+          v-model="editedItem.fdsiKontr"
+          :rules="validationRules"
+          label="ФДШИ контроллера СЗИ"
           required
           dense
       ></v-text-field>
 
-      <v-combobox
-          v-model="editedItem.country"
-          class="mt-4"
-          label="Страна"
-          dense
-          required
-          :items="autocompleteCountries"
-          :rules="countryRules"
-          :hide-no-data="true"
-          :auto-select-first="true"
-          :filter="filterRules"
-          :search-input.sync="searchCountries"
-      ></v-combobox>
-
       <v-text-field
+          v-model="editedItem.zav_number"
           class="mt-4"
-          v-model="editedItem.part"
-          :rules="partRules"
-          label="Тема"
-          required
+          label="Заводской номер"
           dense
+          required
+          :rules="validationRules"
       ></v-text-field>
 
       <v-text-field
           class="mt-4"
           ref="serialNumberField"
-          v-model="editedItem.serial_number"
-          :rules="serialNumberRules"
-          label="Серийный номер"
+          v-model="editedItem.kontr_zav_number"
+          :rules="validationRules"
+          label="Заводской номер контроллера"
           required
           dense
-          @keypress.enter="save"
       ></v-text-field>
-        <v-text-field
-            class="mt-4"
-            v-if="!isNewApkzi"
-            v-model="editedItem.number_machine"
-            label="Номер системного блока"
-            dense
-        ></v-text-field>
-
+      
       <v-spacer></v-spacer>
+      
       <v-btn
           color="blue darken-1"
           text
@@ -124,6 +97,7 @@
           color="blue darken-1"
           text
           @click="save"
+          :disabled="disableSaveBtn"
       >
         Сохранить
       </v-btn>
@@ -135,8 +109,5 @@
 <script src="./ApkziCard.ts" lang="ts"></script>
 
 <style lang="scss">
-.pki-card-form {
-  padding: 20px;
-  background: white;
-}
+
 </style>
