@@ -4,12 +4,14 @@ import Part from '@/models/Part';
 import SystemCase from '@/models/SystemCase';
 import systemCaseApi from '@/api/SystemCaseApi';
 import SystemCaseForm from '@/components/systemcase/systemcaseform/SystemCaseForm.vue';
+import Pagination from '@/components/pagination/Pagination.vue';
 
-@Component({ components: { SystemCaseForm } })
+@Component({ components: { SystemCaseForm, Pagination } })
 export default class SystemCaseMain extends Vue {
     private systemCases: SystemCase[] = [];
     private loading = false;
     private itemsPerPage = 10; // количество элементов на странице
+    private page = 1; // текущая страница
     // пропсы для футера
     private footerProps = {
         'items-per-page-options': [5, 10, 30, 50, -1],
@@ -43,5 +45,14 @@ export default class SystemCaseMain extends Vue {
             this.systemCases = data;
             this.loading = false;
         });
+    }
+
+    /**
+     * Смена страницы
+     * @param page
+     * @private
+     */
+    private changePage(page): void {
+        this.page = page;
     }
 }
