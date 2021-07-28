@@ -1,10 +1,10 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import Unit from '@/models/Unit';
+import SystemCase from "@/models/SystemCase";
 
 @Component({ components: {} })
 export default class SystemCaseTable extends Vue {
     @Prop()
-    private systemCaseUnits!: Unit;
+    private systemCase!: SystemCase;
 
     private headers = [
         {
@@ -44,4 +44,17 @@ export default class SystemCaseTable extends Vue {
             class: 'systemCaseHeader',
         },
     ];
+
+    private insertSerialNumber(props: any): void {
+        props.item.serialNumber = props.value;
+        debugger
+    }
+
+    private cancel () {
+        console.log('cancel')
+    }
+
+    private test(a, b) {
+        debugger
+    }
 }

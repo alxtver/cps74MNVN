@@ -1,7 +1,10 @@
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-property-decorator';
 
 @Component({ components: {} })
 export default class Pagination extends Vue {
+    @Prop()
+    private pages!: number;
+
     private page = 1;
 
     private beforeMount () {
