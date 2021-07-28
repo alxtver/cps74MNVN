@@ -8,7 +8,7 @@
         :items-per-page="-1"
         item-key="i"
         :single-select="true"
-        
+        :item-class="itemClass"
     >
         <template v-slot:top>
             <v-toolbar
@@ -44,7 +44,7 @@
                 @save="insertSerialNumber(props)"
                 @cancel="cancel"
                 @close="cancel"
-                
+                @open="open(props.index)"
             >
                 <div @click="test">{{ props.item.serial_number }}</div>
                 <template v-slot:input>
@@ -79,6 +79,9 @@
         margin-top: 0 !important;
         padding-top: 0 !important;
     }
+}
+.active > td{
+    background: #84c6ff;
 }
 </style>
 

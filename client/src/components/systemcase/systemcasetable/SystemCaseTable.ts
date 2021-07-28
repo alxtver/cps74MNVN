@@ -1,10 +1,12 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import SystemCase from "@/models/SystemCase";
+import SystemCase from '@/models/SystemCase';
 
 @Component({ components: {} })
 export default class SystemCaseTable extends Vue {
     @Prop()
     private systemCase!: SystemCase;
+
+    private selectedRow = -1;
 
     private headers = [
         {
@@ -45,16 +47,42 @@ export default class SystemCaseTable extends Vue {
         },
     ];
 
+    private itemClass(a): string {
+        return a.i === this.selectedRow ? 'active' : '';
+    }
+
+    /**
+     * Ввод серийного номера
+     * @param props
+     * @private
+     */
     private insertSerialNumber(props: any): void {
         props.item.serialNumber = props.value;
-        debugger
+        this.goToNextCell(props);
     }
 
-    private cancel () {
-        console.log('cancel')
+
+    /**
+     * Переход на следующую ячейку
+     * @param props
+     * @private
+     */
+    private goToNextCell(props: any): void {
+        if (props.index + 1 >= this.systemCase.systemCaseUnits.length) {
+            this.selectedRow = -1;
+            return
+        }
+        const nextCell = this.$el.children[1].children[0].children[2].children[
+        props.index + 1
+            ].children[4].children[0] as HTMLHtmlElement;
+        nextCell.click();
     }
 
-    private test(a, b) {
-        debugger
+    private open(index: number): void {
+        this.selectedRow = index;
     }
+    private cancel() {
+    }
+
+    private test(a, b) {}
 }
