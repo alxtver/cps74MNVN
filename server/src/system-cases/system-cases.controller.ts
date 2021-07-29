@@ -21,9 +21,13 @@ export class SystemCasesController {
   //   return this.systemCasesService.create(createSystemCaseDto);
   // }
 
-  @Get()
-  findAll() {
-    return this.systemCasesService.findAll();
+
+  /**
+   * Ввод серийного номера ПКИ
+   */
+  @Put('editSerialNumber')
+  async editSerialNumber(@Req() req, @Res() res) {
+    return this.systemCasesService.editSerialNumber(req);
   }
 
   @Get(':id')

@@ -9,6 +9,7 @@
         item-key="i"
         :single-select="true"
         :item-class="itemClass"
+        @click:row="onSelectRow"
     >
         <template v-slot:top>
             <v-toolbar
@@ -43,12 +44,12 @@
                 transition="scale-transition"
                 @save="insertSerialNumber(props)"
                 @cancel="cancel"
-                @close="cancel"
                 @open="open(props.index)"
             >
-                <div @click="test">{{ props.item.serial_number }}</div>
+                <div>{{ props.item.serial_number }}</div>
                 <template v-slot:input>
                     <v-text-field
+                        v-if="isEditableCell(props.item)"
                         class="edit-dialog"
                         v-model="props.item.serial_number"
                         label="Edit"
@@ -82,7 +83,9 @@
 }
 .active > td{
     background: #84c6ff;
+    transition: background 1s ease-out 1s;
 }
+
 </style>
 
 <style lang="scss" scoped>

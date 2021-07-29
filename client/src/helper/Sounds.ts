@@ -1,4 +1,3 @@
-
 class Sounds {
     /**
      * Звук при ошибке
@@ -14,8 +13,12 @@ class Sounds {
      * Текст в речь
      * @param text текст для преобразования
      * @param rate скорость воспроизведения
+     * @param sound включен ли звук
      */
-    public say(text: string, rate: number): void {
+    public say(text: string, rate: number, sound: boolean): void {
+        if (!sound) {
+            return
+        }
         const ut = new SpeechSynthesisUtterance(text);
         ut.lang = 'ru-RU';
         ut.volume = 1;

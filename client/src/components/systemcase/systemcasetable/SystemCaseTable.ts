@@ -1,10 +1,17 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SystemCase from '@/models/SystemCase';
+import table from '@/helper/Table';
+import { State } from 'vuex-class';
+import Unit from "@/models/Unit";
+import systemCaseApi from "@/api/SystemCaseApi";
 
 @Component({ components: {} })
 export default class SystemCaseTable extends Vue {
     @Prop()
     private systemCase!: SystemCase;
+
+    @State((state) => state.sound)
+    private sound!: boolean;
 
     private selectedRow = -1;
 
@@ -45,10 +52,15 @@ export default class SystemCaseTable extends Vue {
             sortable: false,
             class: 'systemCaseHeader',
         },
-    ];
+    ]; // Заголоки таблицы
 
-    private itemClass(a): string {
-        return a.i === this.selectedRow ? 'active' : '';
+    /**
+     * Изменяем класс строки
+     * @param row
+     * @private
+     */
+    private itemClass(row): string {
+        return row.i === this.selectedRow ? 'active' : 'not-active';
     }
 
     /**
@@ -56,33 +68,57 @@ export default class SystemCaseTable extends Vue {
      * @param props
      * @private
      */
-    private insertSerialNumber(props: any): void {
+    private insertSerialNumber(props): void {
+        const item: Unit = props.item;
+        systemCaseApi.editSerialNumber(item, this.systemCase._id).then(data => {
+            debugger
+        })
         props.item.serialNumber = props.value;
-        this.goToNextCell(props);
+        table.goToNextCell(
+            this,
+            props,
+            this.systemCase.systemCaseUnits,
+            this.systemCase.serialNumber,
+            this.sound,
+        );
     }
-
 
     /**
-     * Переход на следующую ячейку
-     * @param props
+     * Редактируемая ли ячейка
+     * @param item
      * @private
      */
-    private goToNextCell(props: any): void {
-        if (props.index + 1 >= this.systemCase.systemCaseUnits.length) {
-            this.selectedRow = -1;
-            return
+    private isEditableCell(item): boolean {
+        if (item.serial_number === this.systemCase.serialNumber) {
+            return false;
         }
-        const nextCell = this.$el.children[1].children[0].children[2].children[
-        props.index + 1
-            ].children[4].children[0] as HTMLHtmlElement;
-        nextCell.click();
+        return item.serial_number !== 'б/н';
     }
 
+    /**
+     * Открытие ячейки на редактирование
+     * @param index
+     * @private
+     */
     private open(index: number): void {
         this.selectedRow = index;
     }
-    private cancel() {
+
+    /**
+     * Отмена редактирования ячейки
+     * @private
+     */
+    private cancel(): void {
+        this.selectedRow = -1;
     }
 
-    private test(a, b) {}
+    /**
+     * Выбор строки
+     * @param row
+     * @param event
+     * @private
+     */
+    private onSelectRow(row: Unit, event): void {
+        this.selectedRow = event.index;
+    }
 }

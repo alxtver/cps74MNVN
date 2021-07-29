@@ -90,14 +90,12 @@ export default class PkiCardTs extends Vue {
             this.$emit('editComplete', pki);
             this.dialog = false;
         } else {
-            if (this.sound) {
                 sounds.say(
                     this.editedItem.serial_number.slice(
                         this.editedItem.serial_number.length - 3,
                     ),
-                    1.4,
+                    1.4, this.sound
                 );
-            }
             const response = await pkiApi.addPki(this.editedItem);
             if (response instanceof Pki) {
                 this.$emit('addNewPki', response);
