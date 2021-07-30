@@ -60,7 +60,7 @@ export default class SystemCaseTable extends Vue {
      * @private
      */
     private itemClass(row): string {
-        return row.i === this.selectedRow ? 'active' : 'not-active';
+        return row.i === this.selectedRow ? 'td active' : 'td not-active';
     }
 
     /**

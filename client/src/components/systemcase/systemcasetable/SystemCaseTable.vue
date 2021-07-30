@@ -12,22 +12,16 @@
         @click:row="onSelectRow"
     >
         <template v-slot:top>
-            <v-toolbar
-                flat
-            >
-                <div>ФДШИ.{{systemCase.fdsi}}</div>
-                <v-divider
-                    class="mx-4"
-                    inset
-                    vertical
-                ></v-divider>
-                <div style="padding: 10px; font-size: x-large; height: 100%">{{systemCase.serialNumber}}</div>
-                <v-divider
-                    class="mx-4"
-                    inset
-                    vertical
-                ></v-divider>
-                <div v-if="systemCase.numberMachine" style="padding: 10px;">{{systemCase.numberMachine}}</div>
+            <v-toolbar flat>
+                <div>ФДШИ.{{ systemCase.fdsi }}</div>
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <div style="padding: 10px; font-size: x-large; height: 100%">
+                    {{ systemCase.serialNumber }}
+                </div>
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <div v-if="systemCase.numberMachine" style="padding: 10px">
+                    {{ systemCase.numberMachine }}
+                </div>
                 <v-divider
                     v-if="systemCase.numberMachine"
                     class="mx-4"
@@ -64,7 +58,7 @@
 
 <script src="./SystemCaseTable.ts"></script>
 
-<style lang="scss" >
+<style lang="scss">
 .systemCaseHeader {
     background: #3d3d3d;
     color: #d5d5d5 !important;
@@ -81,15 +75,18 @@
         padding-top: 0 !important;
     }
 }
-.active > td{
-    background: #84c6ff;
-    transition: background 1s ease-out 1s;
+
+tr.active {
+    background: #84c6ff !important;
+    transition: .6s background ease-out;
 }
 
+tr.not-active {
+    transition: .6s background linear;
+}
 </style>
 
 <style lang="scss" scoped>
-.edit-dialog{
-
+.edit-dialog {
 }
 </style>
