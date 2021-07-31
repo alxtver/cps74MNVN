@@ -10,6 +10,7 @@ import { DataTableHeader } from 'vuetify';
 import PkiCardTs from '@/components/pki/pkicard/PkiCard';
 import SettingsMenu from '@/components/pki/pkitable/settingsmenu/SettingsMenu.vue';
 import sounds from "@/helper/Sounds";
+import Unit from "@/models/Unit";
 
 @Component({ components: { PkiCard, SettingsMenu } })
 export default class PkiTable extends Vue {
@@ -22,6 +23,7 @@ export default class PkiTable extends Vue {
     private selectedType = 'Все';
     private isNewPki = true;
     private isEditing = false;
+    private selectedRow = -1;
 
     private headers: DataTableHeader[] = [
         { text: '', value: 'index', width: 20, sortable: false },
@@ -45,6 +47,16 @@ export default class PkiTable extends Vue {
     @Watch('part', { immediate: false })
     private changePart(): void {
         this.getPki();
+    }
+
+
+    /**
+     * Изменяем класс строки
+     * @param row
+     * @private
+     */
+    private itemClass(row): string {
+        return row.index === this.selectedRow ? 'td active' : 'td not-active';
     }
 
     /**
@@ -211,5 +223,16 @@ export default class PkiTable extends Vue {
             customClass: 'errorMessage',
             center: true,
         });
+    }
+
+
+    /**
+     * Выбор строки
+     * @param row
+     * @param event
+     * @private
+     */
+    private onSelectRow(row: Unit, event): void {
+        this.selectedRow = event.index + 1;
     }
 }

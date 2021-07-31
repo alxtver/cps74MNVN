@@ -86,7 +86,3 @@ tr.not-active {
 }
 </style>
 
-<style lang="scss" scoped>
-.edit-dialog {
-}
-</style>

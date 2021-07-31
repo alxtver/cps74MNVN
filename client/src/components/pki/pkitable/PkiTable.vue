@@ -14,6 +14,8 @@
             :footer-props="{
                 'items-per-page-options': [25, 50, 100, 200, -1],
             }"
+            :item-class="itemClass"
+            @click:row="onSelectRow"
             loading-text="Загрузка данных..."
         >
             <template v-slot:top>
@@ -29,7 +31,7 @@
                     <v-divider class="mx-4" inset vertical></v-divider>
                     <v-select
                         v-model="selectedType"
-                        class="type-select mt-5"
+                        class="type-select mt-2"
                         :items="types"
                         label="Тип"
                         :menu-props="{ offsetY: true }"

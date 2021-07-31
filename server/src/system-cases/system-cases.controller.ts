@@ -27,7 +27,8 @@ export class SystemCasesController {
    */
   @Put('editSerialNumber')
   async editSerialNumber(@Req() req, @Res() res) {
-    return this.systemCasesService.editSerialNumber(req);
+    const unit = await this.systemCasesService.editSerialNumber(req);
+    return res.status(HttpStatus.OK).json(unit);
   }
 
   @Get(':id')

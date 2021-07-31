@@ -15,6 +15,8 @@
                 'items-per-page-options': [25, 50, 100, 200, -1],
             }"
             loading-text="Загрузка данных..."
+            :item-class="itemClass"
+            @click:row="onSelectRow"
         >
             <template v-slot:top>
                 <v-toolbar flat>

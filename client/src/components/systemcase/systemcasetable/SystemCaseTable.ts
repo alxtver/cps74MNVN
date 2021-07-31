@@ -2,8 +2,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import SystemCase from '@/models/SystemCase';
 import table from '@/helper/Table';
 import { State } from 'vuex-class';
-import Unit from "@/models/Unit";
-import systemCaseApi from "@/api/SystemCaseApi";
+import Unit from '@/models/Unit';
+import systemCaseApi from '@/api/SystemCaseApi';
 
 @Component({ components: {} })
 export default class SystemCaseTable extends Vue {
@@ -68,11 +68,16 @@ export default class SystemCaseTable extends Vue {
      * @param props
      * @private
      */
-    private insertSerialNumber(props): void {
+    private async insertSerialNumber(props): Promise<void> {
         const item: Unit = props.item;
-        systemCaseApi.editSerialNumber(item, this.systemCase._id).then(data => {
-            debugger
-        })
+        const data = await systemCaseApi.editSerialNumber(
+            item,
+            this.systemCase._id,
+        );
+        const find: Unit = this.systemCase.systemCaseUnits.find(
+            (systemCaseUnit) => systemCaseUnit.i === item.i,
+        );
+        Object.assign(find, data);
         props.item.serialNumber = props.value;
         table.goToNextCell(
             this,

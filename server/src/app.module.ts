@@ -19,6 +19,7 @@ import { SystemCasesModule } from './system-cases/system-cases.module';
     MongooseModule.forRoot(config.url, {
       useCreateIndex: true,
       useNewUrlParser: true,
+      useFindAndModify: false
     }),
     CustomerModule,
     PkiModule,

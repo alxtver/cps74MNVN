@@ -10,6 +10,7 @@ import { DataTableHeader } from 'vuetify';
 import SettingsMenu from '@/components/pki/pkitable/settingsmenu/SettingsMenu.vue';
 import sounds from '@/helper/Sounds';
 import ApkziCardTs from '@/components/apkzi/apkzicard/ApkziCard';
+import Unit from "@/models/Unit";
 
 /**
  * Основная таблица АПКЗИ
@@ -24,6 +25,7 @@ export default class ApkziTable extends Vue {
     private dialogDelete = false;
     private isEditing = false;
     private isNewApkzi = true;
+    private selectedRow = -1;
 
     private headers: DataTableHeader[] = [
         { text: '', value: 'index', width: 20, sortable: false },
@@ -193,5 +195,25 @@ export default class ApkziTable extends Vue {
         this.editedItem = Object.assign({}, item);
         const apkziCard = this.$refs.apkziCard as ApkziCardTs;
         apkziCard.openDialog();
+    }
+
+
+    /**
+     * Выбор строки
+     * @param row
+     * @param event
+     * @private
+     */
+    private onSelectRow(row: Unit, event): void {
+        this.selectedRow = event.index + 1;
+    }
+
+    /**
+     * Изменяем класс строки
+     * @param row
+     * @private
+     */
+    private itemClass(row): string {
+        return row.index === this.selectedRow ? 'td active' : 'td not-active';
     }
 }

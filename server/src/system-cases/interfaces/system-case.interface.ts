@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import {Unit} from "../../interfaces/unit.interface";
 
 export interface SystemCase extends Document {
     readonly execution: string;
@@ -9,5 +10,5 @@ export interface SystemCase extends Document {
     readonly created: number;
     readonly numberMachine: string;
     readonly back_color: string;
-    readonly systemCaseUnits: [];
+    readonly systemCaseUnits: Unit[];
 }
