@@ -1,6 +1,17 @@
-import {Controller, Get, Post, Body, Put, Param, Delete, Req, Res, HttpStatus} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+  Req,
+  Res,
+  HttpStatus,
+} from '@nestjs/common';
 import { ApkziService } from './apkzi.service';
-import {ApkziDto} from "../dto/apkzi.dto";
+import { Apkzi } from '../interfaces/apkzi.interface';
 
 @Controller('apkzi')
 export class ApkziController {
@@ -13,7 +24,7 @@ export class ApkziController {
    * @param ApkziDto
    */
   @Post('')
-  async addApkzi(@Res() res, @Req() req, @Body() ApkziDto: ApkziDto) {
+  async addApkzi(@Res() res, @Req() req, @Body() ApkziDto: Apkzi) {
     const response = await this.apkziService.addApkzi(ApkziDto, req);
     return res.status(HttpStatus.OK).json(response);
   }
@@ -21,7 +32,7 @@ export class ApkziController {
   @Get()
   async getAllApkzi(@Req() req, @Res() res) {
     const apkzis = await this.apkziService.getAllApkzi(req);
-    return res.status(HttpStatus.OK).json(apkzis)
+    return res.status(HttpStatus.OK).json(apkzis);
   }
 
   /**
@@ -32,7 +43,7 @@ export class ApkziController {
   @Get('lastApkzi')
   async getLastApkzi(@Req() req, @Res() res) {
     const lastApkzi = await this.apkziService.getLastApkzi(req);
-    return res.status(HttpStatus.OK).json(lastApkzi)
+    return res.status(HttpStatus.OK).json(lastApkzi);
   }
 
   /**

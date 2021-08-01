@@ -4,7 +4,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Pki } from '../interfaces/pki.interface';
 import { Model } from 'mongoose';
 import { User } from '../interfaces/user.interface';
-import { ApkziDto } from '../dto/apkzi.dto';
 
 @Injectable()
 export class ApkziService {
@@ -23,7 +22,7 @@ export class ApkziService {
     return req.body.apkzi;
   }
 
-  async addApkzi(ApkziDto: ApkziDto, req): Promise<Pki | string> {
+  async addApkzi(ApkziDto: Apkzi, req): Promise<Apkzi | string> {
     // если оставить id равным null то после сохранения прилетает
     // объект без id, хотя в базе сохраняется с id...
     if (ApkziDto._id === null) {
@@ -47,11 +46,11 @@ export class ApkziService {
       return 'notUniqueSerialNumber';
     }
     // добавляем пользователю идентификатор последнего добавленного АПКЗИ
-    this.userModel
+    await this.userModel
       .findByIdAndUpdate(req.session.user._id, { lastApkzi: ApkziDto })
       .exec();
 
-    return await this.apkziModel(ApkziDto).save();
+    return await new this.apkziModel(ApkziDto).save();
   }
 
   async getLastApkzi(req): Promise<Apkzi> {
@@ -67,7 +66,7 @@ export class ApkziService {
     return `This action returns a #${id} apkzi`;
   }
 
-  async deleteApkzi(req): Promise<Pki> {
-    return await this.apkziModel.findOneAndDelete({ _id: req.body.id });
+  async deleteApkzi(req): Promise<any> {
+    return this.apkziModel.findOneAndDelete({ _id: req.body.id });
   }
 }
