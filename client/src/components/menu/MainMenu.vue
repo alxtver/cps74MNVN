@@ -29,6 +29,8 @@
                     class="part-select mt-1"
                     v-model="currentPart"
                     placeholder="Темы"
+                    filterable
+                    allow-create
                     @change="changeCurrentPartValue"
                 >
                     <el-option
@@ -57,7 +59,6 @@
                                         <v-list-item-icon>
                                             <v-icon
                                                 v-text="soundState"
-                                                @click="test(active)"
                                             ></v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>

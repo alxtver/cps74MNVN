@@ -3,7 +3,7 @@ import Pki from '@/models/Pki';
 import pkiApi from '@/api/PkiApi';
 import eanApi from '@/api/EanApi';
 import converter from '@/helper/Converter';
-import sounds from '@/helper/Sounds';
+import alex from '@/helper/Alex';
 import { State } from 'vuex-class';
 
 @Component
@@ -90,7 +90,7 @@ export default class PkiCardTs extends Vue {
             this.$emit('editComplete', pki);
             this.dialog = false;
         } else {
-                sounds.say(
+                alex.say(
                     this.editedItem.serial_number.slice(
                         this.editedItem.serial_number.length - 3,
                     ),

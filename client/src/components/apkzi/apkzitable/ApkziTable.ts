@@ -8,7 +8,7 @@ import { Watch } from 'vue-property-decorator';
 import apkziApi from '@/api/ApkziApi';
 import { DataTableHeader } from 'vuetify';
 import SettingsMenu from '@/components/pki/pkitable/settingsmenu/SettingsMenu.vue';
-import sounds from '@/helper/Sounds';
+import alex from '@/helper/Alex';
 import ApkziCardTs from '@/components/apkzi/apkzicard/ApkziCard';
 import Unit from "@/models/Unit";
 
@@ -138,7 +138,7 @@ export default class ApkziTable extends Vue {
      * @private
      */
     private notUniqueSerialNumber(): void {
-        sounds.alert();
+        alex.alert();
         this.$message({
             message: 'Неуникальный серийный номер',
             type: 'error',

@@ -1,45 +1,47 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { SystemCase } from '../system-cases/interfaces/system-case.interface';
 
-export const pkiSchema = new mongoose.Schema(
-    {
-        type_pki: {
-            type: String,
-            required: true,
-        },
-        vendor: {
-            type: String,
-            required: true,
-        },
-        model: {
-            type: String,
-            required: true,
-        },
-        serial_number: {
-            type: String,
-            required: true,
-        },
-        part: {
-            type: String,
-            required: true,
-        },
-        country: {
-            type: String,
-        },
-        number_machine: String,
-        ean_code: String,
-        szz1: String,
-        sp_unit: Array,
-        created: {
-            type: Date,
-            default: () => Date.now() + 3 * 60 * 60 * 1000, // время МСК
-        },
-        viborka: {
-            type: Boolean,
-            default: false,
-        }
-    },
-    {
-        versionKey: false,
-    }
-);
+export type pkiSchema = Pki & Document;
 
+@Schema()
+export class Pki {
+  @Prop({ required: true })
+  type_pki: string;
+
+  @Prop({ required: true })
+  vendor: string;
+
+  @Prop({ required: true })
+  model: string;
+
+  @Prop({ required: true })
+  serial_number: string;
+
+  @Prop({ required: true })
+  part: string;
+
+  @Prop()
+  country: string;
+
+  @Prop()
+  number_machine: string;
+
+  @Prop()
+  ean_code: string;
+
+  @Prop()
+  szz1: string;
+
+  @Prop()
+  sp_unit: [];
+
+  @Prop({ default: () => Date.now() + 3 * 60 * 60 * 1000 })
+  created: Date;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'SystemCase' })
+  systemCase?: SystemCase;
+}
+
+export const pkiSchema = SchemaFactory.createForClass(Pki);

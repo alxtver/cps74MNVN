@@ -15,10 +15,27 @@ html {
   backdrop-filter: blur(2px);
   box-shadow: 5px 5px 26px -2px #999999;
   border: none;
-  background: rgba(120, 119, 119, 0.68);
+  background: rgba(208, 208, 208, 0.48);
 }
 .sn-notify {
   background: #00000012;
   backdrop-filter: blur(2px);
   box-shadow: 5px 5px 26px -2px #999999;
+}
+th {
+  background: #3d3d3d !important;
+  color: #d5d5d5 !important;
+}
+.mdi-checkbox-blank-outline {
+  font-size: 20px !important;
+}
+
+.v-color-picker__alpha  {
+  display: none;
+}
+.v-color-picker__dot {
+  display: none;
+}
+.v-color-picker__swatches {
+  margin-top: -35px;
 }

@@ -1,4 +1,4 @@
-import sounds from "@/helper/Sounds";
+import alex from "@/helper/Alex";
 
 class Table {
 
@@ -66,7 +66,7 @@ class Table {
             nextCellText = this.getNextCellText(me, idx)
         }
         table.getNextCell(me, idx).click();
-        sounds.say(this.getNextType(me, idx), 1.2, sound);
+        alex.say(this.getNextType(me, idx), 1.2, sound);
     }
 }
 const table = new Table();

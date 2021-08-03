@@ -1,11 +1,11 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import { IRequest } from '../interfaces/req.interface';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  use(req: Request, res: Response, next: NextFunction) {
-    const session: any = req.session;
-    if (!session.isAuthenticated) {
+  use(req: IRequest, res: Response, next: NextFunction) {
+    if (!req.session.isAuthenticated) {
       return res.status(401).json({
         message: 'Auth error!',
       });

@@ -9,11 +9,11 @@ export interface Pki extends Document {
   readonly serial_number: string;
   readonly part: string;
   readonly country: string;
-  readonly number_machine: string;
+  number_machine: string;
   readonly ean_code: string;
   readonly szz1: string;
   readonly sp_unit: [];
   readonly created: number;
   readonly viborka: boolean;
-  readonly: string;
+  systemCase: any;
 }

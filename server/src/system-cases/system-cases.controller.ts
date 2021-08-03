@@ -1,6 +1,16 @@
-import {Controller, Get, Post, Body, Put, Param, Delete, Req, Res, HttpStatus} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Put,
+  Param,
+  Delete,
+  Req,
+  Res,
+  HttpStatus,
+} from '@nestjs/common';
 import { SystemCasesService } from './system-cases.service';
-import { CreateSystemCaseDto } from './dto/create-system-case.dto';
+import { Unit } from '../interfaces/unit.interface';
+import { SystemCase } from './interfaces/system-case.interface';
 
 @Controller('systemCase')
 export class SystemCasesController {
@@ -21,14 +31,20 @@ export class SystemCasesController {
   //   return this.systemCasesService.create(createSystemCaseDto);
   // }
 
-
   /**
    * Ввод серийного номера ПКИ
    */
   @Put('editSerialNumber')
-  async editSerialNumber(@Req() req, @Res() res) {
-    const unit = await this.systemCasesService.editSerialNumber(req);
-    return res.status(HttpStatus.OK).json(unit);
+  async editSerialNumber(
+    @Req() req,
+    @Res() res,
+  ): Promise<{
+    editableUnit: Unit;
+    message: string;
+    oldSystemCase: SystemCase;
+  }> {
+    const response = await this.systemCasesService.editSerialNumber(req);
+    return res.status(HttpStatus.OK).json(response);
   }
 
   @Get(':id')

@@ -25,10 +25,6 @@ export default class MainMenu extends Vue {
       sound: boolean
   ) => void;
 
-  private test(a) {
-    debugger
-  }
-
   private get soundState() {
     return this.sound ? this.iconVolumeHigh : this.iconVolumeOff;
   }
@@ -95,6 +91,7 @@ export default class MainMenu extends Vue {
       this.currentPart = newPart.part;
       sessionStorage.setItem("part", part);
       this.$store.commit("updatePart", part);
+      this.getParts();
     } catch (e) {
       this.$message.error("Ошибка сервера");
       this.currentPart = oldPart;

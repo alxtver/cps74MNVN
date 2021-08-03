@@ -7,7 +7,7 @@ export interface Apkzi extends Document {
   readonly fdsiKontr: string;
   readonly zav_number: string;
   readonly kontr_zav_number: string;
-  readonly number_machine: string;
+  number_machine: string;
   readonly part: string;
   readonly created: Date;
 }

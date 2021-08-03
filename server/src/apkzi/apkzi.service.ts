@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Apkzi } from '../interfaces/apkzi.interface';
 import { InjectModel } from '@nestjs/mongoose';
-import { Pki } from '../interfaces/pki.interface';
 import { Model } from 'mongoose';
 import { User } from '../interfaces/user.interface';
+import { Pki } from '../interfaces/pki.interface';
 
 @Injectable()
 export class ApkziService {

@@ -1,12 +1,12 @@
 import { axiosFactory } from './AxiosFactory';
 import { AxiosInstance } from 'axios';
-import {dataToArrayClass, dataToClass} from '@/api/ClassFactory';
-import SystemCase from "@/models/SystemCase";
-import Unit from "@/models/Unit";
+import { dataToArrayClass, dataToClass } from '@/api/ClassFactory';
+import SystemCase from '@/models/SystemCase';
+import Unit from '@/models/Unit';
 
 class SystemCaseApi {
     constructor(
-        readonly axiosInstance: AxiosInstance = axiosFactory.axiosInstance
+        readonly axiosInstance: AxiosInstance = axiosFactory.axiosInstance,
     ) {}
 
     /**
@@ -22,9 +22,15 @@ class SystemCaseApi {
      * @param unit
      * @param id - идентификатор серийного номера
      */
-    public async editSerialNumber(unit: Unit, id: string): Promise<Unit> {
-        const response = await this.axiosInstance.put('/systemCase/editSerialNumber', {unit, id});
-        return dataToClass(Unit, response.data);
+    public async editSerialNumber(
+        unit: Unit,
+        id: string,
+    ): Promise<{ editableUnit: Unit; message: string; oldSystemCase: SystemCase }> {
+        const response = await this.axiosInstance.put(
+            '/systemCase/editSerialNumber',
+            { unit, id },
+        );
+        return response.data;
     }
 }
 

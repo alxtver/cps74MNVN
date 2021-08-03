@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { CreateSystemCaseDto } from './dto/create-system-case.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { SystemCase } from './interfaces/system-case.interface';
-import { Pki } from '../interfaces/pki.interface';
 import { Apkzi } from '../interfaces/apkzi.interface';
 import { Unit } from '../interfaces/unit.interface';
-import { type } from 'os';
+import modify from '../helper/SnModify';
+import insert from '../helper/InsertSerialNumber';
+import { Pki } from '../interfaces/pki.interface';
 
 @Injectable()
 export class SystemCasesService {
@@ -26,35 +26,49 @@ export class SystemCasesService {
   public async editSerialNumber(req) {
     const id: string = req.body.id;
     const unit: Unit = req.body.unit;
+    const serialNumber = unit.serial_number;
+    const part = req.session.part;
     const systemCase = await this.systemCaseModel.findById(id);
+    // юнит системного блока, который будем редактировать
+    const editableUnit: Unit = systemCase.systemCaseUnits.find(
+      (systemCaseUnit) => systemCaseUnit.i === unit.i,
+    );
     // Ищем АПКЗИ
     const apkzi = await this.apkzi.findOne({
       part: req.session.part,
-      kontr_zav_number: unit.serial_number,
+      kontr_zav_number: serialNumber,
     });
     if (apkzi) {
-      debugger;
+      return insert.apkzi(this, apkzi, systemCase, unit, part);
     }
+
     // Ищем ПКИ
-    const pki: Pki = await this.pki.findOne({
-      part: req.session.part,
-      serial_number: unit.serial_number,
+    let pki: Pki = await this.pki.findOne({
+      part,
+      serial_number: serialNumber,
     });
+    if (!pki) {
+      pki = await modify.reModify(serialNumber, part, this);
+    }
     if (pki) {
-      const find = systemCase.systemCaseUnits.find(
-        (systemCaseUnit) => systemCaseUnit.i === unit.i,
-      );
-      find.type = pki.type_pki;
-      find.name = `${pki.vendor} ${pki.model}`;
-      find.serial_number = pki.serial_number;
+      // изменяем системный блок
+      editableUnit.type = pki.type_pki;
+      editableUnit.name = `${pki.vendor} ${pki.model}`;
+      editableUnit.serial_number = pki.serial_number;
       systemCase.markModified('systemCaseUnits');
       await systemCase.save();
-      return find;
+      // меняем ПКИ
+      pki.systemCase = systemCase;
+      pki.number_machine = systemCase.serialNumber;
+      await pki.save();
+      return { editableUnit, message: '', oldSystemCase: null };
     }
-    unit.name = 'Н/Д';
+
+    // действия если ничего не нашли
+    editableUnit.name = 'Н/Д';
     systemCase.markModified('systemCaseUnits');
     await systemCase.save();
-    return unit;
+    return { editableUnit, message: '', oldSystemCase: null };
   }
 
   findOne(id: number) {

@@ -166,13 +166,21 @@
 <script src="./PkiTable.ts" lang="ts"></script>
 
 <style lang="scss">
+table {
+    border-collapse: collapse;
+}
+
+tr {
+    border: thin solid rgba(0, 0, 0, 0.12);
+}
+
+td {
+    border-left: thin solid rgba(0, 0, 0, 0.12);
+    font-size: 13px !important;
+    padding: 0 5px !important;
+}
 .pki-table {
-    td {
-        border-bottom: thin solid rgba(0, 0, 0, 0.12);
-        border-left: thin solid rgba(0, 0, 0, 0.12);
-        font-size: 13px !important;
-        padding: 0 5px !important;
-    }
+    
     .type-select {
         max-width: 500px;
     }

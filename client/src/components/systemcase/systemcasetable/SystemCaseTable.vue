@@ -1,17 +1,18 @@
 <template>
     <v-data-table
-        class="elevation-10 pki-table"
+        class="pki-table"
         dense
+        v-model="selected"
         :headers="headers"
         :items="systemCase.systemCaseUnits"
         :hide-default-footer="true"
         :items-per-page="-1"
         item-key="i"
-        :single-select="true"
         :item-class="itemClass"
+        :show-select="editSystemCase"
         @click:row="onSelectRow"
     >
-        <template v-slot:top>
+        <template v-if="!editSystemCase" v-slot:top>
             <v-toolbar flat>
                 <div>ФДШИ.{{ systemCase.fdsi }}</div>
                 <v-divider class="mx-4" inset vertical></v-divider>
@@ -31,6 +32,88 @@
                 <v-spacer></v-spacer>
             </v-toolbar>
         </template>
+    
+        <!-- обозначение изделия -->
+        <template v-if="editSystemCase" v-slot:item.fdsi="props">
+            <v-edit-dialog
+                :return-value.sync="props.item.fdsi"
+                light
+                transition="scale-transition"
+                @open="open(props.index)"
+            >
+                <div>{{ props.item.fdsi }}</div>
+                <template v-slot:input>
+                    <v-text-field
+                        v-if="isEditableCell(props.item)"
+                        class="edit-dialog"
+                        v-model="props.item.fdsi"
+                        single-line
+                        autofocus
+                    ></v-text-field>
+                </template>
+            </v-edit-dialog>
+        </template>
+        <!-- наименование изделия -->
+        <template v-if="editSystemCase" v-slot:item.type="props">
+            <v-edit-dialog
+                :return-value.sync="props.item.type"
+                light
+                transition="scale-transition"
+                @open="open(props.index)"
+            >
+                <div>{{ props.item.type }}</div>
+                <template v-slot:input>
+                    <v-text-field
+                        v-if="isEditableCell(props.item)"
+                        class="edit-dialog"
+                        v-model="props.item.type"
+                        single-line
+                        autofocus
+                    ></v-text-field>
+                </template>
+            </v-edit-dialog>
+        </template>
+        <!-- Характеристика -->
+        <template v-if="editSystemCase" v-slot:item.name="props">
+            <v-edit-dialog
+                :return-value.sync="props.item.name"
+                light
+                transition="scale-transition"
+                @open="open(props.index)"
+            >
+                <div>{{ props.item.name }}</div>
+                <template v-slot:input>
+                    <v-text-field
+                        v-if="isEditableCell(props.item)"
+                        class="edit-dialog"
+                        v-model="props.item.name"
+                        single-line
+                        autofocus
+                    ></v-text-field>
+                </template>
+            </v-edit-dialog>
+        </template>
+        <!-- Количество -->
+        <template v-if="editSystemCase" v-slot:item.quantity="props">
+            <v-edit-dialog
+                :return-value.sync="props.item.quantity"
+                light
+                transition="scale-transition"
+                @open="open(props.index)"
+            >
+                <div>{{ props.item.quantity }}</div>
+                <template v-slot:input>
+                    <v-text-field
+                        v-if="isEditableCell(props.item)"
+                        class="edit-dialog"
+                        v-model="props.item.quantity"
+                        single-line
+                        autofocus
+                    ></v-text-field>
+                </template>
+            </v-edit-dialog>
+        </template>
+        <!-- Заводской номер -->
         <template v-slot:item.serial_number="props">
             <v-edit-dialog
                 :return-value.sync="props.item.serial_number"
@@ -46,7 +129,26 @@
                         v-if="isEditableCell(props.item)"
                         class="edit-dialog"
                         v-model="props.item.serial_number"
-                        label="Edit"
+                        single-line
+                        autofocus
+                    ></v-text-field>
+                </template>
+            </v-edit-dialog>
+        </template>
+        <!-- Примечания -->
+        <template v-if="editSystemCase" v-slot:item.notes="props">
+            <v-edit-dialog
+                :return-value.sync="props.item.notes"
+                light
+                transition="scale-transition"
+                @open="open(props.index)"
+            >
+                <div>{{ props.item.notes }}</div>
+                <template v-slot:input>
+                    <v-text-field
+                        v-if="isEditableCell(props.item)"
+                        class="edit-dialog"
+                        v-model="props.item.notes"
                         single-line
                         autofocus
                     ></v-text-field>
@@ -59,12 +161,14 @@
 <script src="./SystemCaseTable.ts"></script>
 
 <style lang="scss">
-.systemCaseHeader {
-    background: #3d3d3d;
-    color: #d5d5d5 !important;
+.v-simple-checkbox {
+    width: 20px;
 }
 .pki-table > .v-data-table__wrapper > table > tbody > tr > td {
     height: 28px !important;
+    .v-input--selection-controls__input {
+        margin-left: 9px;
+    }
 }
 .v-text-field__details {
     display: none;

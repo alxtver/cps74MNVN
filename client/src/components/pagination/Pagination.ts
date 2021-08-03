@@ -1,39 +1,72 @@
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({ components: {} })
 export default class Pagination extends Vue {
     @Prop()
     private pages!: number;
 
-    private page = 1;
+    @Prop({ default: 1 })
+    private page!: number;
 
-    private beforeMount () {
+    /**
+     * Вешаем слушатели
+     * @private
+     */
+    private beforeMount() {
         window.addEventListener('keydown', this.handleKeydown, null);
     }
 
-    private beforeDestroy () {
+    /**
+     * Убираем слушатели
+     * @private
+     */
+    private beforeDestroy() {
         window.removeEventListener('keydown', this.handleKeydown);
     }
 
-    private handleKeydown (e: KeyboardEvent) {
+    /**
+     * Обработчик клавиш
+     * @param e
+     * @private
+     */
+    private handleKeydown(e: KeyboardEvent) {
         if (e.ctrlKey && e.key === 'ArrowRight') {
-            e.preventDefault()
-            this.nextPage()
+            e.preventDefault();
+            this.nextPage();
         } else if (e.ctrlKey && e.key === 'ArrowLeft') {
-            e.preventDefault()
-            this.previousPage()
+            e.preventDefault();
+            this.previousPage();
         }
     }
 
+    /**
+     * Выбор страницы
+     * @param page
+     * @private
+     */
     private changePage(page): void {
-        this.$emit('changePage', page)
+        this.$emit('changePage', page);
     }
 
+    /**
+     * Следующая страница
+     * @private
+     */
     private nextPage(): void {
-        this.$emit('nextPage')
+        if (this.page + 1 <= this.pages) {
+            this.page++;
+            this.$emit('nextPage');
+        }
     }
 
+    /**
+     * Предыдущая страница
+     * @private
+     */
     private previousPage(): void {
-        this.$emit('previousPage')
+        if (this.page - 1 >= 1) {
+            this.page--;
+            this.$emit('previousPage');
+        }
     }
 }

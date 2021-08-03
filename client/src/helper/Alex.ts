@@ -1,12 +1,15 @@
-class Sounds {
+class Alex {
     /**
      * Звук при ошибке
      */
     public alert() {
-        const audio = {};
-        audio['alert'] = new Audio();
-        audio['alert'].src = require('../assets/sound/alert.mp3');
-        audio['alert'].play();
+        const context = new AudioContext();
+        const osc = context.createOscillator();
+        osc.type = 'sawtooth';
+        osc.frequency.value = 180;
+        osc.connect(context.destination);
+        osc.start();
+        osc.stop(context.currentTime + 0.2);
     }
 
     /**
@@ -17,7 +20,7 @@ class Sounds {
      */
     public say(text: string, rate: number, sound: boolean): void {
         if (!sound) {
-            return
+            return;
         }
         const ut = new SpeechSynthesisUtterance(text);
         ut.lang = 'ru-RU';
@@ -27,5 +30,5 @@ class Sounds {
         speechSynthesis.speak(ut);
     }
 }
-const sounds = new Sounds();
-export default sounds;
+const alex = new Alex();
+export default alex;

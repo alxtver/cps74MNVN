@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Pki } from '../interfaces/pki.interface';
 import { User } from '../interfaces/user.interface';
 import converter from '../helper/Converter';
 import { Ean } from '../interfaces/ean.interface';
+import { Pki } from '../interfaces/pki.interface';
 
 @Injectable()
 export class PkiService {
@@ -40,7 +40,7 @@ export class PkiService {
       const ean = await this.eanModel.findOne({ ean_code: PkiDto.ean_code });
       if (!ean) {
         const newEan = Object.assign(await new this.eanModel(), PkiDto);
-        newEan.save();
+        await newEan.save();
       }
     }
     // добавляем пользователю идентификатор последнего добавленного ПКИ
