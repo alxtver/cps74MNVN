@@ -71,11 +71,24 @@ export class SystemCasesService {
     return { editableUnit, message: '', oldSystemCase: null };
   }
 
+  async create(req): Promise<SystemCase> {
+    const newSystemCase = req.body;
+    if (newSystemCase._id === null) {
+      delete newSystemCase._id;
+    }
+    return await new this.systemCaseModel(newSystemCase).save();
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} systemCase`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} systemCase`;
+  async remove(id: string) {
+    try {
+      await this.systemCaseModel.findByIdAndRemove(id);
+      return id;
+    } catch (e) {
+      return e;
+    }
   }
 }

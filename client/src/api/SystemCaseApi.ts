@@ -25,12 +25,41 @@ class SystemCaseApi {
     public async editSerialNumber(
         unit: Unit,
         id: string,
-    ): Promise<{ editableUnit: Unit; message: string; oldSystemCase: SystemCase }> {
+    ): Promise<{
+        editableUnit: Unit;
+        message: string;
+        oldSystemCase: SystemCase;
+    }> {
         const response = await this.axiosInstance.put(
             '/systemCase/editSerialNumber',
             { unit, id },
         );
         return response.data;
+    }
+
+    /**
+     * Добавить системный блок
+     * @param systemCase
+     */
+    public async addSystemCase(systemCase: SystemCase): Promise<SystemCase> {
+        const response = await this.axiosInstance.post(
+            '/systemCase',
+            systemCase,
+        );
+        return dataToClass(SystemCase, response.data);
+    }
+
+    /**
+     * Удалить системный блок
+     * @param id
+     */
+    public async removeSystemCase(id: string): Promise<string> {
+        try {
+            const response = await this.axiosInstance.delete(`/systemCase/${id}`);
+            return response.data;
+        } catch (e) {
+            return e
+        }
     }
 }
 

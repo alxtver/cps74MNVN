@@ -10,7 +10,13 @@
             >
         </div>
         <div>
-            <v-btn class="mr-6" elevation="3" small text color="deep-orange darken-1"
+            <v-btn
+                class="mr-6"
+                elevation="3"
+                small
+                text
+                color="deep-orange darken-1"
+                @click="doRemove"
                 ><v-icon class="icon">mdi-trash-can-outline</v-icon
                 >Удалить</v-btn
             >

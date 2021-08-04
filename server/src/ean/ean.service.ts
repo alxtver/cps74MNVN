@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import {Ean} from "../interfaces/ean.interface";
-import {InjectModel} from "@nestjs/mongoose";
-import {Model} from 'mongoose';
+import { Ean } from '../interfaces/ean.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class EanService {
-  constructor(@InjectModel('Ean')
-              private readonly eanModel: Model<Ean>) { }
+  constructor(
+    @InjectModel('Ean')
+    private readonly eanModel: Model<Ean>,
+  ) {}
 
   create() {
     return 'This action adds a new ean';
@@ -17,7 +19,7 @@ export class EanService {
   }
 
   async findOne(eanCode: string) {
-    return await this.eanModel.find({ean_code: eanCode}).exec();
+    return await this.eanModel.find({ ean_code: eanCode }).exec();
   }
 
   update(req) {

@@ -14,6 +14,7 @@
             </v-btn>
         </template>
         <v-color-picker
+            v-model="systemCase.back_color"
             class="ma-2"
             :swatches="swatches"
             hide-mode-switch

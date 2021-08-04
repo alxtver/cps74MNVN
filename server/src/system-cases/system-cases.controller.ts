@@ -1,12 +1,13 @@
 import {
   Controller,
-  Get,
-  Put,
-  Param,
   Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
   Req,
   Res,
-  HttpStatus,
 } from '@nestjs/common';
 import { SystemCasesService } from './system-cases.service';
 import { Unit } from '../interfaces/unit.interface';
@@ -26,10 +27,21 @@ export class SystemCasesController {
     const systemCases = await this.systemCasesService.getAllSystemCases(req);
     return res.status(HttpStatus.OK).json(systemCases);
   }
-  // @Post()
-  // create(@Body() createSystemCaseDto: CreateSystemCaseDto) {
-  //   return this.systemCasesService.create(createSystemCaseDto);
-  // }
+
+  /**
+   * Добавить системный блок
+   * @param req
+   * @param res
+   */
+  @Post()
+  async create(@Req() req, @Res() res) {
+    try {
+      const newSystemCase = await this.systemCasesService.create(req);
+      return res.status(HttpStatus.OK).json(newSystemCase);
+    } catch (e) {
+      return res.status(HttpStatus.CONFLICT).json(e);
+    }
+  }
 
   /**
    * Ввод серийного номера ПКИ
@@ -54,6 +66,6 @@ export class SystemCasesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.systemCasesService.remove(+id);
+    return this.systemCasesService.remove(id);
   }
 }

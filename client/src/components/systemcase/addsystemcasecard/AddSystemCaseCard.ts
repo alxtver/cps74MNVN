@@ -1,23 +1,39 @@
-import {Component, Prop, Ref, Vue} from 'vue-property-decorator';
+import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
 import SystemCaseTable from '@/components/systemcase/systemcasetable/SystemCaseTable.vue';
 import SystemCaseTableTS from '@/components/systemcase/systemcasetable/SystemCaseTable';
-import SystemCase from "@/models/SystemCase";
-import ColorPicker from "@/components/colorpicker/ColorPicker.vue";
-import {State} from "vuex-class";
-import Part from "@/models/Part";
+import SystemCase from '@/models/SystemCase';
+import ColorPicker from '@/components/colorpicker/ColorPicker.vue';
+import { State } from 'vuex-class';
+import Part from '@/models/Part';
+import systemCaseApi from '@/api/SystemCaseApi';
 
 @Component({ components: { SystemCaseTable, ColorPicker } })
 export default class AddSystemCaseCard extends Vue {
-    private valid = true;
-
-    @Prop({default: () => new SystemCase()})
+    @Prop({ default: () => new SystemCase() })
     private systemCase!: SystemCase;
+
+    @Prop({ default: () => [] })
+    private serialNumbers!: string[];
+
+    private valid = true;
 
     @Ref('systemCaseTable')
     private systemCaseTable!: SystemCaseTableTS;
 
     @State((state) => state.part)
     private part!: Part;
+
+    private fdsiRules = [(v) => !!v || 'Введите ФДШИ'];
+    private serialNumberRules = [(v) => !!v || 'Введите серийный номер'];
+
+    public resetValidation(): void {
+        const form = this.$refs.form as Vue & {
+            resetValidation: () => boolean;
+        };
+        if (form) {
+            form.resetValidation();
+        }
+    }
 
     private mounted(): void {
         this.systemCase.part = this.part;
@@ -27,7 +43,7 @@ export default class AddSystemCaseCard extends Vue {
      * @private
      */
     private addRow(): void {
-        this.systemCaseTable.addRow()
+        this.systemCaseTable.addRow();
     }
 
     /**
@@ -42,8 +58,29 @@ export default class AddSystemCaseCard extends Vue {
      * Сохранить системный блок
      * @private
      */
-    private save(): void {
-        debugger;
+    private async save(): Promise<void> {
+        await this.validation();
+        if (!this.valid) {
+            return;
+        }
+        if (this.serialNumbers.includes(this.systemCase.serialNumber)) {
+            this.$message.error('Неуникальный серийный номер!')
+            return;
+        }
+        const newSystemCase = await systemCaseApi.addSystemCase(
+            this.systemCase,
+        );
+        this.$emit('close');
+        this.$emit('addSystemCase', newSystemCase);
+    }
+
+    /**
+     * Валидация формы
+     * @private
+     */
+    private validation(): void {
+        const form = this.$refs.form as Vue & { validate: () => boolean };
+        form.validate();
     }
 
     /**
@@ -51,6 +88,10 @@ export default class AddSystemCaseCard extends Vue {
      * @private
      */
     private chancel(): void {
-        this.$emit('chancel');
+        this.$emit('close');
+    }
+
+    private get backColor(): string {
+        return `background: ${this.systemCase.back_color}`;
     }
 }

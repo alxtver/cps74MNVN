@@ -14,25 +14,49 @@
     >
         <template v-if="!editSystemCase" v-slot:top>
             <v-toolbar flat>
-                <div>ФДШИ.{{ systemCase.fdsi }}</div>
-                <v-divider class="mx-4" inset vertical></v-divider>
-                <div style="padding: 10px; font-size: x-large; height: 100%">
-                    {{ systemCase.serialNumber }}
+                <div style="display: flex; align-items: center">
+                    <div>ФДШИ.{{ systemCase.fdsi }}</div>
+
+                    <v-divider class="mx-4" inset vertical></v-divider>
+                    <div
+                        style="padding: 10px; font-size: x-large; height: 100%"
+                    >
+                        № {{ systemCase.serialNumber }}
+                    </div>
+
+                    <v-divider
+                        v-if="systemCase.execution"
+                        class="mx-4"
+                        inset
+                        vertical
+                    ></v-divider>
+                    <div v-if="systemCase.execution" style="padding: 10px">
+                        Исполнение: {{ systemCase.execution }}
+                    </div>
+
+                    <v-divider
+                        v-if="systemCase.attachment"
+                        class="mx-4"
+                        inset
+                        vertical
+                    ></v-divider>
+                    <div v-if="systemCase.attachment" style="padding: 10px">
+                        Приложение: {{ systemCase.attachment }}
+                    </div>
+
+                    <v-divider
+                        v-if="systemCase.numberMachine"
+                        class="mx-4"
+                        inset
+                        vertical
+                    ></v-divider>
+                    <div v-if="systemCase.numberMachine">
+                        ПЭВМ {{ systemCase.numberMachine }}
+                    </div>
                 </div>
-                <v-divider class="mx-4" inset vertical></v-divider>
-                <div v-if="systemCase.numberMachine" style="padding: 10px">
-                    {{ systemCase.numberMachine }}
-                </div>
-                <v-divider
-                    v-if="systemCase.numberMachine"
-                    class="mx-4"
-                    inset
-                    vertical
-                ></v-divider>
-                <v-spacer></v-spacer>
             </v-toolbar>
         </template>
-    
+
         <!-- обозначение изделия -->
         <template v-if="editSystemCase" v-slot:item.fdsi="props">
             <v-edit-dialog
@@ -182,11 +206,17 @@
 
 tr.active {
     background: #84c6ff !important;
-    transition: .6s background ease-out;
+    transition: 0.6s background ease-out;
 }
 
 tr.not-active {
-    transition: .6s background linear;
+    transition: 0.6s background linear;
 }
 </style>
-
+<style lang="scss" scoped>
+.table-header-item {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+</style>

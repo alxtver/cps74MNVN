@@ -80,10 +80,47 @@ export default class SystemCaseMain extends Vue {
         this.page--;
     }
 
+    /**
+     * Обновить системный блок
+     * @param oldSystemCase
+     * @private
+     */
     private updateSystemCase(oldSystemCase): void {
         const outdatedSystemCase = this.systemCases.find(
             (systemCase) => systemCase._id === oldSystemCase._id,
         );
         Object.assign(outdatedSystemCase, oldSystemCase);
+    }
+
+    private async removeSystemCase(id): Promise<void> {
+        try {
+            const response = await systemCaseApi.removeSystemCase(id);
+            if (response === id) {
+                this.systemCases = this.systemCases.filter(
+                    (systemCase) => systemCase._id !== id,
+                );
+            }
+        } catch (e) {
+            this.$message.error(e);
+        }
+    }
+
+    /**
+     * Добавить системный блок
+     * @param newSystemCase
+     * @private
+     */
+    private addSystemCase(newSystemCase): void {
+        this.systemCases.push(newSystemCase);
+    }
+
+    /**
+     * Все серийные номера системных блоков
+     * @private
+     */
+    private get allSerialNumbers(): string[] {
+        return this.systemCases.map((systemCase) => {
+            return systemCase.serialNumber
+        })
     }
 }

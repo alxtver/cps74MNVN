@@ -3,8 +3,10 @@
         <div style="border-bottom: thin solid #c5c5c5fc">
             <v-row align="center" class="justify-space-around">
                 <v-col>
-                    <add-system-case></add-system-case>
-                    
+                    <add-system-case
+                        @addSystemCase="addSystemCase"
+                        :serialNumbers="allSerialNumbers"
+                    ></add-system-case>
                 </v-col>
                 <v-col>
                     <pagination
@@ -38,6 +40,7 @@
                     <system-case-form
                         :systemCase="item"
                         @updateSystemCase="updateSystemCase"
+                        @doRemove="removeSystemCase"
                     ></system-case-form>
                 </v-card>
             </template>

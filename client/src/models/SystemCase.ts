@@ -10,7 +10,7 @@ export default class SystemCase {
     public attachment = '';
     public created: number = Date.now();
     public numberMachine = '';
-    public back_color = '';
+    public back_color = '#8989a7';
     public systemCaseUnits: Unit[] = [
         {
             i: 0,

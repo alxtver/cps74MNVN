@@ -11,9 +11,11 @@ export default class SystemCaseForm extends Vue {
     private updateSystemCase(oldSystemCase): void {
         this.$emit('updateSystemCase', oldSystemCase)
     }
+    private removeSystemCase(): void {
+        this.$emit('doRemove', this.systemCase._id);
+    }
 
-    private get systemCaseShadow(): string {
-        const color = this.systemCase.back_color;
-        return `box-shadow: 0px 6px 14px 4px ${color}, 0px 4px 18px 3px ${color};`
+    private get systemCaseColor(): string {
+        return `background: ${this.systemCase.back_color};`
     }
 }
