@@ -50,12 +50,36 @@ class SystemCaseApi {
     }
 
     /**
+     * Редактировать системный блок
+     * @param systemCase
+     */
+    public async editSystemCase(systemCase: SystemCase): Promise<SystemCase> {
+        const response = await this.axiosInstance.put(
+            '/systemCase',
+            systemCase,
+        );
+        return dataToClass(SystemCase, response.data);
+    }
+
+    /**
      * Удалить системный блок
      * @param id
      */
     public async removeSystemCase(id: string): Promise<string> {
         try {
             const response = await this.axiosInstance.delete(`/systemCase/${id}`);
+            return response.data;
+        } catch (e) {
+            return e
+        }
+    }
+
+    /**
+     * Получить серийные номера системных блоков за тему
+     */
+    public async getSerialNumbers(): Promise<string[]> {
+        try {
+            const response = await this.axiosInstance.get(`/systemCase/serialNumbers`);
             return response.data;
         } catch (e) {
             return e

@@ -23,6 +23,15 @@ export class SystemCasesService {
     return await this.systemCaseModel.find({ part: req.session.part }).exec();
   }
 
+  async getSerialNumbers(req): Promise<string[]> {
+    const systemCases = await this.systemCaseModel.find({
+      part: req.session.part,
+    });
+    return systemCases.map((systemCase) => {
+      return systemCase.serialNumber;
+    });
+  }
+
   public async editSerialNumber(req) {
     const id: string = req.body.id;
     const unit: Unit = req.body.unit;
@@ -79,8 +88,11 @@ export class SystemCasesService {
     return await new this.systemCaseModel(newSystemCase).save();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} systemCase`;
+  async edit(req): Promise<SystemCase> {
+    return this.systemCaseModel.findOneAndUpdate(
+      { _id: req.body._id },
+      req.body,
+    );
   }
 
   async remove(id: string) {

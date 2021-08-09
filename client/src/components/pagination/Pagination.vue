@@ -1,9 +1,9 @@
 <template>
     <v-pagination
-        v-model="page"
+        :value="page"
         class="pagination"
         :length="pages"
-        :total-visible="7"
+        :total-visible="5"
         @input="changePage"
     ></v-pagination>
 </template>

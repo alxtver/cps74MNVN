@@ -1,48 +1,53 @@
 <template>
     <div>
-        <div style="border-bottom: thin solid #c5c5c5fc">
-            <v-row align="center" class="justify-space-around">
-                <v-col>
-                    <add-system-case
-                        @addSystemCase="addSystemCase"
-                        :serialNumbers="allSerialNumbers"
-                    ></add-system-case>
-                </v-col>
-                <v-col>
-                    <pagination
-                        :items="systemCases"
-                        :pages="countPages"
-                        @changePage="changePage"
-                        @nextPage="nextPage"
-                        @previousPage="previousPage"
-                    ></pagination>
-                </v-col>
-            </v-row>
-        </div>
+        <v-row align="center" style="height: 80px; justify-content: space-between;">
+            <add-system-case
+                @addSystemCase="addSystemCase"
+                :serialNumbers="allSerialNumbers"
+            ></add-system-case>
+            <div style="display: flex; align-items: center; margin-right: 20px;">
+                <div class="count-pages">
+                    <v-select
+                        v-model="itemsPerPage"
+                        item-text="key"
+                        item-value="value"
+                        label="Количество на странице"
+                        dense
+                        :items="listCountPages"
+                    ></v-select>
+                </div>
+                <pagination
+                    :items="systemCases"
+                    :pages="countPages"
+                    :page="page"
+                    @changePage="changePage"
+                    @nextPage="nextPage"
+                    @previousPage="previousPage"
+                ></pagination>
+            </div>
+        </v-row>
         <v-data-iterator
             ref="iterator"
-            items-per-page-all-text="Количество"
-            style="height: calc(100vh - 133px); overflow: auto"
-            height="calc(100vh - 214px)"
             :items="systemCases"
             :items-per-page.sync="itemsPerPage"
-            :footer-props="footerProps"
+            :hide-default-footer="true"
             :page.sync="page"
-            :show-current-page="true"
             :loading="loading"
         >
             <template v-slot:default="props">
-                <v-card
-                    style="padding-bottom: 1px"
-                    v-for="item in props.items"
-                    :key="item._id"
-                >
-                    <system-case-form
-                        :systemCase="item"
-                        @updateSystemCase="updateSystemCase"
-                        @doRemove="removeSystemCase"
-                    ></system-case-form>
-                </v-card>
+                <v-col>
+                    <div
+                        style="padding-bottom: 1px"
+                        v-for="item in props.items"
+                        :key="item._id"
+                    >
+                        <system-case-form
+                            :systemCase="item"
+                            @updateSystemCase="updateSystemCase"
+                            @doRemove="removeSystemCase"
+                        ></system-case-form>
+                    </div>
+                </v-col>
             </template>
         </v-data-iterator>
     </div>
@@ -50,4 +55,8 @@
 
 <script src="./SystemCaseMain.ts"></script>
 
-<style scoped></style>
+<style scoped>
+.count-pages {
+    width: 150px;
+}
+</style>

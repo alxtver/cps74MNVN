@@ -1,4 +1,4 @@
-import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
+import {Component, Prop, Ref, Vue, Watch} from 'vue-property-decorator';
 import SystemCaseTable from '@/components/systemcase/systemcasetable/SystemCaseTable.vue';
 import SystemCaseTableTS from '@/components/systemcase/systemcasetable/SystemCaseTable';
 import SystemCase from '@/models/SystemCase';
@@ -15,6 +15,9 @@ export default class AddSystemCaseCard extends Vue {
     @Prop({ default: () => [] })
     private serialNumbers!: string[];
 
+    @Prop({default: true})
+    private isNewSystemCase!: boolean;
+
     private valid = true;
 
     @Ref('systemCaseTable')
@@ -22,6 +25,11 @@ export default class AddSystemCaseCard extends Vue {
 
     @State((state) => state.part)
     private part!: Part;
+
+    @Watch('part')
+    private changePart(): void {
+        this.systemCase.part = this.part;
+    }
 
     private fdsiRules = [(v) => !!v || 'Введите ФДШИ'];
     private serialNumberRules = [(v) => !!v || 'Введите серийный номер'];
@@ -59,6 +67,10 @@ export default class AddSystemCaseCard extends Vue {
      * @private
      */
     private async save(): Promise<void> {
+        if (!this.isNewSystemCase) {
+            this.$emit('saveSystemCase', this.systemCase);
+            return;
+        }
         await this.validation();
         if (!this.valid) {
             return;
@@ -71,7 +83,7 @@ export default class AddSystemCaseCard extends Vue {
             this.systemCase,
         );
         this.$emit('close');
-        this.$emit('addSystemCase', newSystemCase);
+        this.$emit('saveSystemCase', newSystemCase);
     }
 
     /**

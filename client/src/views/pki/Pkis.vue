@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-5 mt-5 ml-10 mr-10" elevation="5">
+  <v-card class="mb-5 mt-15 ml-10 mr-10" elevation="5">
     <pki-table></pki-table>
   </v-card>
 </template>

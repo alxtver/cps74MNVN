@@ -12,7 +12,7 @@
                 Добавить системный блок
             </v-btn>
             <v-btn
-                class="mx-2 d-flex d-md-flex d-lg-none"
+                class="ml-4 mx-2 d-flex d-md-flex d-lg-none"
                 fab
                 dark
                 small
@@ -27,7 +27,7 @@
         <add-system-case-card
             ref="addSystemCaseCard"
             :serialNumbers="serialNumbers"
-            @addSystemCase="addSystemCase"
+            @saveSystemCase="addSystemCase"
             @close="dialog = false"
         ></add-system-case-card>
     </v-dialog>

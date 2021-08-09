@@ -19,6 +19,7 @@
 
                     <v-divider class="mx-4" inset vertical></v-divider>
                     <div
+                        :id="systemCase.serialNumber"
                         style="padding: 10px; font-size: x-large; height: 100%"
                     >
                         № {{ systemCase.serialNumber }}

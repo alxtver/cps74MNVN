@@ -11,6 +11,7 @@ export default new Vuex.Store({
         user: null,
         part: '',
         sound: true,
+        selectedSerialNumber: ''
     },
     mutations: {
         updateUser(state, newUser) {
@@ -24,6 +25,9 @@ export default new Vuex.Store({
         },
         changeSound(state, sound) {
             state.sound = sound;
+        },
+        selectSerialNumber(state, serialNumber) {
+            state.selectedSerialNumber = serialNumber;
         },
     },
     actions: {
@@ -39,6 +43,9 @@ export default new Vuex.Store({
         changeSound(context, sound) {
             context.commit('changeSound', sound);
         },
+        selectSerialNumber(context, serialNumber) {
+            context.commit('selectSerialNumber', serialNumber);
+        },
     },
     modules: {},
 });
@@ -47,3 +54,4 @@ export const UPDATE_USER = 'updateUser';
 export const LOGIN_CONFIRM = 'loginConfirm';
 export const UPDATE_PART = 'updatePart';
 export const CHANGE_SOUND = 'changeSound';
+export const SELECT_SERIAL_NUMBER = 'selectSerialNumber';

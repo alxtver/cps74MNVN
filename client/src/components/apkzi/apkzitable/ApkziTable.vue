@@ -1,10 +1,8 @@
 <template>
-    <div style="height: calc(100vh - 90px)">
         <v-data-table
             dense
             fixed-header
             class="pki-table"
-            height="calc(100vh - 214px)"
             :search="search"
             :headers="headers"
             :items="apkzis"
@@ -166,7 +164,6 @@
                 </el-popconfirm>
             </template>
         </v-data-table>
-    </div>
 </template>
 
 <script src="./ApkziTable.ts" lang="ts"></script>

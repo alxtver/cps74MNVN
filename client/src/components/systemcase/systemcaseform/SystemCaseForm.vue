@@ -11,8 +11,16 @@
             <group-buttons
                 item="systemCase"
                 @doRemove="removeSystemCase"
+                @doEdit="doEdit"
             ></group-buttons>
         </v-card>
+        <edit-system-case
+            ref="editSystemCase"
+            :openDialog="openEditDialog"
+            :systemCase="systemCase"
+            @editSystemCase="editSystemCase"
+            @close="closeEditDialog"
+        ></edit-system-case>
     </div>
 </template>
 

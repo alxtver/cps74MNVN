@@ -13,14 +13,33 @@ export default class SystemCaseMain extends Vue {
     private loading = true;
     private itemsPerPage = 10; // количество элементов на странице
     private page = 1; // текущая страница
-    // пропсы для футера
-    private footerProps = {
-        'items-per-page-options': [5, 10, 30, 50, -1],
-        'items-per-page-text': 'Количество системных блоков на странице',
-    };
+    private listCountPages = [
+        { key: 5, value: 5 },
+        { key: 10, value: 10 },
+        { key: 30, value: 30 },
+        { key: 'Все', value: -1 },
+    ];
 
     @State((state) => state.part)
     private part!: Part;
+
+    @State((state) => state.selectedSerialNumber)
+    private selectedSerialNumber!: string;
+
+    @Watch('selectedSerialNumber')
+    private async selectSerialNumber(): Promise<void> {
+        const selectedSystemCase = this.systemCases.find(
+            (systemCase) =>
+                systemCase.serialNumber === this.selectedSerialNumber,
+        );
+        const index = this.systemCases.indexOf(selectedSystemCase) + 1;
+        await this.changePage(Math.ceil(index / this.itemsPerPage));
+        const element = document.getElementById(this.selectedSerialNumber);
+        const yOffset = -90;
+        const y =
+            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
 
     @Watch('part', { immediate: false })
     private changePart(): void {
@@ -56,11 +75,11 @@ export default class SystemCaseMain extends Vue {
 
     /**
      * Смена страницы
-     * @param page
      * @private
+     * @param pageIndex
      */
-    private changePage(page): void {
-        this.page = page;
+    private async changePage(pageIndex): Promise<void> {
+        this.page = await pageIndex;
     }
 
     /**
@@ -92,6 +111,11 @@ export default class SystemCaseMain extends Vue {
         Object.assign(outdatedSystemCase, oldSystemCase);
     }
 
+    /**
+     * Удалить системный блок
+     * @param id
+     * @private
+     */
     private async removeSystemCase(id): Promise<void> {
         try {
             const response = await systemCaseApi.removeSystemCase(id);
@@ -110,7 +134,7 @@ export default class SystemCaseMain extends Vue {
      * @param newSystemCase
      * @private
      */
-    private addSystemCase(newSystemCase): void {
+    private addSystemCase(newSystemCase: SystemCase): void {
         this.systemCases.push(newSystemCase);
     }
 
@@ -120,7 +144,7 @@ export default class SystemCaseMain extends Vue {
      */
     private get allSerialNumbers(): string[] {
         return this.systemCases.map((systemCase) => {
-            return systemCase.serialNumber
-        })
+            return systemCase.serialNumber;
+        });
     }
 }

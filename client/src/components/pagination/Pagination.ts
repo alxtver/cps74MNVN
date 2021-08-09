@@ -1,11 +1,11 @@
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({ components: {} })
 export default class Pagination extends Vue {
     @Prop()
     private pages!: number;
 
-    @Prop({ default: 1 })
+    @Prop()
     private page!: number;
 
     /**
@@ -41,11 +41,11 @@ export default class Pagination extends Vue {
 
     /**
      * Выбор страницы
-     * @param page
      * @private
+     * @param pageIndex
      */
-    private changePage(page): void {
-        this.$emit('changePage', page);
+    private changePage(pageIndex): void {
+        this.$emit('changePage', pageIndex);
     }
 
     /**
@@ -54,7 +54,6 @@ export default class Pagination extends Vue {
      */
     private nextPage(): void {
         if (this.page + 1 <= this.pages) {
-            this.page++;
             this.$emit('nextPage');
         }
     }
@@ -65,7 +64,6 @@ export default class Pagination extends Vue {
      */
     private previousPage(): void {
         if (this.page - 1 >= 1) {
-            this.page--;
             this.$emit('previousPage');
         }
     }

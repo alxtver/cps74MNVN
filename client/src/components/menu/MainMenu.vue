@@ -1,10 +1,12 @@
 <template>
     <div>
         <v-app-bar
-            color="brown lighten-5"
+            color="#8e8c8c43"
             dense
+            fixed
             width="100%"
-            style="z-index: 999"
+            elevate-on-scroll
+            style="z-index: 999; backdrop-filter: blur(2px)"
             v-if="auth"
         >
             <v-app-bar-nav-icon
@@ -12,21 +14,39 @@
                 @click="drawer = true"
             ></v-app-bar-nav-icon>
             <div v-if="!isMobile" style="display: flex; width: 1920px">
-                <v-tabs
-                    fixed-tabs
-                    background-color="brown lighten-5"
-                    :optional="true"
-                    @change="changeTab"
+                <v-btn
+                    v-for="item in nav"
+                    :key="item.title"
+                    :to="item.to"
+                    :title="item.title"
+                    elevation="0"
+                    large
+                    style="background: rgba(153, 153, 153, 0); width: 170px"
+                >{{ item.title }}
+                </v-btn
                 >
-                    <v-tabs-slider color="deep-orange"></v-tabs-slider>
-                    <v-tab to="/pkis"> ПКИ </v-tab>
-                    <v-tab to="/apkzi"> АПКЗИ </v-tab>
-                    <v-tab to="/systemCases"> Системные блоки </v-tab>
-                    <v-tab to="/pc"> ПЭВМ </v-tab>
-                </v-tabs>
+                
                 <v-spacer></v-spacer>
                 <el-select
+                    v-if="isPcOrSystemCase"
                     class="part-select mt-1"
+                    v-model="currentSn"
+                    placeholder="Серийные номера"
+                    filterable
+                    allow-create
+                    @change="changeSerialNumber"
+                >
+                    <el-option
+                        v-for="serialNumber in serialNumbers"
+                        :key="serialNumber"
+                        :label="serialNumber"
+                        :value="serialNumber"
+                    >
+                    </el-option>
+                </el-select>
+                
+                <el-select
+                    class="part-select mt-1 ml-1"
                     v-model="currentPart"
                     placeholder="Темы"
                     filterable
@@ -51,8 +71,12 @@
                         >
                         </v-icon>
                     </template>
-                    <v-list  shaped>
-                        <v-list-item-group multiple @change="changeItem" v-model="selectedItem">
+                    <v-list shaped>
+                        <v-list-item-group
+                            multiple
+                            @change="changeItem"
+                            v-model="selectedItem"
+                        >
                             <template>
                                 <v-list-item :key="0" value="sound">
                                     <template v-slot:default="{ active }">
@@ -78,23 +102,18 @@
                     </v-list>
                 </v-menu>
             </div>
-
+            
             <v-navigation-drawer
                 v-model="drawer"
                 absolute
                 temporary
                 :height="innerHeight"
+                style="backdrop-filter: blur(3px); background: #8e8c8c43"
             >
                 <v-list nav dense>
-                    <v-list-item-group
-                        active-class="deep-purple--text text--accent-4"
-                    >
-                        <v-list-item to="/pkis">
-                            <v-list-item-title>ПКИ</v-list-item-title>
-                        </v-list-item>
-
-                        <v-list-item to="/pc">
-                            <v-list-item-title>ПЭВМ</v-list-item-title>
+                    <v-list-item-group active-class="text--accent-4">
+                        <v-list-item v-for="item in nav" :key="item.to" :to="item.to">
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
                         </v-list-item>
                     </v-list-item-group>
                 </v-list>
@@ -107,6 +126,6 @@
 
 <style lang="scss" scoped>
 .part-select {
-    width: 250px;
+    min-width: 150px;
 }
 </style>

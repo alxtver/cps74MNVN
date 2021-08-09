@@ -1,10 +1,8 @@
 <template>
-    <div style="height: calc(100vh - 90px)">
         <v-data-table
             dense
             fixed-header
             class="pki-table"
-            height="calc(100vh - 214px)"
             :search="search"
             :headers="headers"
             :items="displayedPki"
@@ -160,7 +158,6 @@
                 </el-popconfirm>
             </template>
         </v-data-table>
-    </div>
 </template>
 
 <script src="./PkiTable.ts" lang="ts"></script>
@@ -180,7 +177,6 @@ td {
     padding: 0 5px !important;
 }
 .pki-table {
-    
     .type-select {
         max-width: 500px;
     }

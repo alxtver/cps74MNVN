@@ -5,6 +5,18 @@ export default class GroupButtons extends Vue {
     @Prop({ default: 'pc' })
     item!: string;
 
+    /**
+     * Нажатие на кнопку редактировать
+     * @private
+     */
+    private doEdit(): void {
+        this.$emit('doEdit')
+    }
+
+    /**
+     * Нажатие на кнопку удалить
+     * @private
+     */
     private doRemove(): void {
         const message: string =
             this.item === 'pc' ? 'Удалить ПЭВМ?' : 'Удалить системный блок?';

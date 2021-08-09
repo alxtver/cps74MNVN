@@ -28,6 +28,12 @@ export class SystemCasesController {
     return res.status(HttpStatus.OK).json(systemCases);
   }
 
+  @Get('/serialNumbers')
+  async getSerialNumbers(@Req() req, @Res() res) {
+    const serialNumbers = await this.systemCasesService.getSerialNumbers(req);
+    return res.status(HttpStatus.OK).json(serialNumbers);
+  }
+
   /**
    * Добавить системный блок
    * @param req
@@ -44,6 +50,17 @@ export class SystemCasesController {
   }
 
   /**
+   * Редактировать системный блок
+   * @param req
+   * @param res
+   */
+  @Put()
+  async edit(@Req() req, @Res() res) {
+    const newSystemCase = await this.systemCasesService.edit(req);
+    return res.status(HttpStatus.OK).json(newSystemCase);
+  }
+
+  /**
    * Ввод серийного номера ПКИ
    */
   @Put('editSerialNumber')
@@ -57,11 +74,6 @@ export class SystemCasesController {
   }> {
     const response = await this.systemCasesService.editSerialNumber(req);
     return res.status(HttpStatus.OK).json(response);
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.systemCasesService.findOne(+id);
   }
 
   @Delete(':id')

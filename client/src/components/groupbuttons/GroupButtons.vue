@@ -4,7 +4,7 @@
             <v-btn class="ml-6" elevation="3" small text color="blue lighten-2"
                 ><v-icon class="icon">mdi-content-copy</v-icon>Копировать</v-btn
             >
-            <v-btn class="ml-6" elevation="3" small text color="teal lighten-2">
+            <v-btn class="ml-6" elevation="3" small text color="teal lighten-2" @click="doEdit">
                 <v-icon class="icon">mdi-pencil-outline</v-icon>
                 Редактировать</v-btn
             >
