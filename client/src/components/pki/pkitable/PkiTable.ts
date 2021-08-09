@@ -179,6 +179,7 @@ export default class PkiTable extends Vue {
         const lastPki = await pkiApi.getLastPki();
         if (lastPki) {
             lastPki._id = null;
+            lastPki.serial_number = null;
             this.editedItem = lastPki;
         } else {
             this.editedItem = new Pki();

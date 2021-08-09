@@ -5,8 +5,7 @@ import Part from '@/models/Part';
 import { mdiCog, mdiVolumeHigh, mdiVolumeOff } from '@mdi/js';
 import { Action, State } from 'vuex-class';
 import { CHANGE_SOUND, SELECT_SERIAL_NUMBER } from '@/store';
-import systemCaseApi from "@/api/SystemCaseApi";
-import {Watch} from "vue-property-decorator";
+import { Watch } from 'vue-property-decorator';
 
 @Component
 export default class MainMenu extends Vue {
@@ -24,6 +23,15 @@ export default class MainMenu extends Vue {
     @State((state) => state.sound)
     private sound!: boolean;
 
+    @State((state) => state.systemCasesSerialNumbers)
+    private systemCaseSerialNumbers!: string[];
+
+    @State((state) => state.selectedSerialNumber)
+    private selectedSerialNumber!: string;
+
+    @State((state) => state.sound)
+    private pcSerialNumbers!: string[];
+
     @Action(CHANGE_SOUND)
     private changeSound!: (sound: boolean) => void;
 
@@ -39,6 +47,11 @@ export default class MainMenu extends Vue {
 
     @Watch('$route', { immediate: true, deep: true })
     private onUrlChange() {
+        this.getSerialNumbers();
+    }
+
+    @Watch('systemCaseSerialNumbers')
+    private changeSerialNumbers(): void {
         this.getSerialNumbers();
     }
 
@@ -93,9 +106,12 @@ export default class MainMenu extends Vue {
      */
     private async getSerialNumbers(): Promise<void> {
         if (this.$route.path === '/systemCases') {
-            this.serialNumbers = await systemCaseApi.getSerialNumbers()
-            this.currentSn = this.serialNumbers[0];
+            this.serialNumbers = this.systemCaseSerialNumbers;
+        } else if (this.$route.path === '/pc') {
+            this.serialNumbers = this.pcSerialNumbers;
         }
+        this.currentSn = this.selectedSerialNumber || this.serialNumbers[0];
+        this.selectSerialNumber(this.currentSn);
     }
 
     /**

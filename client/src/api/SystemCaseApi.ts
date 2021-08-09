@@ -50,6 +50,25 @@ class SystemCaseApi {
     }
 
     /**
+     * Копирование системного блока
+     * @param serialNumber - серийный номер копируемого системного блока
+     * @param firstSerialNumber
+     * @param lastSerialNumber
+     */
+    public async copySystemCase(
+        serialNumber: string,
+        firstSerialNumber: string,
+        lastSerialNumber: string,
+    ): Promise<SystemCase[]> {
+        const response = await this.axiosInstance.post('/systemCase/copy', {
+            serialNumber,
+            firstSerialNumber,
+            lastSerialNumber,
+        });
+        return dataToArrayClass(SystemCase, response.data);
+    }
+
+    /**
      * Редактировать системный блок
      * @param systemCase
      */
@@ -67,10 +86,12 @@ class SystemCaseApi {
      */
     public async removeSystemCase(id: string): Promise<string> {
         try {
-            const response = await this.axiosInstance.delete(`/systemCase/${id}`);
+            const response = await this.axiosInstance.delete(
+                `/systemCase/${id}`,
+            );
             return response.data;
         } catch (e) {
-            return e
+            return e;
         }
     }
 
@@ -79,10 +100,12 @@ class SystemCaseApi {
      */
     public async getSerialNumbers(): Promise<string[]> {
         try {
-            const response = await this.axiosInstance.get(`/systemCase/serialNumbers`);
+            const response = await this.axiosInstance.get(
+                `/systemCase/serialNumbers`,
+            );
             return response.data;
         } catch (e) {
-            return e
+            return e;
         }
     }
 }

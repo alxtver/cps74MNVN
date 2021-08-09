@@ -12,6 +12,7 @@
                 item="systemCase"
                 @doRemove="removeSystemCase"
                 @doEdit="doEdit"
+                @doCopy="doCopy"
             ></group-buttons>
         </v-card>
         <edit-system-case
@@ -21,6 +22,13 @@
             @editSystemCase="editSystemCase"
             @close="closeEditDialog"
         ></edit-system-case>
+        <copy-form
+            ref="copySystemCase"
+            title="Копирование системных блоков"
+            :serialNumbers="serialNumbers"
+            :currentSerialNumber="systemCase.serialNumber"
+            @copy="copySystemCases"
+        ></copy-form>
     </div>
 </template>
 

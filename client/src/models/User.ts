@@ -1,3 +1,5 @@
+import Pki from "@/models/Pki";
+
 export default class User {
     public _id: string | null = null; // id
     readonly username: string = '';
@@ -8,5 +10,5 @@ export default class User {
     readonly pcCount: string = '';
     readonly lastAssemblyPC: string = '';
     readonly lastApkzi: string = '';
-    readonly lastPki: string = '';
+    readonly lastPki: Pki | null = null;
 }

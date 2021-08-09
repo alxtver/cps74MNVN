@@ -7,6 +7,8 @@ import { Unit } from '../interfaces/unit.interface';
 import modify from '../helper/SnModify';
 import insert from '../helper/InsertSerialNumber';
 import { Pki } from '../interfaces/pki.interface';
+import stringHelper from '../helper/StringHelper';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class SystemCasesService {
@@ -93,6 +95,48 @@ export class SystemCasesService {
       { _id: req.body._id },
       req.body,
     );
+  }
+
+  async copy(req): Promise<any> {
+    const currentSN = req.body.serialNumber;
+    let firstSN = req.body.firstSerialNumber;
+    const lastSN = req.body.lastSerialNumber;
+    const systemCaseForCopy = await this.systemCaseModel.findOne({
+      part: req.session.part,
+      serialNumber: currentSN,
+    });
+    const allSystemCaseSerialNumbers = await this.systemCaseModel
+      .find({ part: req.session.part })
+      .distinct('serialNumber');
+    const serialNumbers = [firstSN];
+    while (lastSN && firstSN !== lastSN) {
+      firstSN = stringHelper.plusOne(firstSN);
+      serialNumbers.push(firstSN);
+    }
+    const systemCasesForSave = [];
+    for (const serialNumber of serialNumbers) {
+      if (allSystemCaseSerialNumbers.includes(serialNumber)) {
+        continue;
+      }
+      const newSystemCase = await new this.systemCaseModel(systemCaseForCopy);
+      newSystemCase._id = mongoose.Types.ObjectId();
+      newSystemCase.isNew = true;
+      newSystemCase.serialNumber = serialNumber;
+      const units = [];
+      for (const unit of newSystemCase.systemCaseUnits) {
+        const copyUnit = { ...unit };
+        if (copyUnit.serial_number === systemCaseForCopy.serialNumber) {
+          copyUnit.serial_number = serialNumber;
+        } else if (!/[Бб].?[Нн]/g.test(copyUnit.serial_number)) {
+          copyUnit.name = '';
+          copyUnit.serial_number = '';
+        }
+        units.push(copyUnit);
+      }
+      newSystemCase.systemCaseUnits = units;
+      systemCasesForSave.push(newSystemCase);
+    }
+    return await this.systemCaseModel.insertMany(systemCasesForSave);
   }
 
   async remove(id: string) {

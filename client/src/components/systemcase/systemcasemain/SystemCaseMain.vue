@@ -42,9 +42,11 @@
                         :key="item._id"
                     >
                         <system-case-form
+                            :serialNumbers="allSerialNumbers"
                             :systemCase="item"
                             @updateSystemCase="updateSystemCase"
                             @doRemove="removeSystemCase"
+                            @addSystemCases="addSystemCases"
                         ></system-case-form>
                     </div>
                 </v-col>

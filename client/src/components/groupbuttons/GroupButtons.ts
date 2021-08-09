@@ -14,6 +14,14 @@ export default class GroupButtons extends Vue {
     }
 
     /**
+     * Нажатие на кнопку копировать
+     * @private
+     */
+    private doCopy(): void {
+        this.$emit('doCopy')
+    }
+
+    /**
      * Нажатие на кнопку удалить
      * @private
      */

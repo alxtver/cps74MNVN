@@ -61,6 +61,17 @@ export class SystemCasesController {
   }
 
   /**
+   * Копирование системных блоков
+   * @param req
+   * @param res
+   */
+  @Post('copy')
+  async copy(@Req() req, @Res() res) {
+    const newSystemCases = await this.systemCasesService.copy(req);
+    return res.status(HttpStatus.OK).json(newSystemCases);
+  }
+
+  /**
    * Ввод серийного номера ПКИ
    */
   @Put('editSerialNumber')

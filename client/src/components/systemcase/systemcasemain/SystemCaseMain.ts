@@ -1,11 +1,12 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { State } from 'vuex-class';
+import { Action, State } from 'vuex-class';
 import Part from '@/models/Part';
 import SystemCase from '@/models/SystemCase';
 import systemCaseApi from '@/api/SystemCaseApi';
 import SystemCaseForm from '@/components/systemcase/systemcaseform/SystemCaseForm.vue';
 import Pagination from '@/components/pagination/Pagination.vue';
 import AddSystemCase from '@/components/systemcase/addsystemcase/AddSystemCase.vue';
+import { UPDATE_SYSTEM_CASES_SERIAL_NUMBERS } from '@/store';
 
 @Component({ components: { SystemCaseForm, Pagination, AddSystemCase } })
 export default class SystemCaseMain extends Vue {
@@ -25,6 +26,9 @@ export default class SystemCaseMain extends Vue {
 
     @State((state) => state.selectedSerialNumber)
     private selectedSerialNumber!: string;
+
+    @Action(UPDATE_SYSTEM_CASES_SERIAL_NUMBERS)
+    private updateSystemCaseSerialNumbers!: (serialNumber: string[]) => void;
 
     @Watch('selectedSerialNumber')
     private async selectSerialNumber(): Promise<void> {
@@ -70,6 +74,8 @@ export default class SystemCaseMain extends Vue {
         systemCaseApi.getSystemCases().then((data) => {
             this.systemCases = data;
             this.loading = false;
+            this.updateSerialNumbers();
+            this.selectSerialNumber();
         });
     }
 
@@ -123,6 +129,7 @@ export default class SystemCaseMain extends Vue {
                 this.systemCases = this.systemCases.filter(
                     (systemCase) => systemCase._id !== id,
                 );
+                this.updateSerialNumbers();
             }
         } catch (e) {
             this.$message.error(e);
@@ -136,6 +143,17 @@ export default class SystemCaseMain extends Vue {
      */
     private addSystemCase(newSystemCase: SystemCase): void {
         this.systemCases.push(newSystemCase);
+        this.updateSerialNumbers();
+    }
+
+    /**
+     * Добавить несколько системных блоков (при копировании)
+     * @param systemCases
+     * @private
+     */
+    private addSystemCases(systemCases: SystemCase[]): void {
+        this.systemCases.push(...systemCases);
+        this.updateSerialNumbers();
     }
 
     /**
@@ -146,5 +164,9 @@ export default class SystemCaseMain extends Vue {
         return this.systemCases.map((systemCase) => {
             return systemCase.serialNumber;
         });
+    }
+
+    private updateSerialNumbers(): void {
+        this.updateSystemCaseSerialNumbers(this.allSerialNumbers);
     }
 }

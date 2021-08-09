@@ -11,7 +11,9 @@ export default new Vuex.Store({
         user: null,
         part: '',
         sound: true,
-        selectedSerialNumber: ''
+        selectedSerialNumber: '',
+        systemCasesSerialNumbers: [],
+        pcSerialNumbers: [],
     },
     mutations: {
         updateUser(state, newUser) {
@@ -28,6 +30,12 @@ export default new Vuex.Store({
         },
         selectSerialNumber(state, serialNumber) {
             state.selectedSerialNumber = serialNumber;
+        },
+        updateSystemCasesSerialNumbers(state, serialNumbers) {
+            state.systemCasesSerialNumbers = serialNumbers;
+        },
+        updatePCSerialNumbers(state, serialNumbers) {
+            state.pcSerialNumbers = serialNumbers;
         },
     },
     actions: {
@@ -46,6 +54,12 @@ export default new Vuex.Store({
         selectSerialNumber(context, serialNumber) {
             context.commit('selectSerialNumber', serialNumber);
         },
+        updateSystemCasesSerialNumbers(context, serialNumbers) {
+            context.commit('updateSystemCasesSerialNumbers', serialNumbers);
+        },
+        updatePCSerialNumbers(context, serialNumbers) {
+            context.commit('updatePCSerialNumbers', serialNumbers);
+        },
     },
     modules: {},
 });
@@ -55,3 +69,5 @@ export const LOGIN_CONFIRM = 'loginConfirm';
 export const UPDATE_PART = 'updatePart';
 export const CHANGE_SOUND = 'changeSound';
 export const SELECT_SERIAL_NUMBER = 'selectSerialNumber';
+export const UPDATE_SYSTEM_CASES_SERIAL_NUMBERS = 'updateSystemCasesSerialNumbers';
+export const UPDATE_PC_SERIAL_NUMBERS = 'updatePCSerialNumbers';
