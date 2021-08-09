@@ -26,6 +26,7 @@ export default class ApkziTable extends Vue {
     private isEditing = false;
     private isNewApkzi = true;
     private selectedRow = -1;
+    private overlay = true;
 
     private headers: DataTableHeader[] = [
         { text: '', value: 'index', width: 20, sortable: false },
@@ -70,10 +71,13 @@ export default class ApkziTable extends Vue {
      */
     private getApkzi(): void {
         this.loading = true;
+        this.overlay = true;
         this.apkzis = [];
         apkziApi.getApkzi().then((data) => {
             this.apkzis = this.addIndexes(data);
             this.loading = false;
+        }).finally(()=> {
+            this.overlay = false;
         });
     }
 

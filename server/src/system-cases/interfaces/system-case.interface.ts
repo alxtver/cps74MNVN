@@ -8,7 +8,7 @@ export interface SystemCase extends Document {
   readonly part: string;
   readonly attachment: string;
   readonly created: number;
-  readonly numberMachine: string;
+  numberMachine: string;
   readonly back_color: string;
   systemCaseUnits: Unit[];
 }

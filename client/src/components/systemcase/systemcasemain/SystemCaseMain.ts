@@ -6,7 +6,10 @@ import systemCaseApi from '@/api/SystemCaseApi';
 import SystemCaseForm from '@/components/systemcase/systemcaseform/SystemCaseForm.vue';
 import Pagination from '@/components/pagination/Pagination.vue';
 import AddSystemCase from '@/components/systemcase/addsystemcase/AddSystemCase.vue';
-import { UPDATE_SYSTEM_CASES_SERIAL_NUMBERS } from '@/store';
+import {
+    SELECT_SERIAL_NUMBER,
+    UPDATE_SYSTEM_CASES_SERIAL_NUMBERS,
+} from '@/store';
 
 @Component({ components: { SystemCaseForm, Pagination, AddSystemCase } })
 export default class SystemCaseMain extends Vue {
@@ -14,6 +17,7 @@ export default class SystemCaseMain extends Vue {
     private loading = true;
     private itemsPerPage = 10; // количество элементов на странице
     private page = 1; // текущая страница
+    private overlay = true;
     private listCountPages = [
         { key: 5, value: 5 },
         { key: 10, value: 10 },
@@ -30,19 +34,26 @@ export default class SystemCaseMain extends Vue {
     @Action(UPDATE_SYSTEM_CASES_SERIAL_NUMBERS)
     private updateSystemCaseSerialNumbers!: (serialNumber: string[]) => void;
 
+    @Action(SELECT_SERIAL_NUMBER)
+    private changeSelectedSerialNumber!: (serialNumber: string | null) => void;
+
     @Watch('selectedSerialNumber')
     private async selectSerialNumber(): Promise<void> {
         const selectedSystemCase = this.systemCases.find(
             (systemCase) =>
                 systemCase.serialNumber === this.selectedSerialNumber,
         );
-        const index = this.systemCases.indexOf(selectedSystemCase) + 1;
-        await this.changePage(Math.ceil(index / this.itemsPerPage));
-        const element = document.getElementById(this.selectedSerialNumber);
-        const yOffset = -90;
-        const y =
-            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (selectedSystemCase) {
+            const index = this.systemCases.indexOf(selectedSystemCase) + 1;
+            await this.changePage(Math.ceil(index / this.itemsPerPage));
+            const element = document.getElementById(this.selectedSerialNumber);
+            const yOffset = -165;
+            const y =
+                element.getBoundingClientRect().top +
+                window.pageYOffset +
+                yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
     }
 
     @Watch('part', { immediate: false })
@@ -70,12 +81,15 @@ export default class SystemCaseMain extends Vue {
      */
     private getSystemCase(): void {
         this.loading = true;
+        this.overlay = true;
         this.systemCases = [];
         systemCaseApi.getSystemCases().then((data) => {
             this.systemCases = data;
             this.loading = false;
             this.updateSerialNumbers();
             this.selectSerialNumber();
+        }).finally(()=>{
+            this.overlay = false;
         });
     }
 
@@ -126,6 +140,7 @@ export default class SystemCaseMain extends Vue {
         try {
             const response = await systemCaseApi.removeSystemCase(id);
             if (response === id) {
+                this.doChangeSelectedSerialNumber(id);
                 this.systemCases = this.systemCases.filter(
                     (systemCase) => systemCase._id !== id,
                 );
@@ -133,6 +148,27 @@ export default class SystemCaseMain extends Vue {
             }
         } catch (e) {
             this.$message.error(e);
+        }
+    }
+
+    /**
+     * Смена выбранного серийного номера
+     * @private
+     */
+    private doChangeSelectedSerialNumber(id): void {
+        const index = this.systemCases.indexOf(
+            this.systemCases.find((systemCase) => systemCase._id === id),
+        );
+        if (this.systemCases[index - 1]) {
+            this.changeSelectedSerialNumber(
+                this.systemCases[index - 1].serialNumber,
+            );
+        } else if (this.systemCases[index + 1]) {
+            this.changeSelectedSerialNumber(
+                this.systemCases[index + 1].serialNumber,
+            );
+        } else {
+            this.changeSelectedSerialNumber(null);
         }
     }
 

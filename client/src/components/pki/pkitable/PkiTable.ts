@@ -24,6 +24,7 @@ export default class PkiTable extends Vue {
     private isNewPki = true;
     private isEditing = false;
     private selectedRow = -1;
+    private overlay = true;
 
     private headers: DataTableHeader[] = [
         { text: '', value: 'index', width: 20, sortable: false },
@@ -73,10 +74,13 @@ export default class PkiTable extends Vue {
      */
     private getPki(): void {
         this.loading = true;
+        this.overlay = true;
         this.pkis = [];
         pkiApi.getPki().then((data) => {
             this.pkis = this.addIndexes(data);
             this.loading = false;
+        }).finally(()=> {
+            this.overlay = false;
         });
     }
 

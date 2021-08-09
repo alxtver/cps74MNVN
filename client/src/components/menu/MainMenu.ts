@@ -29,7 +29,7 @@ export default class MainMenu extends Vue {
     @State((state) => state.selectedSerialNumber)
     private selectedSerialNumber!: string;
 
-    @State((state) => state.sound)
+    @State((state) => state.pcSerialNumbers)
     private pcSerialNumbers!: string[];
 
     @Action(CHANGE_SOUND)
@@ -110,21 +110,33 @@ export default class MainMenu extends Vue {
         } else if (this.$route.path === '/pc') {
             this.serialNumbers = this.pcSerialNumbers;
         }
-        this.currentSn = this.selectedSerialNumber || this.serialNumbers[0];
-        this.selectSerialNumber(this.currentSn);
+        if (this.serialNumbers.length !== 0 ){
+            this.currentSn = this.serialNumbers.includes(this.selectedSerialNumber)
+                ? this.selectedSerialNumber
+                : this.serialNumbers[0];
+            this.selectSerialNumber(this.currentSn);
+        }
     }
 
     /**
      * Изменить тему
      * @param part
      */
-    public async changeCurrentPartValue(part: string): Promise<void> {
+    public async changeCurrentPartValue(part: Part): Promise<void> {
         const oldPart = sessionStorage.getItem('part');
+        // из комбобокса vuetify при создании приходит стринг, а при выборе объект
+        // по этому костылим
+        if (typeof part === "string") {
+            const newPart = new Part();
+            newPart.part = part;
+            part = newPart;
+        }
         try {
-            const newPart = await partApi.changePart(part);
+            const newPart = await partApi.changePart(part.part);
             this.currentPart = newPart.part;
-            sessionStorage.setItem('part', part);
-            this.$store.commit('updatePart', part);
+            this.selectSerialNumber(null);
+            sessionStorage.setItem('part', part.part);
+            this.$store.commit('updatePart', part.part);
             await this.getParts();
         } catch (e) {
             this.$message.error('Ошибка сервера');

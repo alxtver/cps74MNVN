@@ -1,4 +1,5 @@
 <template>
+    <div>
         <v-data-table
             dense
             fixed-header
@@ -157,7 +158,17 @@
                     <v-icon small slot="reference"> mdi-delete </v-icon>
                 </el-popconfirm>
             </template>
+            
         </v-data-table>
+    <v-overlay :value="overlay">
+        <v-progress-circular
+            indeterminate
+            :size="70"
+            :width="7"
+            color="purple"
+        ></v-progress-circular>
+    </v-overlay>
+    </div>
 </template>
 
 <script src="./PkiTable.ts" lang="ts"></script>

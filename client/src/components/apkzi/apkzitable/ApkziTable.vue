@@ -1,4 +1,5 @@
 <template>
+    <div>
         <v-data-table
             dense
             fixed-header
@@ -164,6 +165,15 @@
                 </el-popconfirm>
             </template>
         </v-data-table>
+        <v-overlay :value="overlay">
+            <v-progress-circular
+                indeterminate
+                :size="70"
+                :width="7"
+                color="purple"
+            ></v-progress-circular>
+        </v-overlay>
+    </div>
 </template>
 
 <script src="./ApkziTable.ts" lang="ts"></script>

@@ -52,6 +52,14 @@
                 </v-col>
             </template>
         </v-data-iterator>
+        <v-overlay :value="overlay">
+            <v-progress-circular
+                indeterminate
+                :size="70"
+                :width="7"
+                color="purple"
+            ></v-progress-circular>
+        </v-overlay>
     </div>
 </template>
 

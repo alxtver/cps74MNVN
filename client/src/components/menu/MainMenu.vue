@@ -13,7 +13,7 @@
                 v-if="isMobile"
                 @click="drawer = true"
             ></v-app-bar-nav-icon>
-            <div v-if="!isMobile" style="display: flex; width: 1920px">
+            <div class="menu-buttons" v-if="!isMobile" style="display: flex; width: 1920px">
                 <v-btn
                     v-for="item in nav"
                     :key="item.title"
@@ -27,40 +27,30 @@
                 >
                 
                 <v-spacer></v-spacer>
-                <el-select
+                <v-select
                     v-if="isPcOrSystemCase"
-                    class="part-select mt-1"
+                    class="part-select mt-3"
+                    dense
                     v-model="currentSn"
-                    placeholder="Серийные номера"
-                    filterable
-                    allow-create
+                    label="Серийные номера"
+                    :menu-props="{ offsetY: true }"
+                    :items="serialNumbers"
                     @change="changeSerialNumber"
                 >
-                    <el-option
-                        v-for="serialNumber in serialNumbers"
-                        :key="serialNumber"
-                        :label="serialNumber"
-                        :value="serialNumber"
-                    >
-                    </el-option>
-                </el-select>
+                </v-select>
                 
-                <el-select
-                    class="part-select mt-1 ml-1"
+                <v-combobox
+                    class="part-select mt-3 ml-1"
+                    dense
                     v-model="currentPart"
-                    placeholder="Темы"
-                    filterable
-                    allow-create
+                    label="Тема"
+                    :menu-props="{ offsetY: true }"
+                    :items="parts"
+                    item-text="part"
+                    item-value="part"
                     @change="changeCurrentPartValue"
                 >
-                    <el-option
-                        v-for="part in parts"
-                        :key="part._id"
-                        :label="part.part"
-                        :value="part.part"
-                    >
-                    </el-option>
-                </el-select>
+                </v-combobox>
                 <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
@@ -78,7 +68,7 @@
                             v-model="selectedItem"
                         >
                             <template>
-                                <v-list-item :key="0" value="sound">
+                                <v-list-item value="sound">
                                     <template v-slot:default="{ active }">
                                         <v-list-item-icon>
                                             <v-icon
@@ -127,5 +117,20 @@
 <style lang="scss" scoped>
 .part-select {
     min-width: 150px;
+    max-width: 300px;
+}
+.menu-buttons {
+    .v-btn {
+        border-radius: 0;
+        height: 48px !important;
+        border-bottom: solid #99999900;
+    }
+    .v-btn:hover {
+        border-bottom: solid #d2d2d2;
+    }
+    .v-btn--active {
+        border-bottom: solid #0cc5e7;
+        border-radius: 0;
+    }
 }
 </style>

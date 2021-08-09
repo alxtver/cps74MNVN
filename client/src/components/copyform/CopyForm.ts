@@ -14,21 +14,13 @@ export default class CopyForm extends Vue {
 
     private dialog = false;
 
-    private firstSerialNumber = this.first;
+    private firstSerialNumber = '';
 
     private lastSerialNumber: string | null = null;
 
     private count: string | null = null;
 
     private disableCopy = true;
-
-    private get first(): string {
-        return stringHelper.plusOne(this.currentSerialNumber);
-    }
-
-    private set first(value) {
-        this.firstSerialNumber = value;
-    }
 
     private rules = {
         counter: (value) => {
@@ -118,6 +110,7 @@ export default class CopyForm extends Vue {
      * Открыть диалог
      */
     public openDialog(): void {
+        this.firstSerialNumber = stringHelper.plusOne(this.currentSerialNumber);
         this.dialog = true;
     }
 

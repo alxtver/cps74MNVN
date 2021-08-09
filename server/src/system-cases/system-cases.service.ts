@@ -118,10 +118,13 @@ export class SystemCasesService {
       if (allSystemCaseSerialNumbers.includes(serialNumber)) {
         continue;
       }
-      const newSystemCase = await new this.systemCaseModel(systemCaseForCopy);
+      const newSystemCase: SystemCase = await new this.systemCaseModel(
+        systemCaseForCopy,
+      );
       newSystemCase._id = mongoose.Types.ObjectId();
       newSystemCase.isNew = true;
       newSystemCase.serialNumber = serialNumber;
+      newSystemCase.numberMachine = '';
       const units = [];
       for (const unit of newSystemCase.systemCaseUnits) {
         const copyUnit = { ...unit };
