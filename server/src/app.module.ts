@@ -12,6 +12,7 @@ import { ResponseVariablesMiddleware } from './middleware/responseVariables.midd
 import { AuthModule } from './auth/auth.module';
 import { PkiModule } from './pki/pki.module';
 import { PartModule } from './part/part.module';
+import { PcModule } from './pc/pc.module';
 import * as mongoose from 'mongoose';
 
 mongoose.set('returnOriginal', false);
@@ -29,6 +30,7 @@ mongoose.set('returnOriginal', false);
     EanModule,
     ApkziModule,
     SystemCasesModule,
+    PcModule,
   ],
   controllers: [AppController],
   providers: [AppService],

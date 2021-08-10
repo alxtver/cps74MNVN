@@ -1,20 +1,22 @@
 import { Module } from '@nestjs/common';
-import { SystemCasesService } from './system-cases.service';
-import { SystemCasesController } from './system-cases.controller';
+import { PcService } from './pc.service';
+import { PcController } from './pc.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { pkiSchema } from '../schemas/pki.schema';
 import { systemCaseSchema } from '../schemas/systemCase.schema';
+import { pkiSchema } from '../schemas/pki.schema';
 import { apkziSchema } from '../schemas/apkzi.schema';
+import { pcSchema } from '../schemas/pc.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
+      { name: 'Pc', schema: pcSchema },
       { name: 'SystemCase', schema: systemCaseSchema },
       { name: 'Pki', schema: pkiSchema },
       { name: 'Apkzi', schema: apkziSchema },
     ]),
   ],
-  controllers: [SystemCasesController],
-  providers: [SystemCasesService],
+  controllers: [PcController],
+  providers: [PcService],
 })
-export class SystemCasesModule {}
+export class PcModule {}

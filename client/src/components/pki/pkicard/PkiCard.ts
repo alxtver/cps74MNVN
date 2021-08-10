@@ -170,7 +170,7 @@ export default class PkiCardTs extends Vue {
      * @param itemText
      * @private
      */
-    private filterRules(item: any, queryText: string, itemText: string) {
+    private filterRules(item: string, queryText: string, itemText: string) {
         const ruToEnQueryText = converter.translate(queryText).ruToEnLeather;
         const enToRuQueryText = converter.translate(queryText).enToRuLeather;
         return (

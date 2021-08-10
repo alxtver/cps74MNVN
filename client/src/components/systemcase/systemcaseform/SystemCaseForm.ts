@@ -15,7 +15,7 @@ export default class SystemCaseForm extends Vue {
     @Prop()
     private systemCase!: SystemCase;
 
-    @Prop()
+    @Prop({ default: () => [] })
     private serialNumbers!: string[];
 
     private openEditDialog = false;
@@ -29,6 +29,7 @@ export default class SystemCaseForm extends Vue {
     private updateSystemCase(oldSystemCase): void {
         this.$emit('updateSystemCase', oldSystemCase);
     }
+
     private removeSystemCase(): void {
         this.$emit('doRemove', this.systemCase._id);
     }
@@ -61,7 +62,10 @@ export default class SystemCaseForm extends Vue {
     }
 
     private get systemCaseColor(): string {
-        return `background: ${this.systemCase.back_color}; border-radius: 4px;`;
+        if (this.systemCase) {
+            return `background: ${this.systemCase.back_color}; border-radius: 4px;`;
+        }
+        return '';
     }
 
     private closeEditDialog(): void {
@@ -85,6 +89,6 @@ export default class SystemCaseForm extends Vue {
             firstSerialNumber,
             lastSerialNumber,
         );
-        this.$emit('addSystemCases', systemCases)
+        this.$emit('addSystemCases', systemCases);
     }
 }

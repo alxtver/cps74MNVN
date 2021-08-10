@@ -47,7 +47,10 @@ class Insert {
       serialNumber: oldNumberMachine,
     });
 
-    if (oldSystemCase) {
+    if (
+      oldSystemCase &&
+      oldSystemCase.serialNumber !== systemCase.serialNumber
+    ) {
       for (const unit of oldSystemCase.systemCaseUnits) {
         if (unit.serial_number === controllerNumber) {
           unit.name = 'Н/Д';

@@ -28,10 +28,35 @@ export class SystemCasesController {
     return res.status(HttpStatus.OK).json(systemCases);
   }
 
+  /**
+   * Получить серийные номера системный блоков за тему
+   * @param req
+   * @param res
+   */
   @Get('/serialNumbers')
   async getSerialNumbers(@Req() req, @Res() res) {
+    console.log(req.body);
     const serialNumbers = await this.systemCasesService.getSerialNumbers(req);
     return res.status(HttpStatus.OK).json(serialNumbers);
+  }
+
+  /**
+   * Получить системный блок по серийному номеру
+   * @param serialNumber
+   * @param req
+   * @param res
+   */
+  @Get('/:serialNumber')
+  async getSystemCaseBySerialNumber(
+    @Param('serialNumber') serialNumber: string,
+    @Req() req,
+    @Res() res,
+  ) {
+    const systemCase = await this.systemCasesService.getByNumber(
+      serialNumber,
+      req,
+    );
+    return res.status(HttpStatus.OK).json(systemCase);
   }
 
   /**
@@ -87,6 +112,10 @@ export class SystemCasesController {
     return res.status(HttpStatus.OK).json(response);
   }
 
+  /**
+   * Удалить системный блок
+   * @param id
+   */
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.systemCasesService.remove(id);

@@ -14,8 +14,4 @@ export default class ColorPicker extends Vue {
 		['#d6d561'],
 		['#d661ba'],
 	]
-
-	// private changeColor(color): void {
-	// 	this.systemCase
-	// }
 }

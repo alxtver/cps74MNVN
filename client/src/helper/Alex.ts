@@ -12,6 +12,13 @@ class Alex {
         osc.stop(context.currentTime + 0.2);
     }
 
+    public wave() {
+        const audio = {};
+        audio['alert'] = new Audio();
+        audio['alert'].src = require('../assets/sound/wave.mp3');
+        audio['alert'].play();
+    }
+
     /**
      * Текст в речь
      * @param text текст для преобразования

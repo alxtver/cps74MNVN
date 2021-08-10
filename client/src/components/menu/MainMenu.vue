@@ -132,5 +132,8 @@
         border-bottom: solid #0cc5e7;
         border-radius: 0;
     }
+    .v-btn--active:hover {
+        border-bottom: solid #0cc5e7;
+    }
 }
 </style>

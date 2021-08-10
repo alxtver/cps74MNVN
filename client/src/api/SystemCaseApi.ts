@@ -101,12 +101,25 @@ class SystemCaseApi {
     public async getSerialNumbers(): Promise<string[]> {
         try {
             const response = await this.axiosInstance.get(
-                `/systemCase/serialNumbers`,
+                '/systemCase/serialNumbers',
             );
             return response.data;
         } catch (e) {
             return e;
         }
+    }
+
+    /**
+     * Получить системный блок по серийному номеру
+     * @param serialNumber
+     */
+    public async getSystemCaseByNumber(
+        serialNumber: string,
+    ): Promise<SystemCase> {
+        const response = await this.axiosInstance.get(
+            `/systemCase/${serialNumber}`,
+        );
+        return dataToClass(SystemCase, response.data);
     }
 }
 

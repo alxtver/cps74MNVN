@@ -54,6 +54,29 @@ export default class SystemCaseTable extends Vue {
         },
     ]; // Заголоки таблицы
 
+    private headersForAssembly = [
+        {
+            text: 'Наименование изделия',
+            value: 'type',
+            sortable: false,
+        },
+        {
+            text: 'Характеристика',
+            value: 'name',
+            sortable: false,
+        },
+        {
+            text: 'Количество',
+            value: 'quantity',
+            sortable: false,
+        },
+        {
+            text: 'Заводской номер',
+            value: 'serial_number',
+            sortable: false,
+        },
+    ]; // Заголоки таблицы для сборки
+
     /**
      * Изменяем класс строки
      * @param row
@@ -102,6 +125,7 @@ export default class SystemCaseTable extends Vue {
             this.systemCase.systemCaseUnits,
             this.systemCase.serialNumber,
             this.sound,
+            this.$route.path === '/SystemCases'
         );
     }
 

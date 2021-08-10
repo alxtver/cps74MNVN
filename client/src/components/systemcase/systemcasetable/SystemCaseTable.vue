@@ -1,9 +1,10 @@
 <template>
     <v-data-table
-        class="pki-table"
+        v-if="systemCase"
+        :class="{'pki-table': $route.path !== '/assembly', 'assembly-table': $route.path === '/assembly'}"
         dense
         v-model="selected"
-        :headers="headers"
+        :headers="$route.path === '/systemCases'? headers : headersForAssembly"
         :items="systemCase.systemCaseUnits"
         :hide-default-footer="true"
         :items-per-page="-1"
@@ -12,7 +13,7 @@
         :show-select="editSystemCase"
         @click:row="onSelectRow"
     >
-        <template v-if="!editSystemCase" v-slot:top>
+        <template v-if="!editSystemCase && $route.path === '/systemCases'" v-slot:top>
             <v-toolbar flat>
                 <div style="display: flex; align-items: center">
                     <div>ФДШИ.{{ systemCase.fdsi }}</div>
@@ -189,12 +190,14 @@
 .v-simple-checkbox {
     width: 20px;
 }
+
 .pki-table > .v-data-table__wrapper > table > tbody > tr > td {
     height: 28px !important;
     .v-input--selection-controls__input {
         margin-left: 9px;
     }
 }
+
 .v-text-field__details {
     display: none;
 }

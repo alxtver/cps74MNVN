@@ -4,8 +4,9 @@ import Component from 'vue-class-component';
 import Part from '@/models/Part';
 import { mdiCog, mdiVolumeHigh, mdiVolumeOff } from '@mdi/js';
 import { Action, State } from 'vuex-class';
-import { CHANGE_SOUND, SELECT_SERIAL_NUMBER } from '@/store';
+import {CHANGE_SOUND, SELECT_SERIAL_NUMBER, UPDATE_SYSTEM_CASES_SERIAL_NUMBERS} from '@/store';
 import { Watch } from 'vue-property-decorator';
+import systemCaseApi from "@/api/SystemCaseApi";
 
 @Component
 export default class MainMenu extends Vue {
@@ -38,6 +39,9 @@ export default class MainMenu extends Vue {
     @Action(SELECT_SERIAL_NUMBER)
     private selectSerialNumber!: (serialNumber: string) => void;
 
+    @Action(UPDATE_SYSTEM_CASES_SERIAL_NUMBERS)
+    private updateSystemCaseSerialNumbers!: (serialNumber: string[]) => void;
+
     private nav = [
         { to: '/pkis', title: 'ПКИ' },
         { to: '/apkzi', title: 'АПКЗИ' },
@@ -53,6 +57,11 @@ export default class MainMenu extends Vue {
     @Watch('systemCaseSerialNumbers')
     private changeSerialNumbers(): void {
         this.getSerialNumbers();
+    }
+
+    @Watch('selectedSerialNumber')
+    private changeSelectedSerialNumber(): void {
+        this.currentSn = this.selectedSerialNumber;
     }
 
     private get soundState() {
@@ -105,7 +114,7 @@ export default class MainMenu extends Vue {
      * @private
      */
     private async getSerialNumbers(): Promise<void> {
-        if (this.$route.path === '/systemCases') {
+        if (this.$route.path === '/systemCases' || this.$route.path === '/assembly') {
             this.serialNumbers = this.systemCaseSerialNumbers;
         } else if (this.$route.path === '/pc') {
             this.serialNumbers = this.pcSerialNumbers;
@@ -134,6 +143,8 @@ export default class MainMenu extends Vue {
         try {
             const newPart = await partApi.changePart(part.part);
             this.currentPart = newPart.part;
+            const systemCaseSerialNumbers = await systemCaseApi.getSerialNumbers();
+            this.updateSystemCaseSerialNumbers(systemCaseSerialNumbers);
             this.selectSerialNumber(null);
             sessionStorage.setItem('part', part.part);
             this.$store.commit('updatePart', part.part);
@@ -149,9 +160,8 @@ export default class MainMenu extends Vue {
      * @private
      */
     private get isPcOrSystemCase(): boolean {
-        return (
-            this.$route.path === '/systemCases' || this.$route.path === '/pc'
-        );
+        const acceptRoutes = ['/systemCases', '/pc', '/assembly']
+        return acceptRoutes.includes(this.$route.path);
     }
 
     private changeSerialNumber(serialNumber: string): void {

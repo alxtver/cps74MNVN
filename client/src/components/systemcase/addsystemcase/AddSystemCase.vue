@@ -2,17 +2,7 @@
     <v-dialog v-model="dialog" max-width="1000px" persistent>
         <template v-slot:activator="{ on, attrs }">
             <v-btn
-                elevation="4"
-                color="primary"
-                class="ml-6 d-none d-lg-flex d-xl-flex"
-                v-bind="attrs"
-                v-on="on"
-                @click="resetValidation"
-            >
-                Добавить системный блок
-            </v-btn>
-            <v-btn
-                class="ml-4 mx-2 d-flex d-md-flex d-lg-none"
+                class="ml-6 mx-2"
                 fab
                 dark
                 small
@@ -21,7 +11,14 @@
                 v-on="on"
                 @click="resetValidation"
             >
-                <v-icon dark> mdi-plus </v-icon>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-icon dark v-bind="attrs" v-on="on">
+                            mdi-plus
+                        </v-icon>
+                    </template>
+                    <span>Добавить системный блок</span>
+                </v-tooltip>
             </v-btn>
         </template>
         <add-system-case-card

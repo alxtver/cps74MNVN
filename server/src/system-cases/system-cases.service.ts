@@ -25,6 +25,12 @@ export class SystemCasesService {
     return await this.systemCaseModel.find({ part: req.session.part }).exec();
   }
 
+  async getByNumber(serialNumber, req): Promise<SystemCase> {
+    return await this.systemCaseModel
+      .findOne({ part: req.session.part, serialNumber: serialNumber })
+      .exec();
+  }
+
   async getSerialNumbers(req): Promise<string[]> {
     const systemCases = await this.systemCaseModel.find({
       part: req.session.part,
@@ -77,6 +83,7 @@ export class SystemCasesService {
 
     // действия если ничего не нашли
     editableUnit.name = 'Н/Д';
+    editableUnit.serial_number = serialNumber;
     systemCase.markModified('systemCaseUnits');
     await systemCase.save();
     return { editableUnit, message: '', oldSystemCase: null };

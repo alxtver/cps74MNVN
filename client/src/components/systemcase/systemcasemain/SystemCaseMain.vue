@@ -1,11 +1,26 @@
 <template>
     <div>
-        <v-row align="center" style="height: 80px; justify-content: space-between;">
-            <add-system-case
-                @addSystemCase="addSystemCase"
-                :serialNumbers="allSerialNumbers"
-            ></add-system-case>
-            <div style="display: flex; align-items: center; margin-right: 20px;">
+        <v-row
+            align="center"
+            style="height: 80px; justify-content: space-between"
+        >
+            <div>
+                <add-system-case
+                    @addSystemCase="addSystemCase"
+                    :serialNumbers="allSerialNumbers"
+                ></add-system-case>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn to="/assembly" fab dark small color="success">
+                            <v-icon dark v-bind="attrs" v-on="on">
+                                mdi-wrench-outline
+                            </v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Сборка системных блоков</span>
+                </v-tooltip>
+            </div>
+            <div style="display: flex; align-items: center; margin-right: 20px">
                 <div class="count-pages">
                     <v-select
                         v-model="itemsPerPage"
@@ -52,12 +67,12 @@
                 </v-col>
             </template>
         </v-data-iterator>
-        <v-overlay :value="overlay">
+        <v-overlay :value="overlay" :opacity="0.8">
             <v-progress-circular
                 indeterminate
                 :size="70"
                 :width="7"
-                color="purple"
+                color="deep-orange lighten-2"
             ></v-progress-circular>
         </v-overlay>
     </div>

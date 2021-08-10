@@ -160,12 +160,12 @@
             </template>
             
         </v-data-table>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" :opacity="0.8">
         <v-progress-circular
             indeterminate
             :size="70"
             :width="7"
-            color="purple"
+            color="deep-orange lighten-2"
         ></v-progress-circular>
     </v-overlay>
     </div>
