@@ -5,10 +5,10 @@
         style="height: 80px; justify-content: space-between"
     >
         <div>
-            <add-system-case
-                @addSystemCase="addSystemCase"
+            <add-pc
+                @addPc="addNewPc"
                 :serialNumbers="allSerialNumbers"
-            ></add-system-case>
+            ></add-pc>
         </div>
         <div style="display: flex; align-items: center; margin-right: 20px">
             <div class="count-pages">
@@ -22,7 +22,7 @@
                 ></v-select>
             </div>
             <pagination
-                :items="systemCases"
+                :items="pc"
                 :pages="countPages"
                 :page="page"
                 @changePage="changePage"
@@ -31,6 +31,31 @@
             ></pagination>
         </div>
     </v-row>
+    <v-data-iterator
+        ref="iterator"
+        :items="pc"
+        :items-per-page.sync="itemsPerPage"
+        :hide-default-footer="true"
+        :page.sync="page"
+    >
+        <template v-slot:default="props">
+            <v-col>
+                <div
+                    style="padding-bottom: 1px"
+                    v-for="item in props.items"
+                    :key="item._id"
+                >
+                    <pc-form
+                        :serialNumbers="allSerialNumbers"
+                        :pc="item"
+                        @updateSystemCase="updateSystemCase"
+                        @doRemove="removePc"
+                        @addPc="addPc"
+                    ></pc-form>
+                </div>
+            </v-col>
+        </template>
+    </v-data-iterator>
     <v-overlay :value="overlay" :opacity="0.8">
         <v-progress-circular
             indeterminate

@@ -83,7 +83,7 @@ export default class SystemCaseTable extends Vue {
      * @private
      */
     private itemClass(row): string {
-        return row.i === this.selectedRow ? 'td active' : 'td not-active';
+        return this.systemCase.systemCaseUnits.indexOf(row) === this.selectedRow ? 'td active' : 'td not-active';
     }
 
     /**

@@ -35,7 +35,6 @@ export class SystemCasesController {
    */
   @Get('/serialNumbers')
   async getSerialNumbers(@Req() req, @Res() res) {
-    console.log(req.body);
     const serialNumbers = await this.systemCasesService.getSerialNumbers(req);
     return res.status(HttpStatus.OK).json(serialNumbers);
   }

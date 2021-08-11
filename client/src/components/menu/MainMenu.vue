@@ -29,7 +29,7 @@
                 <v-spacer></v-spacer>
                 <v-select
                     v-if="isPcOrSystemCase"
-                    class="part-select mt-3"
+                    class="part-select ml-2 mt-3"
                     dense
                     v-model="currentSn"
                     label="Серийные номера"

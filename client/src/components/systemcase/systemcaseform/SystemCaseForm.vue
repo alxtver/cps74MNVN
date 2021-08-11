@@ -36,7 +36,7 @@
 
 <script src="./SystemCaseForm.ts" lang="ts"></script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .system-case-card {
     padding: 15px;
 }

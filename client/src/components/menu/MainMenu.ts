@@ -4,9 +4,15 @@ import Component from 'vue-class-component';
 import Part from '@/models/Part';
 import { mdiCog, mdiVolumeHigh, mdiVolumeOff } from '@mdi/js';
 import { Action, State } from 'vuex-class';
-import {CHANGE_SOUND, SELECT_SERIAL_NUMBER, UPDATE_SYSTEM_CASES_SERIAL_NUMBERS} from '@/store';
+import {
+    CHANGE_SOUND,
+    SELECT_SERIAL_NUMBER,
+    UPDATE_PC_SERIAL_NUMBERS,
+    UPDATE_SYSTEM_CASES_SERIAL_NUMBERS
+} from '@/store';
 import { Watch } from 'vue-property-decorator';
 import systemCaseApi from "@/api/SystemCaseApi";
+import pcApi from "@/api/PcApi";
 
 @Component
 export default class MainMenu extends Vue {
@@ -41,6 +47,9 @@ export default class MainMenu extends Vue {
 
     @Action(UPDATE_SYSTEM_CASES_SERIAL_NUMBERS)
     private updateSystemCaseSerialNumbers!: (serialNumber: string[]) => void;
+
+    @Action(UPDATE_PC_SERIAL_NUMBERS)
+    private updatePcSerialNumbers!: (serialNumber: string[]) => void;
 
     private nav = [
         { to: '/pkis', title: 'ПКИ' },
@@ -145,6 +154,8 @@ export default class MainMenu extends Vue {
             this.currentPart = newPart.part;
             const systemCaseSerialNumbers = await systemCaseApi.getSerialNumbers();
             this.updateSystemCaseSerialNumbers(systemCaseSerialNumbers);
+            const pcSerialNumbers = await pcApi.getSerialNumbers();
+            this.updatePcSerialNumbers(pcSerialNumbers);
             this.selectSerialNumber(null);
             sessionStorage.setItem('part', part.part);
             this.$store.commit('updatePart', part.part);

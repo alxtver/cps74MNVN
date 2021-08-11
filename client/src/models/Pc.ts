@@ -4,13 +4,13 @@ import Part from "@/models/Part";
 export default class Pc {
 	public _id?: string | null = null; // id
 	public execution = '';
-	public serialNumber = '';
+	public serial_number = '';
 	public fdsi = '';
 	public part: Part | string = '';
 	public attachment = '';
 	public created: number = Date.now();
 	public back_color = '#8989a7';
-	public systemCaseUnits: Unit[] = [];
+	public system_case_unit: Unit[] = [];
 	public arm = '';
 	public pc_unit: Unit[] = [
 		{
