@@ -19,7 +19,7 @@
         >
             <v-toolbar flat>
                 <div style="display: flex; align-items: center">
-                    <div>ФДШИ.{{ pc.fdsi }}</div>
+                    <div>{{ pc.fdsi }}</div>
 
                     <v-divider class="mx-4" inset vertical></v-divider>
                     <div

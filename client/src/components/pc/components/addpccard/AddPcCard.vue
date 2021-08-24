@@ -18,7 +18,7 @@
                 
                 <v-text-field
                     v-model="pc.fdsi"
-                    label="ФДШИ."
+                    label="Код"
                     :rules="fdsiRules"
                     dense
                     outlined

@@ -16,7 +16,7 @@
         <template v-if="!editSystemCase && $route.path === '/systemCases'" v-slot:top>
             <v-toolbar flat>
                 <div style="display: flex; align-items: center">
-                    <div>ФДШИ.{{ systemCase.fdsi }}</div>
+                    <div>{{ systemCase.fdsi }}</div>
 
                     <v-divider class="mx-4" inset vertical></v-divider>
                     <div
