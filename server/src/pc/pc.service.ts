@@ -82,6 +82,74 @@ export class PcService {
       .exec();
   }
 
+  public async editSystemCaseSerialNumber(req) {
+    const id: string = req.body.id;
+    const unit: Unit = req.body.unit;
+    const serialNumber = unit.serial_number;
+    const part = req.session.part;
+    const pc = await this.pcModel.findById(id);
+    const editableUnit: Unit = pc.pc_unit.find((pcUnit) => pcUnit.i === unit.i);
+    const systemCase = await this.systemCaseModel.findOne({
+      part: part,
+      serialNumber: serialNumber,
+    });
+    if (!systemCase) {
+      pc.system_case_unit = [];
+      editableUnit.fdsi = '';
+      editableUnit.serial_number = serialNumber;
+      editableUnit.name = 'Н/Д';
+      pc.markModified('pc_unit');
+      await pc.save();
+      return {
+        systemCaseUnits: [],
+        editableUnit,
+        message: 'Системный блок не найден',
+        oldPc: null,
+      };
+    }
+    if (systemCase) {
+      let message = '';
+      let oldPc = null;
+      if (
+        systemCase.numberMachine &&
+        systemCase.numberMachine !== pc.serial_number
+      ) {
+        oldPc = await this.pcModel.findOne({
+          part: part,
+          serial_number: systemCase.numberMachine,
+        });
+        if (oldPc) {
+          const oldPCEditableUnit: Unit = oldPc.pc_unit.find(
+            (pcUnit) => pcUnit.serial_number === systemCase.serialNumber,
+          );
+          if (oldPCEditableUnit) {
+            oldPCEditableUnit.fdsi = '';
+            oldPCEditableUnit.serial_number = '';
+            oldPCEditableUnit.name = 'Н/Д';
+          }
+          oldPc.system_case_unit = [];
+          await oldPc.save();
+          message = `Системный блок был привязан к ПЭВМ с номером ${systemCase.numberMachine}`;
+        }
+      }
+      // изменяем ПЭВМ
+      editableUnit.fdsi = systemCase.fdsi || '';
+      editableUnit.serial_number = systemCase.serialNumber;
+      editableUnit.name = '';
+      pc.markModified('pc_unit');
+      pc.system_case_unit = systemCase.systemCaseUnits;
+      systemCase.numberMachine = pc.serial_number;
+      await pc.save();
+      await systemCase.save();
+      return {
+        systemCaseUnits: systemCase.systemCaseUnits,
+        editableUnit,
+        message: message,
+        oldPc: oldPc,
+      };
+    }
+  }
+
   public async editSerialNumber(req) {
     const id: string = req.body.id;
     const unit: Unit = req.body.unit;

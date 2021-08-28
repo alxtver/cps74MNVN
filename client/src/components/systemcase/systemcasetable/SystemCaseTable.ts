@@ -4,7 +4,7 @@ import table from '@/helper/Table';
 import { State } from 'vuex-class';
 import Unit from '@/models/Unit';
 import systemCaseApi from '@/api/SystemCaseApi';
-import alex from '@/helper/Alex';
+import alexa from '@/helper/Alexa';
 
 @Component({ components: {} })
 export default class SystemCaseTable extends Vue {
@@ -111,11 +111,11 @@ export default class SystemCaseTable extends Vue {
         );
         Object.assign(find, data.editableUnit);
         if (data.editableUnit.name === 'Н/Д') {
-            alex.alert();
+            alexa.alert();
             this.$message.error('Не найден серийный номер!');
         }
         if (data.message) {
-            alex.alert();
+            alexa.alert();
             this.$message.error(data.message);
         }
         props.item.serialNumber = props.value;
@@ -125,7 +125,7 @@ export default class SystemCaseTable extends Vue {
             this.systemCase.systemCaseUnits,
             this.systemCase.serialNumber,
             this.sound,
-            this.$route.path === '/SystemCases'
+            this.$route.path
         );
     }
 

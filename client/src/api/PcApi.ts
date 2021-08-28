@@ -29,7 +29,7 @@ class PcApi {
     ): Promise<{
         editableUnit: Unit;
         message: string;
-        oldSystemCase: Pc;
+        oldPc: Pc;
     }> {
         const response = await this.axiosInstance.put(
             '/pc/editSerialNumber',
@@ -38,8 +38,30 @@ class PcApi {
         return response.data;
     }
 
-
     /**
+     * Ввод серийного номера системного блока
+     * @param unit
+     * @param id
+     */
+    public async editSystemCaseSerialNumber(
+        unit: Unit,
+        id: string,
+    ): Promise<{
+        systemCaseUnits: Unit[];
+        editableUnit: Unit;
+        message: string;
+        oldPc: Pc;
+    }> {
+        const response = await this.axiosInstance.put(
+            '/pc/editSystemCaseSerialNumber',
+            { unit, id },
+        );
+        return  response.data;
+    }
+
+
+
+        /**
      * Добавить ПЭВМ
      * @param pc
      */
@@ -109,7 +131,6 @@ class PcApi {
             return e;
         }
     }
-
 
     /**
      * Получить ПЭВМ по серийному номеру

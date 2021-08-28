@@ -9,7 +9,7 @@ import { Watch } from 'vue-property-decorator';
 import { DataTableHeader } from 'vuetify';
 import PkiCardTs from '@/components/pki/pkicard/PkiCard';
 import SettingsMenu from '@/components/pki/pkitable/settingsmenu/SettingsMenu.vue';
-import alex from "@/helper/Alex";
+import alexa from "@/helper/Alexa";
 import Unit from "@/models/Unit";
 
 @Component({ components: { PkiCard, SettingsMenu } })
@@ -221,7 +221,7 @@ export default class PkiTable extends Vue {
      * @private
      */
     private notUniqueSerialNumber(): void {
-        alex.alert()
+        alexa.alert()
         this.$message({
             message: 'Неуникальный серийный номер',
             type: 'error',

@@ -155,7 +155,7 @@ export default class PcMain extends Vue {
      * @param oldPc
      * @private
      */
-    private updateSystemCase(oldPc): void {
+    private updatePc(oldPc): void {
         const updatedPc = this.pc.find((pc) => pc._id === oldPc._id);
         Object.assign(updatedPc, oldPc);
     }

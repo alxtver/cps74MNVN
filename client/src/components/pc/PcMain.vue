@@ -48,7 +48,7 @@
                     <pc-form
                         :serialNumbers="allSerialNumbers"
                         :pc="item"
-                        @updateSystemCase="updateSystemCase"
+                        @updatePc="updatePc"
                         @doRemove="removePc"
                         @addPc="addPc"
                     ></pc-form>

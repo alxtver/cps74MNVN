@@ -109,6 +109,23 @@ export class PcController {
   }
 
   /**
+   * Ввод серийного номера системного блока
+   */
+  @Put('editSystemCaseSerialNumber')
+  async editSystemCaseSerialNumber(
+    @Req() req,
+    @Res() res,
+  ): Promise<{
+    systemCaseUnits: Unit[];
+    editableUnit: Unit;
+    message: string;
+    oldPc: Pc;
+  }> {
+    const response = await this.pcService.editSystemCaseSerialNumber(req);
+    return res.status(HttpStatus.OK).json(response);
+  }
+
+  /**
    * Удалить ПЭВМ
    * @param id
    */

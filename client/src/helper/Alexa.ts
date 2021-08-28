@@ -1,4 +1,4 @@
-class Alex {
+class Alexa {
     /**
      * Звук при ошибке
      */
@@ -37,5 +37,5 @@ class Alex {
         speechSynthesis.speak(ut);
     }
 }
-const alex = new Alex();
-export default alex;
+const alexa = new Alexa();
+export default alexa;

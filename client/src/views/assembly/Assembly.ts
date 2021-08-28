@@ -6,7 +6,7 @@ import systemCaseApi from '@/api/SystemCaseApi';
 import AssemblyButtons from '@/components/assemblybuttons/AssemblyButtons.vue';
 import stringHelper from '@/helper/StringHelper';
 import {SELECT_SERIAL_NUMBER} from '@/store';
-import alex from '@/helper/Alex';
+import alexa from '@/helper/Alexa';
 
 @Component({ components: { SystemCaseForm, AssemblyButtons } })
 export default class Assembly extends Vue {
@@ -60,7 +60,7 @@ export default class Assembly extends Vue {
                 stringHelper.minusOne(this.selectedSerialNumber),
             );
             this.cardClass = 'pcCardAssemblyPrevious';
-            alex.wave();
+            alexa.wave();
             setTimeout(()=>{
                 this.cardClass = '';
             }, 500)
@@ -82,7 +82,7 @@ export default class Assembly extends Vue {
                 stringHelper.plusOne(this.selectedSerialNumber),
             );
             this.cardClass = 'pcCardAssemblyNext';
-            alex.wave();
+            alexa.wave();
             setTimeout(()=>{
                 this.cardClass = '';
             }, 500)
