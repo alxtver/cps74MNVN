@@ -59,3 +59,10 @@ body::-webkit-scrollbar-thumb {
   background-color: #899395;
   outline: 1px solid #899395;
 }
+
+.highlighting {
+  background: orangered;
+}
+.highlighting:hover {
+  background: coral !important;
+}

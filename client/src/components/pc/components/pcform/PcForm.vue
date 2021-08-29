@@ -4,15 +4,19 @@
             style="background: #fff; padding: 0 10px 10px 10px; box-shadow: #000 2px 4px 13px 0, #0000000f 0 12px 7px 8px;"
         >
             <pc-table
+                ref="pcTable"
                 :pc="pc"
                 @updatePc="updatePc"
+                @painting="painting"
             ></pc-table>
             <pc-table
+                ref="systemCaseTable"
                 v-if="pc.system_case_unit.length !== 0"
                 class="mt-4"
                 unit="systemCaseUnit"
                 :pc="pc"
                 @updatePc="updatePc"
+                @painting="painting"
             ></pc-table>
             <group-buttons
                 item="pc"

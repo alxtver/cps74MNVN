@@ -1,5 +1,6 @@
 <template>
     <v-data-table
+        ref="table"
         v-if="systemCase"
         :class="{'pki-table': $route.path !== '/assembly', 'assembly-table': $route.path === '/assembly'}"
         dense

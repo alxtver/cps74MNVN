@@ -1,7 +1,7 @@
 <template>
     <div class="me-auto ml-auto mt-auto mb-auto" v-if="systemCase" @touchstart="touchStartMethod">
-            <v-card min-width="1000" :class="cardClass" elevation="10" style="padding: 1px">
-                <system-case-form :systemCase="systemCase"></system-case-form>
+            <v-card min-width="1000" :class="cardClass" elevation="10" style="padding: 1px;">
+                <system-case-form ref="systemCaseForm" style="max-height: calc(100vh - 455px); overflow: auto;" :systemCase="systemCase"></system-case-form>
             </v-card>
         <assembly-buttons
             ref="assemblyButtons"
@@ -49,7 +49,7 @@
     }
 }
 .serial-card {
-    position: absolute;
+    position: fixed;
     top: 50px;
     left: calc((100% / 2) - 150px);
     width: 300px;

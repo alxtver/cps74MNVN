@@ -113,6 +113,9 @@ export default class PcTable extends Vue {
             this.sound,
             this.$route.path,
         );
+        this.$nextTick(() => {
+            this.$emit('painting');
+        });
     }
 
     private async insertSerialNumberSystemCase(item: Unit): Promise<void> {
@@ -127,12 +130,12 @@ export default class PcTable extends Vue {
         const find: Unit = this.pc.pc_unit.find((unit) => unit.i === item.i);
         Object.assign(find, response.editableUnit);
         if (response.message) {
-            alexa.alert()
+            alexa.alert();
             this.$message({
                 showClose: true,
                 message: response.message,
                 type: 'error',
-                duration: 0
+                duration: 0,
             });
         }
     }

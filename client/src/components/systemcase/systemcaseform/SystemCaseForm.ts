@@ -1,12 +1,14 @@
 import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
 import SystemCase from '@/models/SystemCase';
 import SystemCaseTable from '@/components/systemcase/systemcasetable/SystemCaseTable.vue';
+import SystemCaseTableTs from '@/components/systemcase/systemcasetable/SystemCaseTable';
 import GroupButtons from '@/components/groupbuttons/GroupButtons.vue';
 import EditSystemCase from '@/components/systemcase/editsystemcase/EditSystemCase.vue';
 import EditSystemCaseTS from '@/components/systemcase/editsystemcase/EditSystemCase';
 import CopyForm from '@/components/copyform/CopyForm.vue';
 import CopyFormTS from '@/components/copyform/CopyForm';
 import systemCaseApi from '@/api/SystemCaseApi';
+import table from '@/helper/Table';
 
 @Component({
     components: { SystemCaseTable, GroupButtons, EditSystemCase, CopyForm },
@@ -26,7 +28,19 @@ export default class SystemCaseForm extends Vue {
     @Ref('copySystemCase')
     private copySystemCaseComponent!: CopyFormTS;
 
+    @Ref('table')
+    private table!: SystemCaseTableTs;
+
+    private mounted(): void {
+       this.painting();
+    }
+
+    public painting(): void {
+        table.painting(this.table);
+    }
+
     private updateSystemCase(oldSystemCase): void {
+        table.painting(this.table);
         this.$emit('updateSystemCase', oldSystemCase);
     }
 

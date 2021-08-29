@@ -83,7 +83,9 @@ export default class SystemCaseTable extends Vue {
      * @private
      */
     private itemClass(row): string {
-        return this.systemCase.systemCaseUnits.indexOf(row) === this.selectedRow ? 'td active' : 'td not-active';
+        return this.systemCase.systemCaseUnits.indexOf(row) === this.selectedRow
+            ? 'td active'
+            : 'td not-active';
     }
 
     /**
@@ -125,8 +127,11 @@ export default class SystemCaseTable extends Vue {
             this.systemCase.systemCaseUnits,
             this.systemCase.serialNumber,
             this.sound,
-            this.$route.path
+            this.$route.path,
         );
+        this.$nextTick(() => {
+            this.$emit('painting');
+        });
     }
 
     /**
@@ -180,7 +185,7 @@ export default class SystemCaseTable extends Vue {
         }
         const units = this.systemCase.systemCaseUnits;
         for (const item of this.selected) {
-            units.splice(units.indexOf(item) + 1, 0, new Unit())
+            units.splice(units.indexOf(item) + 1, 0, new Unit());
         }
         this.correctIndexes();
         this.selected = [];
@@ -195,7 +200,7 @@ export default class SystemCaseTable extends Vue {
         }
         const units = this.systemCase.systemCaseUnits;
         for (const item of this.selected) {
-            units.splice(units.indexOf(item), 1)
+            units.splice(units.indexOf(item), 1);
         }
         this.correctIndexes();
         this.selected = [];
@@ -207,6 +212,8 @@ export default class SystemCaseTable extends Vue {
      * @private
      */
     private correctIndexes(): void {
-        this.systemCase.systemCaseUnits.forEach((unit, index) => unit.i = index)
+        this.systemCase.systemCaseUnits.forEach(
+            (unit, index) => (unit.i = index),
+        );
     }
 }

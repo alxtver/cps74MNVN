@@ -90,6 +90,25 @@ class Table {
         table.getNextCell(me, idx, route).click();
         alexa.say(this.getNextType(me, idx, route), 1.2, sound);
     }
+
+    /**
+     * Подсвечиваем строки в таблице у которых есть 'Н/Д'
+     * @param table
+     */
+    public painting(table: any): void {
+        const element = table.$el as HTMLElement
+        const rows = element.querySelectorAll('tr')
+        for (const row of rows) {
+            const cells = row.querySelectorAll('td');
+            for (const cell of cells) {
+                row.classList.remove('highlighting')
+                if (cell.innerHTML === 'Н/Д') {
+                    row.classList.add('highlighting')
+                    break
+                }
+            }
+        }
+    }
 }
 const table = new Table();
 export default table;

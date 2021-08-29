@@ -7,6 +7,7 @@ import CopyFormTS from '@/components/copyform/CopyForm';
 import pcApi from '@/api/PcApi';
 import EditPc from '@/components/pc/components/editpc/EditPc.vue';
 import EditPcTS from '@/components/pc/components/editpc/EditPc';
+import table from '@/helper/Table';
 
 @Component({ components: { GroupButtons, CopyForm, PcTable, EditPc } })
 export default class PcForm extends Vue {
@@ -22,7 +23,22 @@ export default class PcForm extends Vue {
     @Ref('copyPc')
     private copyPcComponent!: CopyFormTS;
 
+    @Ref('pcTable')
+    private pcTable!: HTMLElement;
+
+    @Ref('systemCaseTable')
+    private systemCaseTable!: HTMLElement;
+
     private openEditDialog = false;
+
+    private mounted(): void {
+        this.painting();
+    }
+
+    private painting(): void {
+        table.painting(this.pcTable);
+        table.painting(this.systemCaseTable);
+    }
 
     /**
      * Удалить ПЭВМ
@@ -79,17 +95,14 @@ export default class PcForm extends Vue {
         return '';
     }
 
-
-	/**
-	 * Сохранить измененный ПЭВМ
-	 * @param pc
-	 * @private
-	 */
-	private editPc(pc): void {
-		pcApi
-			.editPc(pc)
-			.then(() => this.editPcComponent.closeDialog());
-	}
+    /**
+     * Сохранить измененный ПЭВМ
+     * @param pc
+     * @private
+     */
+    private editPc(pc): void {
+        pcApi.editPc(pc).then(() => this.editPcComponent.closeDialog());
+    }
 
     private closeEditDialog(): void {
         this.openEditDialog = false;

@@ -4,7 +4,9 @@
             style="background: #fff; padding: 0 10px 10px 10px; box-shadow: #000 2px 4px 13px 0, #0000000f 0 12px 7px 8px;"
         >
             <system-case-table
+                ref="table"
                 :systemCase="systemCase"
+                @painting="painting"
                 @updateSystemCase="updateSystemCase"
             ></system-case-table>
             <group-buttons

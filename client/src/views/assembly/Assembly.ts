@@ -1,11 +1,12 @@
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import {Component, Ref, Vue, Watch} from 'vue-property-decorator';
 import SystemCaseForm from '@/components/systemcase/systemcaseform/SystemCaseForm.vue';
+import SystemCaseFormTs from '@/components/systemcase/systemcaseform/SystemCaseForm';
 import { Action, State } from 'vuex-class';
 import SystemCase from '@/models/SystemCase';
 import systemCaseApi from '@/api/SystemCaseApi';
 import AssemblyButtons from '@/components/assemblybuttons/AssemblyButtons.vue';
 import stringHelper from '@/helper/StringHelper';
-import {SELECT_SERIAL_NUMBER} from '@/store';
+import { SELECT_SERIAL_NUMBER } from '@/store';
 import alexa from '@/helper/Alexa';
 
 @Component({ components: { SystemCaseForm, AssemblyButtons } })
@@ -25,7 +26,8 @@ export default class Assembly extends Vue {
     @State((state) => state.systemCasesSerialNumbers)
     private systemCasesSerialNumbers!: string;
 
-
+    @Ref('systemCaseForm')
+    private systemCaseForm!: SystemCaseFormTs;
 
     @Watch('selectedSerialNumber', { immediate: true })
     private changeSerialNumber(): void {
@@ -61,9 +63,10 @@ export default class Assembly extends Vue {
             );
             this.cardClass = 'pcCardAssemblyPrevious';
             alexa.wave();
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.cardClass = '';
-            }, 500)
+                this.systemCaseForm.painting();
+            }, 500);
         }
     }
 
@@ -83,9 +86,10 @@ export default class Assembly extends Vue {
             );
             this.cardClass = 'pcCardAssemblyNext';
             alexa.wave();
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.cardClass = '';
-            }, 500)
+                this.systemCaseForm.painting();
+            }, 500);
         }
     }
 
@@ -121,15 +125,21 @@ export default class Assembly extends Vue {
     }
 
     private touchStartMethod(touchEvent): void {
-        if (touchEvent.changedTouches.length !== 1) { // We only care if one finger is used
+        if (touchEvent.changedTouches.length !== 1) {
+            // We only care if one finger is used
             return;
         }
         const posXStart = touchEvent.changedTouches[0].clientX;
-        addEventListener('touchend', (touchEvent) => this.touchEnd(touchEvent, posXStart), {once: true});
+        addEventListener(
+            'touchend',
+            (touchEvent) => this.touchEnd(touchEvent, posXStart),
+            { once: true },
+        );
     }
 
     private touchEnd(touchEvent, posXStart) {
-        if (touchEvent.changedTouches.length !== 1) { // We only care if one finger is used
+        if (touchEvent.changedTouches.length !== 1) {
+            // We only care if one finger is used
             return;
         }
         const posXEnd = touchEvent.changedTouches[0].clientX;
