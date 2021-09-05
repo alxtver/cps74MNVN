@@ -59,6 +59,8 @@
                         ПЭВМ {{ pc.numberMachine }}
                     </div>
                 </div>
+                <v-spacer></v-spacer>
+                <export-menu :pc="pc"></export-menu>
             </v-toolbar>
         </template>
 

@@ -7,8 +7,9 @@ import { Action, State } from 'vuex-class';
 import Part from '@/models/Part';
 import { SELECTED_PC, UPDATE_PC_SERIAL_NUMBERS } from '@/store';
 import AddPc from '@/components/pc/components/addpc/AddPc.vue';
+import Export from "@/components/pc/components/export/Export.vue";
 
-@Component({ components: { Pagination, PcForm, AddPc } })
+@Component({ components: { Pagination, PcForm, AddPc, Export } })
 export default class PcMain extends Vue {
     private pc: Pc[] = [];
     private itemsPerPage = 10; // количество элементов на странице

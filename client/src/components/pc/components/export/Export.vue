@@ -6,31 +6,25 @@
                 fab
                 dark
                 small
-                color="success"
+                color="primary"
                 v-bind="attrs"
                 v-on="on"
-                @click="resetValidation"
             >
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon dark v-bind="attrs" v-on="on">
-                            mdi-plus
+                            mdi-file-word-outline
                         </v-icon>
                     </template>
-                    <span>Добавить ПЭВМ</span>
+                    <span>Экспорт в Word</span>
                 </v-tooltip>
             </v-btn>
         </template>
-        <add-pc-card
-            ref="addPcCard"
-            :serialNumbers="serialNumbers"
-            @savePc="addPc"
-            @close="dialog = false"
-        ></add-pc-card>
+        <export-form @close="dialog = false"></export-form>
     </v-dialog>
 </template>
 
-<script src="./AddPc.ts"></script>
+<script src="./Export.ts"></script>
 
 <style scoped>
 

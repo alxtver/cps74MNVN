@@ -5,8 +5,9 @@ import Unit from '@/models/Unit';
 import alexa from '@/helper/Alexa';
 import table from '@/helper/Table';
 import pcApi from '@/api/PcApi';
+import ExportMenu from "@/components/pc/components/export/exportmenu/ExportMenu.vue";
 
-@Component
+@Component({components: {ExportMenu}})
 export default class PcTable extends Vue {
     @Prop()
     private pc!: Pc;

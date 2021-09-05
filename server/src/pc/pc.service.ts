@@ -5,7 +5,7 @@ import { SystemCase } from '../system-cases/interfaces/system-case.interface';
 import { Pki } from '../interfaces/pki.interface';
 import { Pc } from '../interfaces/pc.interface';
 import stringHelper from '../helper/StringHelper';
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 import { Unit } from '../interfaces/unit.interface';
 import modify from '../helper/SnModify';
 
@@ -39,7 +39,7 @@ export class PcService {
     const lastSN = req.body.lastSerialNumber;
     const pcForCopy = await this.pcModel.findOne({
       part: req.session.part,
-      serialNumber: currentSN,
+      serial_number: currentSN,
     });
     const allPcSerialNumbers = await this.pcModel
       .find({ part: req.session.part })
@@ -49,7 +49,7 @@ export class PcService {
       firstSN = stringHelper.plusOne(firstSN);
       serialNumbers.push(firstSN);
     }
-    const systemCasesForSave = [];
+    const pcForSave = [];
     for (const serialNumber of serialNumbers) {
       if (allPcSerialNumbers.includes(serialNumber)) {
         continue;
@@ -58,6 +58,7 @@ export class PcService {
       newPc._id = mongoose.Types.ObjectId();
       newPc.isNew = true;
       newPc.serial_number = serialNumber;
+      newPc.system_case_unit = [];
       // копирование состава ПЭВМ
       const pcUnits = [];
       for (const unit of newPc.pc_unit) {
@@ -71,9 +72,9 @@ export class PcService {
         pcUnits.push(copyUnit);
       }
       newPc.pc_unit = pcUnits;
-      systemCasesForSave.push(newPc);
+      pcForSave.push(newPc);
     }
-    return await this.systemCaseModel.insertMany(systemCasesForSave);
+    return await this.pcModel.insertMany(pcForSave);
   }
 
   async getByNumber(serialNumber, req): Promise<Pc> {

@@ -1,5 +1,5 @@
-import { AxiosInstance } from 'axios';
-import { axiosFactory } from '@/api/AxiosFactory';
+import {AxiosInstance} from 'axios';
+import {axiosFactory} from '@/api/AxiosFactory';
 import {dataToArrayClass, dataToClass} from '@/api/ClassFactory';
 import Pc from '@/models/Pc';
 import Unit from "@/models/Unit";
