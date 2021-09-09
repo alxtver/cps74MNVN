@@ -11,4 +11,5 @@ export default class User {
     readonly lastAssemblyPC: string = '';
     readonly lastApkzi: string = '';
     readonly lastPki: Pki | null = null;
+    company = '';
 }

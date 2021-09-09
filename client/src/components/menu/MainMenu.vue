@@ -13,7 +13,11 @@
                 v-if="isMobile"
                 @click="drawer = true"
             ></v-app-bar-nav-icon>
-            <div class="menu-buttons" v-if="!isMobile" style="display: flex; width: 1920px">
+            <div
+                class="menu-buttons"
+                v-if="!isMobile"
+                style="display: flex; width: 1920px"
+            >
                 <v-btn
                     v-for="item in nav"
                     :key="item.title"
@@ -22,10 +26,9 @@
                     elevation="0"
                     large
                     style="background: rgba(153, 153, 153, 0); width: 170px"
-                >{{ item.title }}
-                </v-btn
-                >
-                
+                    >{{ item.title }}
+                </v-btn>
+
                 <v-spacer></v-spacer>
                 <v-select
                     v-if="isPcOrSystemCase"
@@ -38,7 +41,7 @@
                     @change="changeSerialNumber"
                 >
                 </v-select>
-                
+
                 <v-combobox
                     class="part-select mt-3 ml-1"
                     dense
@@ -51,7 +54,7 @@
                     @change="changeCurrentPartValue"
                 >
                 </v-combobox>
-                <v-menu offset-y>
+                <v-menu offset-y :close-on-content-click="false">
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
                             class="ml-3"
@@ -61,38 +64,44 @@
                         >
                         </v-icon>
                     </template>
-                    <v-list shaped>
-                        <v-list-item-group
-                            multiple
-                            @change="changeItem"
-                            v-model="selectedItem"
-                        >
-                            <template>
-                                <v-list-item value="sound">
-                                    <template v-slot:default="{ active }">
-                                        <v-list-item-icon>
-                                            <v-icon
-                                                v-text="soundState"
-                                            ></v-icon>
-                                        </v-list-item-icon>
-                                        <v-list-item-content>
-                                            <v-list-item-title
-                                                v-text="'Звук'"
-                                            ></v-list-item-title>
-                                        </v-list-item-content>
-                                        <v-list-item-action>
-                                            <v-checkbox
-                                                :input-value="!active"
-                                            ></v-checkbox>
-                                        </v-list-item-action>
-                                    </template>
-                                </v-list-item>
-                            </template>
-                        </v-list-item-group>
+                    <v-list>
+
+                            <v-list-item>
+                                <template>
+                                    <v-select
+                                        v-model="selectedCompany"
+                                        class="type-select mt-2"
+                                        label="Компания"
+                                        :items="companies"
+                                        item-text="companyName"
+                                        item-value="value"
+                                        :menu-props="{ offsetY: true }"
+                                        @change="onChangeCompany"
+                                    ></v-select>
+                                </template>
+                            </v-list-item>
+                            <v-list-item>
+                                <template>
+                                    <v-list-item-icon>
+                                        <v-icon v-text="soundState"></v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title
+                                            v-text="'Звук'"
+                                        ></v-list-item-title>
+                                    </v-list-item-content>
+                                    <v-list-item-action>
+                                        <v-switch
+                                            v-model="sound"
+                                            @change="onChangeSound"
+                                        ></v-switch>
+                                    </v-list-item-action>
+                                </template>
+                            </v-list-item>
                     </v-list>
                 </v-menu>
             </div>
-            
+
             <v-navigation-drawer
                 v-model="drawer"
                 absolute
@@ -102,8 +111,14 @@
             >
                 <v-list nav dense>
                     <v-list-item-group active-class="text--accent-4">
-                        <v-list-item v-for="item in nav" :key="item.to" :to="item.to">
-                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        <v-list-item
+                            v-for="item in nav"
+                            :key="item.to"
+                            :to="item.to"
+                        >
+                            <v-list-item-title>{{
+                                item.title
+                            }}</v-list-item-title>
                         </v-list-item>
                     </v-list-item-group>
                 </v-list>

@@ -14,7 +14,8 @@ export default new Vuex.Store({
         selectedSerialNumber: '',
         systemCasesSerialNumbers: [],
         pcSerialNumbers: [],
-        selectedPc: ''
+        selectedPc: '',
+        company: ''
     },
     mutations: {
         updateUser(state, newUser) {
@@ -40,6 +41,9 @@ export default new Vuex.Store({
         },
         changePc(state, serialNumber) {
             state.selectedPc = serialNumber;
+        },
+        changeCompany(state, company) {
+            state.company = company;
         },
     },
     actions: {
@@ -67,6 +71,9 @@ export default new Vuex.Store({
         changePc(context, serialNumber) {
             context.commit('changePc', serialNumber);
         },
+        changeCompany(context, company) {
+            context.commit('changeCompany', company);
+        },
     },
     modules: {},
 });
@@ -79,3 +86,4 @@ export const SELECT_SERIAL_NUMBER = 'selectSerialNumber';
 export const UPDATE_SYSTEM_CASES_SERIAL_NUMBERS = 'updateSystemCasesSerialNumbers';
 export const UPDATE_PC_SERIAL_NUMBERS = 'updatePCSerialNumbers';
 export const SELECTED_PC = 'changePc';
+export const CHANGE_COMPANY = 'changeCompany';

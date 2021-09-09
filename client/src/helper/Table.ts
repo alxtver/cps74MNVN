@@ -96,6 +96,9 @@ class Table {
      * @param table
      */
     public painting(table: any): void {
+        if (!table) {
+            return;
+        }
         const element = table.$el as HTMLElement
         const rows = element.querySelectorAll('tr')
         for (const row of rows) {
