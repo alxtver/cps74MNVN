@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" max-width="1000px" persistent>
+    <v-dialog v-model="dialog" max-width="500px" persistent>
         <template v-slot:activator="{ on, attrs }">
             <v-btn
                 class="ml-6 mx-2"
@@ -20,12 +20,10 @@
                 </v-tooltip>
             </v-btn>
         </template>
-        <export-form @close="dialog = false"></export-form>
+        <export-form @close="dialog = false" @exportDoc="exportDoc"></export-form>
     </v-dialog>
 </template>
 
 <script src="./Export.ts"></script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

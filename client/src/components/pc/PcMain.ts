@@ -7,7 +7,8 @@ import { Action, State } from 'vuex-class';
 import Part from '@/models/Part';
 import { SELECTED_PC, UPDATE_PC_SERIAL_NUMBERS } from '@/store';
 import AddPc from '@/components/pc/components/addpc/AddPc.vue';
-import Export from "@/components/pc/components/export/Export.vue";
+import Export from '@/components/pc/components/export/Export.vue';
+import exportDocX from '@/helper/ExportDocX';
 
 @Component({ components: { Pagination, PcForm, AddPc, Export } })
 export default class PcMain extends Vue {
@@ -30,6 +31,9 @@ export default class PcMain extends Vue {
 
     @State((state) => state.part)
     private part!: Part;
+
+    @State((state) => state.company)
+    private company!: string;
 
     @Watch('part', { immediate: false })
     private changePart(): void {
@@ -61,7 +65,6 @@ export default class PcMain extends Vue {
         }
         return Math.ceil(this.pc.length / this.itemsPerPage);
     }
-
 
     /**
      * Добавить ПЭВМ
@@ -163,5 +166,34 @@ export default class PcMain extends Vue {
 
     private updateSerialNumbers(): void {
         this.updatePcSerialNumbers(this.allSerialNumbers);
+    }
+
+    /**
+     * Получение печатной формы
+     * @param firstPc
+     * @param lastPc
+     * @param document
+     * @private
+     */
+    private exportDoc(firstPc: string, lastPc: string, document: string): void {
+        const firstPcIndex = this.pc.indexOf(
+            this.pc.find((pc) => pc.serial_number === firstPc),
+        );
+        const lastPcIndex = this.pc.indexOf(
+            this.pc.find((pc) => pc.serial_number === lastPc),
+        );
+        for (let i = 0; i < this.pc.length; i++) {
+            setTimeout(() => {
+                if (i >= firstPcIndex && i <= lastPcIndex) {
+                    if (document === 'Паспорт') {
+                        exportDocX.passport(this.pc[i], this.company);
+                    } else if (document === 'Системный блок ЗИП') {
+                        exportDocX.systemCaseZip(this.pc[i], this.company);
+                    } else {
+                        exportDocX.zipLabel(this.pc[i], this.company);
+                    }
+                }
+            }, i*500);
+        }
     }
 }

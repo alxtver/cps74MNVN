@@ -1,13 +1,14 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Pc from '@/models/Pc';
 import exportDocX from "@/helper/ExportDocX";
+import {State} from "vuex-class";
 
 @Component
 export default class ExportMenu extends Vue {
     @Prop()
     private pc!: Pc;
 
-    @Prop({default: 'cps'})
+    @State((state) => state.company)
     private company!: string;
 
     private exportPassport(): void {

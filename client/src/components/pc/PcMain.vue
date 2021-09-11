@@ -9,7 +9,7 @@
                 @addPc="addNewPc"
                 :serialNumbers="allSerialNumbers"
             ></add-pc>
-            <export></export>
+            <export @exportDoc="exportDoc"></export>
         </div>
         <div style="display: flex; align-items: center; margin-right: 20px">
             <div class="count-pages">

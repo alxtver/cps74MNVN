@@ -3,18 +3,30 @@
         <v-select
             class="part-select ml-2 mt-3"
             dense
-            v-model="currentCompany"
-            label="Компания"
-            :menu-props="{ offsetY: true }"
-            :items="companies"
-        ></v-select>
-        <v-select
-            class="part-select ml-2 mt-3"
-            dense
             v-model="currentDocument"
             label="Документ"
             :menu-props="{ offsetY: true }"
             :items="documents"
+        ></v-select>
+    
+        <v-select
+            class="part-select ml-2 mt-3"
+            dense
+            v-model="firstPc"
+            label="Первый ПЭВМ"
+            :menu-props="{ offsetY: true }"
+            :items="pcSerialNumbers"
+            @change="onChangeFirstPc"
+        ></v-select>
+    
+        <v-select
+            class="part-select ml-2 mt-3"
+            dense
+            v-model="lastPc"
+            label="Последний ПЭВМ"
+            :menu-props="{ offsetY: true }"
+            :items="pcSerialNumbers"
+            @change="onChangeLastPc"
         ></v-select>
         
         
