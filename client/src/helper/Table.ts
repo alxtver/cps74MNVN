@@ -72,7 +72,7 @@ class Table {
         units,
         serialNumber,
         sound,
-        route: string,
+        route: string
     ): void {
         if (props.index + 1 >= units.length) {
             me.selectedRow = -1;
@@ -99,15 +99,15 @@ class Table {
         if (!table) {
             return;
         }
-        const element = table.$el as HTMLElement
-        const rows = element.querySelectorAll('tr')
+        const element = table.$el as HTMLElement;
+        const rows = element.querySelectorAll('tr');
         for (const row of rows) {
             const cells = row.querySelectorAll('td');
             for (const cell of cells) {
-                row.classList.remove('highlighting')
+                row.classList.remove('highlighting');
                 if (cell.innerHTML === 'Н/Д') {
-                    row.classList.add('highlighting')
-                    break
+                    row.classList.add('highlighting');
+                    break;
                 }
             }
         }

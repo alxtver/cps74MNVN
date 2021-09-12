@@ -92,12 +92,29 @@
                                     </v-list-item-content>
                                     <v-list-item-action>
                                         <v-switch
-                                            v-model="sound"
+                                            v-model="isSoundOn"
                                             @change="onChangeSound"
                                         ></v-switch>
                                     </v-list-item-action>
                                 </template>
                             </v-list-item>
+                      <v-divider></v-divider>
+                      <v-list-item link to="/eans">
+                        <v-list-item-icon>
+                          <v-icon >mdi-barcode-scan</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <v-list-item-title >Штрих-коды</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item link to="/countries">
+                        <v-list-item-icon>
+                          <v-icon >mdi-flag-variant</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <v-list-item-title >Страны</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
                     </v-list>
                 </v-menu>
             </div>

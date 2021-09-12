@@ -56,6 +56,22 @@ const routes: Array<RouteConfig> = [
         },
     },
     {
+        path: '/eans',
+        name: 'Eans',
+        component: Assembly,
+        meta: {
+            title: 'Штрих-коды',
+        },
+    },
+    {
+        path: '/countries',
+        name: 'Countries',
+        component: Assembly,
+        meta: {
+            title: 'Страны',
+        },
+    },
+    {
         path: '/login',
         name: 'Login',
         component: LoginForm,
@@ -90,7 +106,7 @@ router.beforeEach(
             next({ name: 'Login' });
         }
         next();
-    },
+    }
 );
 
 router.beforeEach((toRoute, fromRoute, next) => {

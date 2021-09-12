@@ -9,13 +9,14 @@ import {
     CHANGE_SOUND,
     SELECT_SERIAL_NUMBER,
     UPDATE_PC_SERIAL_NUMBERS,
-    UPDATE_SYSTEM_CASES_SERIAL_NUMBERS, UPDATE_USER,
+    UPDATE_SYSTEM_CASES_SERIAL_NUMBERS,
+    UPDATE_USER,
 } from '@/store';
 import { Watch } from 'vue-property-decorator';
 import systemCaseApi from '@/api/SystemCaseApi';
 import pcApi from '@/api/PcApi';
 import User from '@/models/User';
-import authApi from "@/api/authapi/AuthApi";
+import authApi from '@/api/authapi/AuthApi';
 
 @Component
 export default class MainMenu extends Vue {
@@ -69,6 +70,8 @@ export default class MainMenu extends Vue {
     @Action(UPDATE_USER)
     private updateUser!: (user: User) => void;
 
+    private isSoundOn = true;
+
     private nav = [
         { to: '/pkis', title: 'ПКИ' },
         { to: '/apkzi', title: 'АПКЗИ' },
@@ -92,11 +95,13 @@ export default class MainMenu extends Vue {
     }
 
     private get soundState() {
+        this.isSoundOn = this.sound;
         return this.sound ? this.iconVolumeHigh : this.iconVolumeOff;
     }
 
-    private onChangeSound(): void {
-        this.changeSound(!this.sound);
+    private onChangeSound(value: boolean): void {
+        this.isSoundOn = value;
+        this.changeSound(value);
     }
 
     private mounted() {
@@ -157,7 +162,7 @@ export default class MainMenu extends Vue {
         }
         if (this.serialNumbers.length !== 0) {
             this.currentSn = this.serialNumbers.includes(
-                this.selectedSerialNumber,
+                this.selectedSerialNumber
             )
                 ? this.selectedSerialNumber
                 : this.serialNumbers[0];
