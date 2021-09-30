@@ -7,6 +7,7 @@ import SystemCases from '@/views/systemcases/SystemCases.vue';
 import goTo from 'vuetify/lib/services/goto';
 import Assembly from '@/views/assembly/Assembly.vue';
 import Pc from '@/views/pc/Pc.vue';
+import Eans from '@/views/eans/Eans.vue';
 
 Vue.use(VueRouter);
 
@@ -58,7 +59,7 @@ const routes: Array<RouteConfig> = [
     {
         path: '/eans',
         name: 'Eans',
-        component: Assembly,
+        component: Eans,
         meta: {
             title: 'Штрих-коды',
         },

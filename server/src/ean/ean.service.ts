@@ -22,11 +22,11 @@ export class EanService {
     return await this.eanModel.find({ ean_code: eanCode }).exec();
   }
 
-  update(req) {
-    return `This action updates a #${req} ean`;
+  async update(req) {
+    return this.eanModel.findOneAndUpdate({ _id: req.body._id }, req.body);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ean`;
+  async remove(id: string) {
+    return await this.eanModel.findByIdAndDelete(id).exec();
   }
 }
