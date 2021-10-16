@@ -5,6 +5,8 @@ import { User } from '../interfaces/user.interface';
 import converter from '../helper/Converter';
 import { Ean } from '../interfaces/ean.interface';
 import { Pki } from '../interfaces/pki.interface';
+import { Pc } from '../interfaces/pc.interface';
+import { SystemCase } from '../system-cases/interfaces/system-case.interface';
 
 @Injectable()
 export class PkiService {
@@ -15,6 +17,10 @@ export class PkiService {
     private readonly userModel: Model<User>,
     @InjectModel('Ean')
     private readonly eanModel: Model<Ean>,
+    @InjectModel('Pc')
+    private readonly pcModel: Model<Pc>,
+    @InjectModel('SystemCase')
+    private readonly systemCaseModel: Model<SystemCase>,
   ) {}
 
   async getAllPki(req): Promise<Pki[]> {
@@ -56,6 +62,12 @@ export class PkiService {
   }
 
   async editPki(req): Promise<Pki> {
+    const pki = req.body.pki;
+    if (pki.number_machine) {
+      await this.editPkiInSystemCase(pki, req.session.part);
+      await this.editPkiInPc(pki, req.session.part);
+    }
+
     await this.pkiModel.findOneAndUpdate(
       { _id: req.body.pki._id },
       req.body.pki,
@@ -64,7 +76,120 @@ export class PkiService {
   }
 
   async deletePki(req): Promise<Pki> {
-    return await this.pkiModel.findOneAndDelete({ _id: req.body.id });
+    const pki = await this.pkiModel.findById(req.body.id);
+    // если пки привязан к машине, то ищем системный блок или пк к которому он привязан и удаляем
+    if (pki.number_machine) {
+      await this.deletePkiInSystemCase(
+        pki.number_machine,
+        pki.serial_number,
+        req.session.part,
+      );
+      await this.deletePkiInPc(
+        pki.number_machine,
+        pki.serial_number,
+        req.session.part,
+      );
+    }
+    return this.pkiModel.findOneAndDelete({ _id: req.body.id });
+  }
+
+  async deletePkiInPc(
+    pcSerialNumber: string,
+    pkiSerialNumber: string,
+    part: string,
+  ): Promise<void> {
+    const pc = await this.pcModel.findOne({
+      part: part,
+      serial_number: pcSerialNumber,
+    });
+
+    if (pc) {
+      pc.pc_unit = pc.pc_unit.map((unit) => {
+        if (unit.serial_number === pkiSerialNumber) {
+          unit.name = 'Н/Д';
+          unit.serial_number = '';
+        }
+        return unit;
+      });
+      pc.markModified('pc_unit');
+      await pc.save();
+    }
+  }
+
+  async deletePkiInSystemCase(
+    systemCaseSerialNumber: string,
+    pkiSerialNumber: string,
+    part: string,
+  ): Promise<void> {
+    const systemCase = await this.systemCaseModel.findOne({
+      part: part,
+      serialNumber: systemCaseSerialNumber,
+    });
+    if (systemCase) {
+      systemCase.systemCaseUnits = systemCase.systemCaseUnits.map((unit) => {
+        if (unit.serial_number === pkiSerialNumber) {
+          unit.name = 'Н/Д';
+          unit.serial_number = '';
+        }
+        return unit;
+      });
+      await this.updatePC(systemCase, part);
+      systemCase.markModified('systemCaseUnits');
+      await systemCase.save();
+    }
+  }
+
+  async editPkiInSystemCase(pki: Pki, part: string): Promise<void> {
+    const systemCase = await this.systemCaseModel.findOne({
+      part: part,
+      serialNumber: pki.number_machine,
+    });
+    if (systemCase) {
+      systemCase.systemCaseUnits = systemCase.systemCaseUnits.map((unit) => {
+        if (unit.serial_number === pki.serial_number) {
+          // изменяем системный блок
+          unit.type = pki.type_pki;
+          unit.name = `${pki.vendor} ${pki.model}`;
+          unit.serial_number = pki.serial_number;
+        }
+        return unit;
+      });
+      await this.updatePC(systemCase, part);
+      systemCase.markModified('systemCaseUnits');
+      await systemCase.save();
+    }
+  }
+
+  async editPkiInPc(pki: Pki, part: string): Promise<void> {
+    const pc = await this.pcModel.findOne({
+      part: part,
+      serial_number: pki.number_machine,
+    });
+
+    if (pc) {
+      pc.pc_unit = pc.pc_unit.map((unit) => {
+        if (unit.serial_number === pki.serial_number) {
+          unit.type = pki.type_pki;
+          unit.name = `${pki.vendor} ${pki.model}`;
+          unit.serial_number = pki.serial_number;
+        }
+        return unit;
+      });
+      pc.markModified('pc_unit');
+      await pc.save();
+    }
+  }
+
+  async updatePC(systemCase: SystemCase, part) {
+    if (systemCase.numberMachine) {
+      const pc = await this.pcModel.findOne({
+        part: part,
+        serial_number: systemCase.numberMachine,
+      });
+      pc.system_case_unit = systemCase.systemCaseUnits;
+      pc.markModified('system_case_unit');
+      await pc.save();
+    }
   }
 
   async autocompleteTypesPki(req): Promise<string[]> {
