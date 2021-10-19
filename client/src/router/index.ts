@@ -8,6 +8,7 @@ import goTo from 'vuetify/lib/services/goto';
 import Assembly from '@/views/assembly/Assembly.vue';
 import Pc from '@/views/pc/Pc.vue';
 import Eans from '@/views/eans/Eans.vue';
+import Countries from '@/views/countries/Countries.vue';
 
 Vue.use(VueRouter);
 
@@ -67,7 +68,7 @@ const routes: Array<RouteConfig> = [
     {
         path: '/countries',
         name: 'Countries',
-        component: Assembly,
+        component: Countries,
         meta: {
             title: 'Страны',
         },
@@ -107,7 +108,7 @@ router.beforeEach(
             next({ name: 'Login' });
         }
         next();
-    }
+    },
 );
 
 router.beforeEach((toRoute, fromRoute, next) => {

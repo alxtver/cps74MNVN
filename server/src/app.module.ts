@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { PkiModule } from './pki/pki.module';
 import { PartModule } from './part/part.module';
 import { PcModule } from './pc/pc.module';
+import { CountryModule } from './country/country.module';
 import * as mongoose from 'mongoose';
 
 mongoose.set('returnOriginal', false);
@@ -31,6 +32,7 @@ mongoose.set('returnOriginal', false);
     ApkziModule,
     SystemCasesModule,
     PcModule,
+    CountryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

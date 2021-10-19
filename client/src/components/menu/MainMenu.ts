@@ -111,7 +111,7 @@ export default class MainMenu extends Vue {
     }
 
     private getCompany(): void {
-        const company = this.user.company;
+        const company = this.user.company || 'cps';
         this.changeCompany(company);
         this.selectedCompany = company;
     }

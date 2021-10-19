@@ -1,1 +1,8 @@
-export const routes: string[] = ['pkis', 'pc', 'ean', 'apkzi', 'systemCases'];
+export const routes: string[] = [
+  'pkis',
+  'pc',
+  'ean',
+  'apkzi',
+  'systemCases',
+  'country',
+];

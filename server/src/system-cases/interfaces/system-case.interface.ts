@@ -7,7 +7,7 @@ export interface SystemCase extends Document {
   readonly fdsi: string;
   readonly part: string;
   readonly attachment: string;
-  readonly created: number;
+  created: number;
   numberMachine: string;
   readonly back_color: string;
   systemCaseUnits: Unit[];

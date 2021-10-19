@@ -128,9 +128,10 @@ export class PcController {
   /**
    * Удалить ПЭВМ
    * @param id
+   * @param req
    */
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pcService.remove(id);
+  remove(@Param('id') id: string, @Req() req) {
+    return this.pcService.remove(id, req);
   }
 }

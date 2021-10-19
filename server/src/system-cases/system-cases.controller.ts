@@ -114,9 +114,10 @@ export class SystemCasesController {
   /**
    * Удалить системный блок
    * @param id
+   * @param req
    */
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.systemCasesService.remove(id);
+  remove(@Param('id') id: string, @Req() req) {
+    return this.systemCasesService.remove(id, req);
   }
 }

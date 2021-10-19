@@ -22,7 +22,9 @@ export class SystemCasesService {
   ) {}
 
   async getAllSystemCases(req): Promise<SystemCase[]> {
-    return await this.systemCaseModel.find({ part: req.session.part }).exec();
+    return this.systemCaseModel
+      .find({ part: req.session.part })
+      .sort({ created: 1 });
   }
 
   async getByNumber(serialNumber, req): Promise<SystemCase> {
@@ -90,7 +92,7 @@ export class SystemCasesService {
   }
 
   async create(req): Promise<SystemCase> {
-    const newSystemCase = req.body;
+    const newSystemCase = req.body as SystemCase;
     if (newSystemCase._id === null) {
       delete newSystemCase._id;
     }
@@ -98,6 +100,16 @@ export class SystemCasesService {
   }
 
   async edit(req): Promise<SystemCase> {
+    const systemCase: SystemCase = await this.systemCaseModel.findById(
+      req.body._id,
+    );
+    // если поменялся серийный номер, то меняем привязку у ПКИ
+    if (systemCase.serialNumber !== req.body.serialNumber) {
+      await this.pki.updateMany(
+        { part: req.session.part, number_machine: systemCase.serialNumber },
+        { $set: { number_machine: req.body.serialNumber } },
+      );
+    }
     return this.systemCaseModel.findOneAndUpdate(
       { _id: req.body._id },
       req.body,
@@ -132,6 +144,7 @@ export class SystemCasesService {
       newSystemCase.isNew = true;
       newSystemCase.serialNumber = serialNumber;
       newSystemCase.numberMachine = '';
+      newSystemCase.created = Date.now() + 3 * 60 * 60 * 1000;
       const units = [];
       for (const unit of newSystemCase.systemCaseUnits) {
         const copyUnit = { ...unit };
@@ -149,7 +162,12 @@ export class SystemCasesService {
     return await this.systemCaseModel.insertMany(systemCasesForSave);
   }
 
-  async remove(id: string) {
+  async remove(id: string, req) {
+    const systemCase = await this.systemCaseModel.findById(id);
+    await this.pki.updateMany(
+      { part: req.session.part, number_machine: systemCase.serialNumber },
+      { $set: { number_machine: '' } },
+    );
     try {
       await this.systemCaseModel.findByIdAndRemove(id);
       return id;

@@ -59,6 +59,7 @@ export class PcService {
       newPc.isNew = true;
       newPc.serial_number = serialNumber;
       newPc.system_case_unit = [];
+      newPc.created = Date.now() + 3 * 60 * 60 * 1000;
       // копирование состава ПЭВМ
       const pcUnits = [];
       for (const unit of newPc.pc_unit) {
@@ -199,10 +200,27 @@ export class PcService {
   }
 
   async edit(req): Promise<Pc> {
+    const pc: Pc = await this.pcModel.findById(req.body._id);
+    // если поменялся серийный номер, то меняем привязку у ПКИ
+    if (pc.serial_number !== req.body.serial_number) {
+      await this.pki.updateMany(
+        { part: req.session.part, number_machine: pc.serial_number },
+        { $set: { number_machine: req.body.serial_number } },
+      );
+    }
     return this.pcModel.findOneAndUpdate({ _id: req.body._id }, req.body);
   }
 
-  async remove(id: string) {
+  async remove(id: string, req) {
+    const pc: Pc = await this.pcModel.findById(id);
+    await this.pki.updateMany(
+      { part: req.session.part, number_machine: pc.serial_number },
+      { $set: { number_machine: '' } },
+    );
+    await this.systemCaseModel.updateOne(
+      { part: req.session.part, numberMachine: pc.serial_number },
+      { $set: { numberMachine: '' } },
+    );
     try {
       await this.pcModel.findByIdAndRemove(id);
       return id;

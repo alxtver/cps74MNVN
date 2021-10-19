@@ -1,17 +1,24 @@
 <template>
-    <div class="me-auto ml-auto mt-auto mb-auto" v-if="systemCase" @touchstart="touchStartMethod">
-            <v-card min-width="1000" :class="cardClass" elevation="10" style="padding: 1px;">
-                <system-case-form ref="systemCaseForm" style="max-height: calc(100vh - 455px); overflow: auto;" :systemCase="systemCase"></system-case-form>
-            </v-card>
+    <div
+        class="me-auto ml-auto mt-auto mb-auto"
+        v-if="systemCase"
+        @touchstart="touchStartMethod"
+    >
+        <system-case-form
+            ref="systemCaseForm"
+            style="max-height: calc(100vh - 455px); overflow: auto; min-width: 1000px;"
+            :class="cardClass"
+            :systemCase="systemCase"
+        ></system-case-form>
         <assembly-buttons
             ref="assemblyButtons"
             @next="next"
             @previous="previous"
         ></assembly-buttons>
-        
+
         <v-card class="serial-card">
             <div>
-                {{selectedSerialNumber}}
+                {{ selectedSerialNumber }}
             </div>
         </v-card>
     </div>
@@ -22,18 +29,18 @@
 <style scoped lang="scss">
 .pcCardAssemblyNext {
     animation-name: slideNext;
-    animation-duration: .5s;
+    animation-duration: 0.5s;
 }
 
 .pcCardAssemblyPrevious {
     animation-name: slidePrevious;
-    animation-duration: .5s;
+    animation-duration: 0.5s;
 }
 @keyframes slideNext {
     50% {
         transform: translate(-100vw, 0);
     }
-    
+
     51% {
         transform: translate(100vw, 0);
     }
@@ -43,7 +50,7 @@
     50% {
         transform: translate(100vw, 0);
     }
-    
+
     51% {
         transform: translate(-100vw, 0);
     }

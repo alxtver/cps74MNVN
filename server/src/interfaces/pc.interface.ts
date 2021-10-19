@@ -7,7 +7,7 @@ export interface Pc extends Document {
   fdsi: string;
   part: string;
   attachment: string;
-  readonly created: number;
+  created: number;
   arm: string;
   numberMachine: string;
   readonly back_color: string;
