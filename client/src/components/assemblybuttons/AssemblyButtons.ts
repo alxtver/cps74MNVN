@@ -1,4 +1,4 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { State } from 'vuex-class';
 import stringHelper from '@/helper/StringHelper';
 
@@ -10,10 +10,13 @@ export default class AssemblyButtons extends Vue {
     @State((state) => state.selectedSerialNumber)
     private selectedSerialNumber!: string;
 
+    @Prop()
+    private serialNumberPanelStyle!: string;
+
     private get isDisablePrevious(): boolean {
         if (this.selectedSerialNumber) {
             return !this.systemCasesSerialNumbers.includes(
-                stringHelper.minusOne(this.selectedSerialNumber),
+                stringHelper.minusOne(this.selectedSerialNumber)
             );
         }
         return false;
@@ -22,7 +25,7 @@ export default class AssemblyButtons extends Vue {
     private get isDisableNext(): boolean {
         if (this.selectedSerialNumber) {
             return !this.systemCasesSerialNumbers.includes(
-                stringHelper.plusOne(this.selectedSerialNumber),
+                stringHelper.plusOne(this.selectedSerialNumber)
             );
         }
         return false;

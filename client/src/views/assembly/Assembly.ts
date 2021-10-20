@@ -1,4 +1,4 @@
-import {Component, Ref, Vue, Watch} from 'vue-property-decorator';
+import { Component, Ref, Vue, Watch } from 'vue-property-decorator';
 import SystemCaseForm from '@/components/systemcase/systemcaseform/SystemCaseForm.vue';
 import SystemCaseFormTs from '@/components/systemcase/systemcaseform/SystemCaseForm';
 import { Action, State } from 'vuex-class';
@@ -43,7 +43,7 @@ export default class Assembly extends Vue {
      */
     private async getSystemCaseByNumber(): Promise<void> {
         this.systemCase = await systemCaseApi.getSystemCaseByNumber(
-            this.selectedSerialNumber,
+            this.selectedSerialNumber
         );
     }
 
@@ -54,12 +54,12 @@ export default class Assembly extends Vue {
     private previous(): void {
         if (
             this.systemCasesSerialNumbers.includes(
-                stringHelper.minusOne(this.selectedSerialNumber),
+                stringHelper.minusOne(this.selectedSerialNumber)
             )
         ) {
             this.show = false;
             this.selectSerialNumber(
-                stringHelper.minusOne(this.selectedSerialNumber),
+                stringHelper.minusOne(this.selectedSerialNumber)
             );
             this.cardClass = 'pcCardAssemblyPrevious';
             alexa.wave();
@@ -77,18 +77,17 @@ export default class Assembly extends Vue {
     private next(): void {
         if (
             this.systemCasesSerialNumbers.includes(
-                stringHelper.plusOne(this.selectedSerialNumber),
+                stringHelper.plusOne(this.selectedSerialNumber)
             )
         ) {
             this.show = false;
             this.selectSerialNumber(
-                stringHelper.plusOne(this.selectedSerialNumber),
+                stringHelper.plusOne(this.selectedSerialNumber)
             );
             this.cardClass = 'pcCardAssemblyNext';
             alexa.wave();
             setTimeout(() => {
                 this.cardClass = '';
-                this.systemCaseForm.painting();
             }, 500);
         }
     }
@@ -132,8 +131,8 @@ export default class Assembly extends Vue {
         const posXStart = touchEvent.changedTouches[0].clientX;
         addEventListener(
             'touchend',
-            (touchEvent) => this.touchEnd(touchEvent, posXStart),
-            { once: true },
+            (event) => this.touchEnd(event, posXStart),
+            { once: true }
         );
     }
 
@@ -148,5 +147,23 @@ export default class Assembly extends Vue {
         } else if (posXStart > posXEnd) {
             this.next(); // swipe left
         }
+    }
+
+    private get serialNumberPanelStyle(): string {
+        return this.isAllOk ? 'ok' : 'not-ok';
+    }
+
+    private get isAllOk(): boolean {
+        const units = this.systemCase.systemCaseUnits;
+        for (const unit of units) {
+            if (
+                unit.serial_number === '' ||
+                unit.name === 'Н/Д' ||
+                unit.name === ''
+            ) {
+                return false;
+            }
+        }
+        return true;
     }
 }

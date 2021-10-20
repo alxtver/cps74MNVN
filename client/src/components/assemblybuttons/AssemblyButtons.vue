@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-3" style="display: flex; justify-content: space-between">
+    <div class="mt-3" style="display: flex; justify-content: space-between; align-items: center">
             <v-btn
                 :disabled="isDisablePrevious"
                 class="change-button"
@@ -10,6 +10,8 @@
             >
                 <v-icon class="icon">mdi-chevron-left</v-icon>
             </v-btn>
+      
+            <v-card :class="serialNumberPanelStyle" style="height: 100px; width: 100%">sdfsdfsdf</v-card>
 
             <v-btn
                 :disabled="isDisableNext"
@@ -35,5 +37,11 @@
         color: #999999;
         font-size: 100px;
     }
+}
+.ok {
+  background: #4db94d;
+}
+.not-ok {
+  background: orangered;
 }
 </style>

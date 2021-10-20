@@ -2,7 +2,6 @@
     <v-dialog v-model="dialog" max-width="500px" persistent>
         <template v-slot:activator="{ on, attrs }">
             <v-btn
-                class="ml-6 mx-2"
                 fab
                 dark
                 small

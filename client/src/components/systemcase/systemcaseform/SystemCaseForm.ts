@@ -1,4 +1,4 @@
-import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
+import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
 import SystemCase from '@/models/SystemCase';
 import SystemCaseTable from '@/components/systemcase/systemcasetable/SystemCaseTable.vue';
 import SystemCaseTableTs from '@/components/systemcase/systemcasetable/SystemCaseTable';
@@ -9,6 +9,7 @@ import CopyForm from '@/components/copyform/CopyForm.vue';
 import CopyFormTS from '@/components/copyform/CopyForm';
 import systemCaseApi from '@/api/SystemCaseApi';
 import table from '@/helper/Table';
+import { State } from 'vuex-class';
 
 @Component({
     components: { SystemCaseTable, GroupButtons, EditSystemCase, CopyForm },
@@ -22,6 +23,9 @@ export default class SystemCaseForm extends Vue {
 
     private openEditDialog = false;
 
+    @State((state) => state.selectedSerialNumber)
+    private selectedSerialNumber!: string;
+
     @Ref('editSystemCase')
     private editSystemCaseComponent!: EditSystemCaseTS;
 
@@ -31,16 +35,22 @@ export default class SystemCaseForm extends Vue {
     @Ref('table')
     private table!: SystemCaseTableTs;
 
+    @Watch('selectedSerialNumber')
+    private systemCaseIsChanged(): void {
+        this.painting();
+    }
+
     private mounted(): void {
-       this.painting();
+        this.painting();
     }
 
     public painting(): void {
-        table.painting(this.table);
+        setTimeout(() => {
+            table.painting(this.table);
+        }, 300);
     }
 
     private updateSystemCase(oldSystemCase): void {
-        table.painting(this.table);
         this.$emit('updateSystemCase', oldSystemCase);
     }
 
@@ -96,12 +106,12 @@ export default class SystemCaseForm extends Vue {
     private async copySystemCases(
         currentSerialNumber: string,
         firstSerialNumber: string,
-        lastSerialNumber: string,
+        lastSerialNumber: string
     ): Promise<void> {
         const systemCases: SystemCase[] = await systemCaseApi.copySystemCase(
             currentSerialNumber,
             firstSerialNumber,
-            lastSerialNumber,
+            lastSerialNumber
         );
         this.$emit('addSystemCases', systemCases);
     }

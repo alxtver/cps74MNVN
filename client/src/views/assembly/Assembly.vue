@@ -12,14 +12,13 @@
         ></system-case-form>
         <assembly-buttons
             ref="assemblyButtons"
+            :serialNumberPanelStyle="serialNumberPanelStyle"
             @next="next"
             @previous="previous"
         ></assembly-buttons>
 
-        <v-card class="serial-card">
-            <div>
+        <v-card class="serial-card" :class="serialNumberPanelStyle">
                 {{ selectedSerialNumber }}
-            </div>
         </v-card>
     </div>
 </template>
@@ -62,5 +61,12 @@
     width: 300px;
     height: 50px;
     font-size: 35px;
+    color: #4c4a4a;
+}
+.ok {
+  background: #4db94d;
+}
+.not-ok {
+  background: orangered;
 }
 </style>
