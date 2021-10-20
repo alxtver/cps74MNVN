@@ -103,13 +103,13 @@ export default class SystemCaseTable extends Vue {
         const item: Unit = props.item;
         const data = await systemCaseApi.editSerialNumber(
             item,
-            this.systemCase._id,
+            this.systemCase._id
         );
         if (data.oldSystemCase) {
             this.$emit('updateSystemCase', data.oldSystemCase);
         }
         const find: Unit = this.systemCase.systemCaseUnits.find(
-            (systemCaseUnit) => systemCaseUnit.i === item.i,
+            (systemCaseUnit) => systemCaseUnit.i === item.i
         );
         Object.assign(find, data.editableUnit);
         if (data.editableUnit.name === 'Н/Д') {
@@ -127,7 +127,7 @@ export default class SystemCaseTable extends Vue {
             this.systemCase.systemCaseUnits,
             this.systemCase.serialNumber,
             this.sound,
-            this.$route.path,
+            this.$route.path
         );
         this.$nextTick(() => {
             this.$emit('painting');
@@ -213,7 +213,7 @@ export default class SystemCaseTable extends Vue {
      */
     private correctIndexes(): void {
         this.systemCase.systemCaseUnits.forEach(
-            (unit, index) => (unit.i = index),
+            (unit, index) => (unit.i = index)
         );
     }
 }
