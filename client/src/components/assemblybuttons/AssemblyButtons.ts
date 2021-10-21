@@ -1,6 +1,5 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { State } from 'vuex-class';
-import stringHelper from '@/helper/StringHelper';
 
 @Component
 export default class AssemblyButtons extends Vue {
@@ -15,8 +14,8 @@ export default class AssemblyButtons extends Vue {
 
     private get isDisablePrevious(): boolean {
         if (this.selectedSerialNumber) {
-            return !this.systemCasesSerialNumbers.includes(
-                stringHelper.minusOne(this.selectedSerialNumber)
+            return (
+              this.systemCasesSerialNumbers.indexOf(this.selectedSerialNumber) === 0
             );
         }
         return false;
@@ -24,8 +23,8 @@ export default class AssemblyButtons extends Vue {
 
     private get isDisableNext(): boolean {
         if (this.selectedSerialNumber) {
-            return !this.systemCasesSerialNumbers.includes(
-                stringHelper.plusOne(this.selectedSerialNumber)
+            return (
+                this.systemCasesSerialNumbers.indexOf(this.selectedSerialNumber) === this.systemCasesSerialNumbers.length - 1
             );
         }
         return false;

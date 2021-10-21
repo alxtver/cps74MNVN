@@ -5,7 +5,6 @@ import { Action, State } from 'vuex-class';
 import SystemCase from '@/models/SystemCase';
 import systemCaseApi from '@/api/SystemCaseApi';
 import AssemblyButtons from '@/components/assemblybuttons/AssemblyButtons.vue';
-import stringHelper from '@/helper/StringHelper';
 import { SELECT_SERIAL_NUMBER } from '@/store';
 import alexa from '@/helper/Alexa';
 
@@ -53,13 +52,11 @@ export default class Assembly extends Vue {
      */
     private previous(): void {
         if (
-            this.systemCasesSerialNumbers.includes(
-                stringHelper.minusOne(this.selectedSerialNumber)
-            )
+          this.systemCasesSerialNumbers.indexOf(this.selectedSerialNumber) !== 0
         ) {
             this.show = false;
             this.selectSerialNumber(
-                stringHelper.minusOne(this.selectedSerialNumber)
+              this.systemCasesSerialNumbers[this.systemCasesSerialNumbers.indexOf(this.selectedSerialNumber) - 1]
             );
             this.cardClass = 'pcCardAssemblyPrevious';
             alexa.wave();
@@ -76,13 +73,11 @@ export default class Assembly extends Vue {
      */
     private next(): void {
         if (
-            this.systemCasesSerialNumbers.includes(
-                stringHelper.plusOne(this.selectedSerialNumber)
-            )
+          this.systemCasesSerialNumbers.indexOf(this.selectedSerialNumber) < this.systemCasesSerialNumbers.length - 1
         ) {
             this.show = false;
             this.selectSerialNumber(
-                stringHelper.plusOne(this.selectedSerialNumber)
+                this.systemCasesSerialNumbers[this.systemCasesSerialNumbers.indexOf(this.selectedSerialNumber) + 1]
             );
             this.cardClass = 'pcCardAssemblyNext';
             alexa.wave();

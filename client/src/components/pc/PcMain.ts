@@ -35,6 +35,9 @@ export default class PcMain extends Vue {
     @State((state) => state.company)
     private company!: string;
 
+    @State((state) => state.selectedSerialNumber)
+    private selectedSerialNumber!: string;
+
     @Watch('part', { immediate: false })
     private changePart(): void {
         this.getAllPc();
@@ -42,6 +45,25 @@ export default class PcMain extends Vue {
 
     private mounted() {
         this.getAllPc();
+    }
+
+    @Watch('selectedSerialNumber')
+    private async selectSerialNumber(): Promise<void> {
+        const selectedPc = this.pc.find(
+          (pc) =>
+            pc.serial_number === this.selectedSerialNumber
+        );
+        if (selectedPc) {
+            const index = this.pc.indexOf(selectedPc) + 1;
+            await this.changePage(Math.ceil(index / this.itemsPerPage));
+            const element = document.getElementById(this.selectedSerialNumber);
+            const yOffset = -165;
+            const y =
+              element.getBoundingClientRect().top +
+              window.pageYOffset +
+              yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
     }
 
     /**
@@ -177,10 +199,10 @@ export default class PcMain extends Vue {
      */
     private exportDoc(firstPc: string, lastPc: string, document: string): void {
         const firstPcIndex = this.pc.indexOf(
-            this.pc.find((pc) => pc.serial_number === firstPc),
+            this.pc.find((pc) => pc.serial_number === firstPc)
         );
         const lastPcIndex = this.pc.indexOf(
-            this.pc.find((pc) => pc.serial_number === lastPc),
+            this.pc.find((pc) => pc.serial_number === lastPc)
         );
         for (let i = 0; i < this.pc.length; i++) {
             setTimeout(() => {
@@ -193,7 +215,7 @@ export default class PcMain extends Vue {
                         exportDocX.zipLabel(this.pc[i], this.company);
                     }
                 }
-            }, i*500);
+            }, i * 500);
         }
     }
 }
