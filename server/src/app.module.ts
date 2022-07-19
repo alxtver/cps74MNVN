@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApkziModule } from './apkzi/apkzi.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { config } from './config';
+import { url } from './config';
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { routes } from './app.routes';
 import { SystemCasesModule } from './system-cases/system-cases.module';
@@ -19,7 +19,7 @@ import * as mongoose from 'mongoose';
 mongoose.set('returnOriginal', false);
 @Module({
   imports: [
-    MongooseModule.forRoot(config.url, {
+    MongooseModule.forRoot(url, {
       useCreateIndex: true,
       useNewUrlParser: true,
       useFindAndModify: false,

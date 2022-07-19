@@ -5,12 +5,12 @@ import Pki from '@/models/Pki';
 import PkiCard from '@/components/pki/pkicard/PkiCard.vue';
 import { State } from 'vuex-class';
 import Part from '@/models/Part';
-import { Watch } from 'vue-property-decorator';
+import { Ref, Watch } from 'vue-property-decorator';
 import { DataTableHeader } from 'vuetify';
 import PkiCardTs from '@/components/pki/pkicard/PkiCard';
 import SettingsMenu from '@/components/pki/pkitable/settingsmenu/SettingsMenu.vue';
-import alexa from "@/helper/Alexa";
-import Unit from "@/models/Unit";
+import alexa from '@/helper/Alexa';
+import Unit from '@/models/Unit';
 
 @Component({ components: { PkiCard, SettingsMenu } })
 export default class PkiTable extends Vue {
@@ -50,7 +50,6 @@ export default class PkiTable extends Vue {
         this.getPki();
     }
 
-
     /**
      * Изменяем класс строки
      * @param row
@@ -76,14 +75,19 @@ export default class PkiTable extends Vue {
         this.loading = true;
         this.overlay = true;
         this.pkis = [];
-        pkiApi.getPki().then((data) => {
-            this.pkis = this.addIndexes(data);
-            this.loading = false;
-        }).finally(()=> {
-            this.overlay = false;
-        });
+        pkiApi
+            .getPki()
+            .then((data) => {
+                this.pkis = this.addIndexes(data);
+                this.loading = false;
+            })
+            .finally(() => {
+                this.overlay = false;
+            });
     }
 
+    @Ref('pkiCard')
+    private pkiCard!: PkiCardTs;
     /**
      * Нажатие на кнопку редактировать
      * @param item
@@ -93,8 +97,7 @@ export default class PkiTable extends Vue {
         this.isNewPki = false;
         this.editedIndex = this.pkis.indexOf(item);
         this.editedItem = Object.assign({}, item);
-        const pkiCard = this.$refs.pkiCard as PkiCardTs;
-        pkiCard.openDialog();
+        this.pkiCard.openDialog();
     }
 
     /**
@@ -136,7 +139,7 @@ export default class PkiTable extends Vue {
                              ${item.type_pki}
                              ${item.vendor}
                              ${item.model} №
-                             ${item.serial_number} удален!`
+                             ${item.serial_number} удален!`;
             this.$message({
                 message,
                 type: 'error',
@@ -188,7 +191,7 @@ export default class PkiTable extends Vue {
         } else {
             this.editedItem = new Pki();
         }
-        this.editedItem.part = this.$store.state.part
+        this.editedItem.part = this.$store.state.part;
         this.isNewPki = true;
     }
 
@@ -205,14 +208,13 @@ export default class PkiTable extends Vue {
         this.isEditing = value;
     }
 
-
     /**
      * Добавить новый ПКИ в таблицу
      * @param pki
      * @private
      */
     private addNewPki(pki: Pki): void {
-        this.pkis.push(pki)
+        this.pkis.push(pki);
         this.addIndexes(this.pkis);
     }
 
@@ -221,7 +223,7 @@ export default class PkiTable extends Vue {
      * @private
      */
     private notUniqueSerialNumber(): void {
-        alexa.alert()
+        alexa.alert();
         this.$message({
             message: 'Неуникальный серийный номер',
             type: 'error',
@@ -229,7 +231,6 @@ export default class PkiTable extends Vue {
             center: true,
         });
     }
-
 
     /**
      * Выбор строки

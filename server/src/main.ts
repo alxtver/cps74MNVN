@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as ConnectMongoDBSession from 'connect-mongodb-session';
-import { config } from './config';
+import { url, secretkey } from './config';
 import * as csrf from 'csurf';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
@@ -20,12 +20,12 @@ async function startApp() {
   const MongoStore = ConnectMongoDBSession(session);
   const store = new MongoStore({
     collection: 'sessions',
-    uri: config.url,
+    uri: url,
   });
 
   app.use(
     session({
-      secret: config.secretKey,
+      secret: secretkey,
       resave: false,
       saveUninitialized: false,
       store,

@@ -1,8 +1,8 @@
 import { Component, Prop, Vue} from 'vue-property-decorator';
 import converter from '@/helper/Converter';
 import { State } from 'vuex-class';
-import Apkzi from "@/models/Apkzi";
-import apkziApi from "@/api/ApkziApi";
+import Apkzi from '@/models/Apkzi';
+import apkziApi from '@/api/ApkziApi';
 
 @Component
 export default class ApkziCardTs extends Vue {
@@ -79,9 +79,7 @@ export default class ApkziCardTs extends Vue {
      * @private
      */
     private resetValidation(): void {
-        const form = this.$refs.form as Vue & {
-            resetValidation: () => boolean;
-        };
+        const form = this.$refs.form as any;
         if (form) {
             form.resetValidation();
         }
@@ -92,7 +90,7 @@ export default class ApkziCardTs extends Vue {
      * @private
      */
     private validation(): void {
-        const form = this.$refs.form as Vue & { validate: () => boolean };
+        const form = this.$refs.form as any;
         form.validate();
     }
 }

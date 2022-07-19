@@ -1,4 +1,4 @@
-import {Component, Prop, Ref, Vue, Watch} from 'vue-property-decorator';
+import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
 import SystemCaseTable from '@/components/systemcase/systemcasetable/SystemCaseTable.vue';
 import SystemCaseTableTS from '@/components/systemcase/systemcasetable/SystemCaseTable';
 import SystemCase from '@/models/SystemCase';
@@ -15,7 +15,7 @@ export default class AddSystemCaseCard extends Vue {
     @Prop({ default: () => [] })
     private serialNumbers!: string[];
 
-    @Prop({default: true})
+    @Prop({ default: true })
     private isNewSystemCase!: boolean;
 
     private valid = true;
@@ -35,9 +35,7 @@ export default class AddSystemCaseCard extends Vue {
     private serialNumberRules = [(v) => !!v || 'Введите серийный номер'];
 
     public resetValidation(): void {
-        const form = this.$refs.form as Vue & {
-            resetValidation: () => boolean;
-        };
+        const form = this.$refs.form as any;
         if (form) {
             form.resetValidation();
         }
@@ -76,7 +74,7 @@ export default class AddSystemCaseCard extends Vue {
             return;
         }
         if (this.serialNumbers.includes(this.systemCase.serialNumber)) {
-            this.$message.error('Неуникальный серийный номер!')
+            this.$message.error('Неуникальный серийный номер!');
             return;
         }
         const newSystemCase = await systemCaseApi.addSystemCase(
@@ -91,7 +89,7 @@ export default class AddSystemCaseCard extends Vue {
      * @private
      */
     private validation(): void {
-        const form = this.$refs.form as Vue & { validate: () => boolean };
+        const form = this.$refs.form as any;
         form.validate();
     }
 

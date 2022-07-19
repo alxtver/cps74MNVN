@@ -1,17 +1,17 @@
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import Pki from '@/models/Pki';
 import pkiApi from '@/api/PkiApi';
 import eanApi from '@/api/EanApi';
 import converter from '@/helper/Converter';
 import alexa from '@/helper/Alexa';
-import { State } from 'vuex-class';
+import {State} from 'vuex-class';
 
 @Component
 export default class PkiCardTs extends Vue {
-    @Prop({ default: new Pki() })
+    @Prop({default: new Pki()})
     private editedItem!: Pki;
 
-    @Prop({ default: true })
+    @Prop({default: true})
     private isNewPki!: boolean;
 
     @State((state) => state.sound)
@@ -53,7 +53,7 @@ export default class PkiCardTs extends Vue {
     private async autoCompleteCountries(query): Promise<void> {
         if (query !== null) {
             this.autocompleteCountries = await pkiApi.autocompleteCountries(
-                query,
+                query
             );
         }
     }
@@ -80,7 +80,9 @@ export default class PkiCardTs extends Vue {
      * @private
      */
     private async save(): Promise<void> {
-        this.editedItem.serial_number = converter.snModifier(this.editedItem).SN;
+        this.editedItem.serial_number = converter.snModifier(
+            this.editedItem,
+        ).SN;
         await this.validation();
         if (!this.valid) {
             return;
@@ -90,12 +92,13 @@ export default class PkiCardTs extends Vue {
             this.$emit('editComplete', pki);
             this.dialog = false;
         } else {
-                alexa.say(
-                    this.editedItem.serial_number.slice(
-                        this.editedItem.serial_number.length - 3,
-                    ),
-                    1.4, this.sound
-                );
+            alexa.say(
+                this.editedItem.serial_number.slice(
+                    this.editedItem.serial_number.length - 3,
+                ),
+                1.4,
+                this.sound,
+            );
             const response = await pkiApi.addPki(this.editedItem);
             if (response instanceof Pki) {
                 this.$emit('addNewPki', response);
@@ -146,9 +149,7 @@ export default class PkiCardTs extends Vue {
      * @private
      */
     private resetValidation(): void {
-        const form = this.$refs.form as Vue & {
-            resetValidation: () => boolean;
-        };
+        const form = this.$refs.form as any;
         if (form) {
             form.resetValidation();
         }
@@ -159,7 +160,7 @@ export default class PkiCardTs extends Vue {
      * @private
      */
     private validation(): void {
-        const form = this.$refs.form as Vue & { validate: () => boolean };
+        const form = this.$refs.form as any;
         form.validate();
     }
 

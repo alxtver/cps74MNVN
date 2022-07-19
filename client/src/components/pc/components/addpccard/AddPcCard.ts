@@ -35,9 +35,7 @@ export default class AddPcCard extends Vue {
     private serialNumberRules = [(v) => !!v || 'Введите серийный номер'];
 
     public resetValidation(): void {
-        const form = this.$refs.form as Vue & {
-            resetValidation: () => boolean;
-        };
+        const form = this.$refs.form as any;
         if (form) {
             form.resetValidation();
         }
@@ -89,7 +87,7 @@ export default class AddPcCard extends Vue {
      * @private
      */
     private validation(): void {
-        const form = this.$refs.form as Vue & { validate: () => boolean };
+        const form = this.$refs.form as any;
         form.validate();
     }
 

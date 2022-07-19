@@ -4,13 +4,13 @@ import ApkziCard from '@/components/apkzi/apkzicard/ApkziCard.vue';
 import Apkzi from '@/models/Apkzi';
 import { State } from 'vuex-class';
 import Part from '@/models/Part';
-import { Watch } from 'vue-property-decorator';
+import { Ref, Watch } from 'vue-property-decorator';
 import apkziApi from '@/api/ApkziApi';
 import { DataTableHeader } from 'vuetify';
 import SettingsMenu from '@/components/pki/pkitable/settingsmenu/SettingsMenu.vue';
 import alexa from '@/helper/Alexa';
 import ApkziCardTs from '@/components/apkzi/apkzicard/ApkziCard';
-import Unit from "@/models/Unit";
+import Unit from '@/models/Unit';
 
 /**
  * Основная таблица АПКЗИ
@@ -73,12 +73,15 @@ export default class ApkziTable extends Vue {
         this.loading = true;
         this.overlay = true;
         this.apkzis = [];
-        apkziApi.getApkzi().then((data) => {
-            this.apkzis = this.addIndexes(data);
-            this.loading = false;
-        }).finally(()=> {
-            this.overlay = false;
-        });
+        apkziApi
+            .getApkzi()
+            .then((data) => {
+                this.apkzis = this.addIndexes(data);
+                this.loading = false;
+            })
+            .finally(() => {
+                this.overlay = false;
+            });
     }
 
     /**
@@ -158,7 +161,7 @@ export default class ApkziTable extends Vue {
     private deleteItemConfirm(item: Apkzi): void {
         apkziApi.deleteApkzi(item._id).then((data: Apkzi) => {
             this.apkzis = this.apkzis.filter(
-                (apkzi: Apkzi) => apkzi._id !== data._id,
+                (apkzi: Apkzi) => apkzi._id !== data._id
             );
             this.apkzis = this.addIndexes(this.apkzis);
             const message = `АПКЗИ удален!`;
@@ -188,6 +191,9 @@ export default class ApkziTable extends Vue {
         });
     }
 
+    @Ref('apkziCard')
+    private apkziCard!: ApkziCardTs;
+
     /**
      * Нажатие на кнопку редактировать
      * @param item
@@ -197,10 +203,8 @@ export default class ApkziTable extends Vue {
         this.isNewApkzi = false;
         this.editedIndex = this.apkzis.indexOf(item);
         this.editedItem = Object.assign({}, item);
-        const apkziCard = this.$refs.apkziCard as ApkziCardTs;
-        apkziCard.openDialog();
+        this.apkziCard.openDialog();
     }
-
 
     /**
      * Выбор строки
