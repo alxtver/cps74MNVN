@@ -7,16 +7,16 @@
         </template>
 
         <v-list>
-            <v-list-item @change="exportPassport">
-                <v-list-item-title v-text="'Паспорт'"></v-list-item-title>
+            <v-list-item  @change="exportPassport">
+                <v-list-item-title class="list-item" v-text="'Паспорт'"></v-list-item-title>
             </v-list-item>
-            <v-list-item @change="exportSystemCaseZip">
-                <v-list-item-title
+            <v-list-item  @change="exportSystemCaseZip">
+                <v-list-item-title class="list-item"
                     v-text="'Системный блок ЗИП'"
                 ></v-list-item-title>
             </v-list-item >
-            <v-list-item  @change="exportZipLabel">
-                <v-list-item-title v-text="'ЗИП этикетка'"></v-list-item-title>
+            <v-list-item   @change="exportZipLabel">
+                <v-list-item-title class="list-item" v-text="'ЗИП этикетка'"></v-list-item-title>
             </v-list-item>
         </v-list>
     </v-menu>
@@ -24,4 +24,8 @@
 
 <script src="./ExportMenu.ts"></script>
 
-<style scoped></style>
+<style scoped>
+.list-item {
+  cursor: pointer;
+}
+</style>

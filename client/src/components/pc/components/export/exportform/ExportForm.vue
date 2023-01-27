@@ -7,7 +7,7 @@
             label="Документ"
             :menu-props="{ offsetY: true }"
             :items="documents"
-        ></v-select>
+        />
     
         <v-select
             class="part-select ml-2 mt-3"
@@ -17,7 +17,7 @@
             :menu-props="{ offsetY: true }"
             :items="pcSerialNumbers"
             @change="onChangeFirstPc"
-        ></v-select>
+        />
     
         <v-select
             class="part-select ml-2 mt-3"
@@ -27,7 +27,7 @@
             :menu-props="{ offsetY: true }"
             :items="pcSerialNumbers"
             @change="onChangeLastPc"
-        ></v-select>
+        />
         
         
         <v-divider class="mt-3 mb-3"></v-divider>
