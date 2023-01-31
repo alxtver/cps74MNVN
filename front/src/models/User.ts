@@ -1,4 +1,4 @@
-import Pki from "@/models/Pki";
+import type Pki from "@/models/Pki";
 
 export default class User {
     public _id: string | null = null; // id

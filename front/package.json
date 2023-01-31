@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev:front": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -11,6 +11,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.0.10",
     "axios": "^1.2.6",
     "class-transformer": "^0.5.1",
     "element-plus": "^2.2.28",
