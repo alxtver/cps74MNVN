@@ -1,5 +1,5 @@
-import Unit from '@/models/Unit';
-import Part from "@/models/Part";
+import type Unit from '@/models/Unit';
+import type Part from "@/models/Part";
 
 export default class Pc {
 	public _id?: string | null = null; // id

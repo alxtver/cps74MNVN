@@ -1,13 +1,11 @@
-import TextComponent from "@/components/test/TextComponent.vue";
 import { defineComponent } from "vue";
+import PkiTable from "@/components/pki/pkitable/PkiTable.vue";
 
 export default defineComponent({
   name: "Pki",
-  components: { TextComponent },
+  components: { PkiTable },
   methods: {
     clickOnDiv(): void {
-      const textComp = this.$refs.text as TextComponent;
-      textComp.testMethod();
     },
   },
 });

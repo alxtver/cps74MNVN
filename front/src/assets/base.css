@@ -76,6 +76,6 @@ body {
   min-height: 100vh;
 }
 .main {
-  min-height: 100vh;
+  height: calc(100vh - 60px);
   display: grid;
 }

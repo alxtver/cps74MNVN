@@ -35,7 +35,7 @@ class ApkziApi {
     /**
      * Удалить АПКЗИ
      */
-    public async deleteApkzi(id): Promise<Apkzi> {
+    public async deleteApkzi(id: string): Promise<Apkzi> {
         const response = await this.axiosInstance.delete('/apkzi', {data: {id}});
         return dataToClass(Apkzi, response.data);
     }

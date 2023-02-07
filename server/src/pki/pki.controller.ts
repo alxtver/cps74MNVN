@@ -23,7 +23,7 @@ export class PkiController {
    */
   @Get('')
   async getAllPki(@Req() req, @Res() res) {
-    const pkis = await this.pkiService.getAllPki(req);
+    const pkis = await this.pkiService.getAllPki(req.query.part);
     return res.status(HttpStatus.OK).json(pkis);
   }
 

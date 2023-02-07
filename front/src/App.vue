@@ -1,10 +1,14 @@
 <template>
   <main-menu class="menu" />
   <div class="main">
-    <transition>
-      <routerView></routerView>
-    </transition>
+    <router-view v-slot="{ Component }">
+      <transition>
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </div>
+
+
 </template>
 
 <script setup lang="ts">
@@ -26,10 +30,6 @@ onBeforeMount((): void => {
     router.push("auth");
   }
 });
-</script>
-<script lang="ts">
-import { defineComponent, onBeforeMount } from "vue";
-export default defineComponent({});
 </script>
 
 <style scoped>

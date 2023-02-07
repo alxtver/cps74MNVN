@@ -1,9 +1,5 @@
 <template>
-  <div>
-    <div>Пки</div>
-    <el-button type="info" @click="clickOnDiv">sdsd</el-button>
-    <text-component ref="text" />
-  </div>
+    <pki-table></pki-table>
 </template>
 
 <script lang="ts" src="./Pki.ts"></script>

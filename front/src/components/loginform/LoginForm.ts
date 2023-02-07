@@ -44,7 +44,7 @@ export default defineComponent({
         );
         this.loading = false;
         if (response.message === "loginConfirm" && response.user) {
-          this.$store.dispatch('loginConfirm');
+          this.$store.dispatch("loginConfirm");
           this.$store.dispatch("updateUser", response.user);
           this.$store.dispatch("updatePart", response.user.lastPart);
           sessionStorage.setItem("isAuth", "true");

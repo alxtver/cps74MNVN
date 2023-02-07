@@ -8,10 +8,10 @@ export default class Pki {
   public country = "";
   public number_machine = "";
   public ean_code = "";
-  public szz1: string;
-  public sp_unit: [];
+  public szz1!: string;
+  public sp_unit!: [];
   public created: number = Date.now();
-  public viborka: boolean;
-  public: string;
+  public viborka!: boolean;
+  public!: string;
   public index?: number;
 }

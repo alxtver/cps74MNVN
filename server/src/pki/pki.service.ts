@@ -23,8 +23,8 @@ export class PkiService {
     private readonly systemCaseModel: Model<SystemCase>,
   ) {}
 
-  async getAllPki(req): Promise<Pki[]> {
-    return await this.pkiModel.find({ part: req.session.part }).exec();
+  async getAllPki(part: string): Promise<Pki[]> {
+    return await this.pkiModel.find({ part }).exec();
   }
 
   async addPki(PkiDto: Pki, req): Promise<Pki | string> {

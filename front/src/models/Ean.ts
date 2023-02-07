@@ -5,7 +5,7 @@ export default class Ean {
     public model = '';
     public country = '';
     public ean_code = '';
-    public sp_unit: [];
-    public sp_unit1: [];
+    public sp_unit = [];
+    public sp_unit1 = [];
     public created: number = Date.now();
 }
