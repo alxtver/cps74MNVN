@@ -37,8 +37,10 @@ class PkiApi {
   /**
    * Удалить ПКИ
    */
-  public async deletePki(id: string): Promise<Pki> {
-    const response = await this.axiosInstance.delete("/pkis", { data: { id } });
+  public async deletePki(id: string, part: string): Promise<Pki> {
+    const response = await this.axiosInstance.delete("/pkis", {
+      params: { id, part },
+    });
     return dataToClass(Pki, response.data);
   }
 

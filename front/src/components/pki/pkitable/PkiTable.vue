@@ -9,54 +9,39 @@
           :data="components"
           :width="width"
           :height="height"
+          :row-height="30"
         />
       </template>
     </el-auto-resizer>
   </div>
 </template>
 
-<script lang="tsx">
-import { defineComponent } from "vue";
-import type Pki from "@/models/Pki";
-import type { Column } from "element-plus";
-import PkiApi from "@/api/PkiApi";
+<script setup lang="tsx">
+import PkiTableSetup from "@/components/pki/pkitable/PkiTableSetup";
+import Pki from "@/models/Pki";
+import { ElButton, ElPopconfirm } from "element-plus";
 
-export default defineComponent({
-  name: "pkiTable",
-  data() {
-    return { components: [] as Pki[], tableItems: [] };
-  },
+const { components, removeComponent } = PkiTableSetup();
 
-  async mounted() {
-    await this.getComponents();
-  },
-  methods: {
-    async getComponents(): Promise<void> {
-      const part = this.part;
-      const data = await PkiApi.getPki(part);
-      this.components = data.sort((a: Pki, b: Pki): number => {
-        if (a.type_pki > b.type_pki) {
-          return 1;
-        }
-        return a.type_pki < b.type_pki ? -1 : 0;
-      });
-    },
-  },
-  computed: {
-    columns(): Column[] {
-      return columns;
-    },
-    part(): string {
-      return this.$store.getters.getPart;
-    },
-  },
-});
 
-export const columns = [
+const onEdit = (row: Pki): void => {
+  debugger;
+};
+
+const onDelete = (row: Pki): void => {
+  removeComponent(row)
+};
+
+const columns = [
   {
     title: "№",
-    width: 60,
+    width: 30,
     maxWidth: 30,
+    cellRenderer: ({ rowIndex: index }: { rowIndex: number }) => (
+      <>
+        <div>{index + 1}</div>
+      </>
+    ),
   },
   {
     title: "Тип",
@@ -80,6 +65,37 @@ export const columns = [
     title: "Серийный номер",
     width: 250,
     dataKey: "serial_number",
+  },
+  {
+    title: "Страна",
+    width: 270,
+    dataKey: "country",
+  },
+  {
+    title: "",
+    width: 270,
+    cellRenderer: ({ rowData: row }: { rowData: Pki }) => (
+      <>
+        <ElButton
+          size="small"
+          type="primary"
+          icon="Edit"
+          onClick={() => onEdit(row)}
+        ></ElButton>
+
+        <ElPopconfirm title="Удалить?" onConfirm={() => onDelete(row)}>
+          {{
+            reference: () => (
+              <ElButton
+                size="small"
+                type="danger"
+                icon="Delete"
+              />
+            ),
+          }}
+        </ElPopconfirm>
+      </>
+    ),
   },
 ];
 </script>
