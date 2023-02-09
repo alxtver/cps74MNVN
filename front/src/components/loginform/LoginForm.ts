@@ -32,7 +32,7 @@ export default defineComponent({
   },
   methods: {
     async login() {
-      let valid = await (this.$refs.form as any).validate();
+      const valid = await (this.$refs.form as any).validate();
       if (!valid) {
         return;
       }

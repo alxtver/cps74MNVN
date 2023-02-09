@@ -1,7 +1,6 @@
 import { createStore } from "vuex";
 import type User from "@/models/User";
 
-
 interface VuexStore {
   auth: boolean;
   user: null | User;

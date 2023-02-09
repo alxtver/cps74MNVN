@@ -1,13 +1,11 @@
 <template>
-    <div>ПЭВМ</div>
+  <div>ПЭВМ</div>
 </template>
 
 <script lang="ts">
 export default {
-    name: "Pc"
+  name: "Pc",
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

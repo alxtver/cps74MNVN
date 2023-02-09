@@ -1,5 +1,5 @@
 <template>
-    <pki-table></pki-table>
+  <pki-table></pki-table>
 </template>
 
 <script lang="ts" src="./Pki.ts"></script>

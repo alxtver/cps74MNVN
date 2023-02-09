@@ -1,15 +1,15 @@
-import axios from 'axios';
+import axios from "axios";
 
 class AxiosFactory {
   public readonly axiosInstance: any;
 
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: 'http://localhost:3001',
+      baseURL: "http://localhost:3001",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      withCredentials: true
+      withCredentials: true,
     });
   }
 }

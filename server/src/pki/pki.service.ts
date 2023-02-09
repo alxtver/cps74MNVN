@@ -67,12 +67,10 @@ export class PkiService {
       await this.editPkiInSystemCase(pki, req.session.part);
       await this.editPkiInPc(pki, req.session.part);
     }
-
-    await this.pkiModel.findOneAndUpdate(
-      { _id: req.body.pki._id },
-      req.body.pki,
-    );
-    return req.body.pki;
+    return this.pkiModel.findOneAndUpdate(
+        { _id: req.body.pki._id },
+        req.body.pki,
+    )
   }
 
   async deletePki(req): Promise<Pki> {
