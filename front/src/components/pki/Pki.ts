@@ -5,7 +5,6 @@ export default defineComponent({
   name: "Pki",
   components: { PkiTable },
   methods: {
-    clickOnDiv(): void {
-    },
+    clickOnDiv(): void {},
   },
 });

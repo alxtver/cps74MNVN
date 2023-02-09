@@ -7,7 +7,7 @@
         :model="authData"
         :rules="rules"
         ref="form"
-        @submit.native.prevent="login"
+        @submit.prevent="login"
       >
         <el-form-item prop="username">
           <el-input
@@ -44,9 +44,9 @@
 
 <style scoped>
 .login {
-    max-height: 205px;
-    max-width: 400px;
-    left: calc(100%/2 - 200px);
-    top: 30vh;
+  max-height: 205px;
+  max-width: 400px;
+  left: calc(100% / 2 - 200px);
+  top: 30vh;
 }
 </style>

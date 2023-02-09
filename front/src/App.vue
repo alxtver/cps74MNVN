@@ -7,8 +7,6 @@
       </transition>
     </router-view>
   </div>
-
-
 </template>
 
 <script setup lang="ts">

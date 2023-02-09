@@ -1,4 +1,4 @@
-import { plainToClass } from 'class-transformer';
+import { plainToClass } from "class-transformer";
 
 export declare type ClassType<T> = new (...args: any[]) => T;
 /**
@@ -8,11 +8,11 @@ export declare type ClassType<T> = new (...args: any[]) => T;
  * @returns {any}
  */
 export function dataToArrayClass<T, V>(clazz: ClassType<T>, data: V[]): T[] {
-    const result = plainToClass(clazz, data);
-    if (Array.isArray(result)) {
-        return result;
-    }
-    return [result];
+  const result = plainToClass(clazz, data);
+  if (Array.isArray(result)) {
+    return result;
+  }
+  return [result];
 }
 
 /**
@@ -22,9 +22,9 @@ export function dataToArrayClass<T, V>(clazz: ClassType<T>, data: V[]): T[] {
  * @returns {any}
  */
 export function dataToClass<T, V>(clazz: ClassType<T>, data: V[]): T {
-    const result = plainToClass(clazz, data);
-    if (Array.isArray(result)) {
-        return result[0];
-    }
-    return result;
+  const result = plainToClass(clazz, data);
+  if (Array.isArray(result)) {
+    return result[0];
+  }
+  return result;
 }
