@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Pki from "@/components/pki/Pki.vue";
-import Apkzi from "@/components/apkzi/Apkzi.vue";
-import Pc from "@/components/pc/Pc.vue";
-import SystemCases from "@/components/systemcases/SystemCases.vue";
+import Apkzi from "@/view/apkzi/Apkzi.vue";
+import Pc from "@/view/pc/Pc.vue";
+import SystemCases from "@/view/systemcases/SystemCases.vue";
 import LoginForm from "@/components/loginform/LoginForm.vue";
+import Pki from '@/view/pki/Pki.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
