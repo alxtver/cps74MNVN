@@ -18,10 +18,10 @@
 </template>
 
 <script setup lang="tsx">
-import PkiTableSetup from "@/view/pki/pkitable/PkiTableSetup";
 import Pki from "@/models/Pki";
 import { ElButton, ElPopconfirm } from "element-plus";
 import { EditableCell } from "@/components/table/inputcell/EditableCell";
+import PkiTableSetup from "@/view/pki/pkitable/PkiTableSetup";
 
 const { components, removeComponent, updateComponent } = PkiTableSetup();
 
