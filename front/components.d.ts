@@ -21,6 +21,7 @@ declare module '@vue/runtime-core' {
     ElTableV2: typeof import('element-plus/es')['ElTableV2']
     LoginForm: typeof import('./src/components/loginform/LoginForm.vue')['default']
     MainMenu: typeof import('./src/components/mainmenu/MainMenu.vue')['default']
+    PartComboBox: typeof import('./src/components/mainmenu/partcombobox/PartComboBox.vue')['default']
     Pc: typeof import('./src/view/pc/Pc.vue')['default']
     Pki: typeof import('./src/view/pki/Pki.vue')['default']
     PkiTable: typeof import('./src/view/pki/pkitable/PkiTable.vue')['default']
@@ -28,5 +29,8 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     SystemCases: typeof import('./src/view/systemcases/SystemCases.vue')['default']
     TextCell: typeof import('./src/components/table/inputcell/TextCell.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

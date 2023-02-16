@@ -5,10 +5,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import PkiTable from '@/view/pki/pkitable/PkiTable.vue';
+import FastPkiTable from "@/view/pki/pkitable/FastPkiTable.vue";
 
 export default defineComponent({
     name: 'Pki',
-    components: { PkiTable },
+    components: { FastPkiTable, PkiTable },
     methods: {
         clickOnDiv(): void {}
     }

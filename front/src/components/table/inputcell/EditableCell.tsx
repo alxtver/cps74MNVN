@@ -1,47 +1,52 @@
-import { ref } from "vue";
 import type Pki from "@/models/Pki";
 import TextCell from "@/components/table/inputcell/TextCell.vue";
 
 export const EditableCell = function (
     updatePromise: (row: Pki) => void,
     onEnterPromise: (row: Pki, evt: KeyboardEvent) => void,
-    onTabPromise: (row: Pki) => void
+    onTabPromise: (row: Pki, evt: KeyboardEvent) => void
 ) {
     return ({ rowData, column }: { rowData: any; column: any }) => {
-        const onInput = (value: string) => {
+        const onChange = (value: string) => {
             rowData[column.dataKey!] = value;
+            updatePromise(rowData);
         };
         const onEnterEditMode = (): void => {
             rowData.editing = column.dataKey;
         };
         const onExitEditMode = (): void => {
             rowData.editing = null;
-            updatePromise(rowData);
         };
 
         const onEnter = (evt: KeyboardEvent): void => {
+            evt.preventDefault();
             onExitEditMode();
-            onEnterPromise(rowData, evt)
+            onEnterPromise(rowData, evt);
         };
 
-        const input = ref();
-        const setRef = (el: any) => {
-            input.value = el;
-            if (el) {
-                el.focus();
-            }
+        const onTab = (evt: KeyboardEvent): void => {
+            evt.preventDefault();
+            onExitEditMode();
+            onTabPromise(rowData, evt);
         };
+
         return rowData.editing === column.dataKey ? (
             <TextCell
-                forwardRef={setRef}
                 value={rowData[column.dataKey]}
-                onChange={onExitEditMode}
-                onBlur={onExitEditMode}
-                onInput={onInput}
                 onEnter={onEnter}
+                onTab={onTab}
+                onBlur={onExitEditMode}
+                onChange={onChange}
             />
         ) : (
-            <div class="table-trigger" onDblclick={onEnterEditMode}>
+            <div
+                class="table-trigger"
+                style={{
+                    width: "100%",
+                    height: "100%",
+                }}
+                onDblclick={onEnterEditMode}
+            >
                 {rowData[column.dataKey]}
             </div>
         );
