@@ -20,7 +20,9 @@
                                 {{ item.name }}
                             </a>
                         </div>
-                        <PartComboBox class="fixed top-2 w-72 right-2"/>
+
+                        <PartComboBox :items="parts" v-if='showParts' class="fixed top-2 w-72 right-2" />
+
                     </div>
                     <div class="-mr-2 flex md:hidden">
                         <!-- Mobile menu button -->
@@ -60,11 +62,15 @@
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import PartComboBox from '@/components/mainmenu/partcombobox/PartComboBox.vue';
+import PartApi from '@/api/PartApi';
 
 const route = useRoute();
+
+const parts = ref([]);
+const showParts = ref(false);
 
 const navigation = [
     { name: 'ПКИ', href: 'pki' },
@@ -75,4 +81,13 @@ const navigation = [
 const currentUrl = computed(() => {
     return route.name;
 });
+
+onMounted(() => {
+    loadParts();
+});
+
+async function loadParts() {
+    parts.value = await PartApi.getParts();
+    showParts.value = true
+}
 </script>

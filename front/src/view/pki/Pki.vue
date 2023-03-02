@@ -1,5 +1,7 @@
 <template>
-    <pki-table />
+    <div class='w-full h-screen overflow-auto'>
+        <pki-table />
+    </div>
 </template>
 
 <script lang="ts">

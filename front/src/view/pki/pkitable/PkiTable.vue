@@ -1,7 +1,6 @@
 <template>
-
     <div class="wrapper">
-        <fast-pki-table :columns="columns" :items="components"></fast-pki-table>
+        <fast-pki-table :columns="columns" :items="components" @change="onEdit" />
     </div>
 </template>
 

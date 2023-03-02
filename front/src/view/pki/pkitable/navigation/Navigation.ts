@@ -7,8 +7,9 @@ export default function Navigation(): Navigation {
         const currentCell = evt.target as HTMLElement;
         const currentRow = currentCell.parentNode as HTMLElement;
         const cellIndex = Array.prototype.slice.call(currentRow.children).indexOf(currentCell);
-        const nextRow = currentRow.nextSibling;
-        if (!nextRow) {
+        const nextRow = currentRow.nextSibling as HTMLElement;
+        if (!nextRow || nextRow.tagName !== 'TR') {
+            currentCell.blur()
             return;
         }
         const targetCell = Array.prototype.slice.call((nextRow as HTMLElement).children)[cellIndex];

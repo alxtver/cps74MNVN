@@ -3,7 +3,9 @@
         <table>
             <tr>
                 <th class="header">№</th>
-                <th  class="header" v-for="column in columns" :key="column.title">{{ column.title }}</th>
+                <th class="header" v-for="column in columns" :key="column.title">
+                    {{ column.title }}
+                </th>
             </tr>
             <tr v-for="item in items" :key="item._id">
                 <td class="index-cell" v-html="getIndex(item)"></td>
@@ -12,6 +14,7 @@
                     :key="column.dataKey"
                     :contenteditable="column.editable"
                     @keydown.enter="nextCellByEnter($event)"
+                    @blur="change($event, item, column)"
                 >
                     {{ item[column.dataKey] }}
                 </td>
@@ -24,6 +27,7 @@
 import { toRefs } from 'vue';
 import Pki from '@/models/Pki';
 import Navigation from '@/view/pki/pkitable/navigation/Navigation';
+import _ from 'lodash';
 interface Prop {
     items?: Pki[];
     columns?: { title: string; dataKey: string; editable: boolean }[];
@@ -34,12 +38,26 @@ const props = withDefaults(defineProps<Prop>(), {
     columns: () => [],
 });
 
+const emit = defineEmits(['change', 'delete']);
+
 const { columns, items } = toRefs(props);
 const { nextCellByEnter } = Navigation();
 
 function getIndex(row: Pki): number | null {
     const index = items.value.indexOf(row) + 1;
     return index ? index : null;
+}
+
+function change(event: any, row: Pki, column: any): void {
+    const keys = Object.keys(row) as (keyof Pki)[];
+    const index = keys.indexOf(column.dataKey);
+    const key = keys[index];
+    const oldRow = _.cloneDeep(row);
+    const value = event.target.innerHTML;
+    row[key] = value as never;
+    if (oldRow[key] !== value) {
+        emit('change', row, oldRow);
+    }
 }
 </script>
 
