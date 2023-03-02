@@ -23,8 +23,40 @@ export class PkiService {
     private readonly systemCaseModel: Model<SystemCase>,
   ) {}
 
-  async getAllPki(part: string): Promise<Pki[]> {
-    return await this.pkiModel.find({ part }).exec();
+  async getAllPki(part: string, query: string = ''): Promise<Pki[]> {
+    const queryDB = {
+      $and: [
+        {
+          $or: [
+            {
+              type_pki: new RegExp(query + '.*', 'i'),
+            },
+            {
+              vendor: new RegExp(query + '.*', 'i'),
+            },
+            {
+              country: new RegExp(query + '.*', 'i'),
+            },
+            {
+              model: new RegExp(query + '.*', 'i'),
+            },
+            {
+              part: new RegExp(query + '.*', 'i'),
+            },
+            {
+              serial_number: new RegExp(query + '.*', 'i'),
+            },
+            {
+              number_machine: new RegExp(query + '.*', 'i'),
+            },
+          ],
+        },
+        {
+          part: part,
+        },
+      ],
+    };
+    return await this.pkiModel.find(queryDB).exec();
   }
 
   async addPki(PkiDto: Pki, req): Promise<Pki | string> {
@@ -68,9 +100,9 @@ export class PkiService {
       await this.editPkiInPc(pki, req.session.part);
     }
     return this.pkiModel.findOneAndUpdate(
-        { _id: req.body.pki._id },
-        req.body.pki,
-    )
+      { _id: req.body.pki._id },
+      req.body.pki,
+    );
   }
 
   async deletePki(req): Promise<Pki> {

@@ -27,6 +27,7 @@ declare module '@vue/runtime-core' {
     PkiTable: typeof import('./src/view/pki/pkitable/PkiTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchField: typeof import('./src/components/searchfield/SearchField.vue')['default']
     SystemCases: typeof import('./src/view/systemcases/SystemCases.vue')['default']
     TextCell: typeof import('./src/components/table/inputcell/TextCell.vue')['default']
   }

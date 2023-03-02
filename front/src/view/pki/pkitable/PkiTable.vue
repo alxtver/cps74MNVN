@@ -1,4 +1,5 @@
 <template>
+    <SearchField @input="onSearch" />
     <div class="wrapper">
         <fast-pki-table :columns="columns" :items="components" @change="onEdit" />
     </div>
@@ -8,8 +9,12 @@
 import Pki from '@/models/Pki';
 import PkiTableSetup from '@/view/pki/pkitable/PkiTableSetup';
 import FastPkiTable from '@/view/pki/pkitable/FastPkiTable.vue';
+import SearchField from '@/components/searchfield/SearchField.vue';
+import { useStore } from 'vuex';
+const store = useStore();
+const part = store.getters.getPart;
 
-const { components, loading, removeComponent, updateComponent } = PkiTableSetup();
+const { components, loading, removeComponent, updateComponent, loadComponents } = PkiTableSetup();
 
 function onEdit(row: Pki): void {
     updateComponent(row);
@@ -17,6 +22,10 @@ function onEdit(row: Pki): void {
 
 function onDelete(row: Pki): void {
     removeComponent(row);
+}
+
+async function onSearch(query: string): Promise<void> {
+    components.value = await loadComponents(part, query);
 }
 
 const columns = [

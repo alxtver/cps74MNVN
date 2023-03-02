@@ -23,10 +23,11 @@ export default function PkiTableSetup() {
     /**
      * Загрузить ПКИ
      * @param part
+     * @param query
      */
-    async function loadComponents(part: string): Promise<Pki[]> {
+    async function loadComponents(part: string, query: string = ''): Promise<Pki[]> {
         loading.value = true;
-        const data = await PkiApi.getPki(part);
+        const data = await PkiApi.getPki(part, query);
         loading.value = false;
         return data.sort(sortMethod);
     }
@@ -58,5 +59,5 @@ export default function PkiTableSetup() {
         }
     }
 
-    return { components, loading, removeComponent, updateComponent };
+    return { components, loading, removeComponent, updateComponent, loadComponents };
 }
